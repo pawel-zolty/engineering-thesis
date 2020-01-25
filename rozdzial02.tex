@@ -1,16 +1,17 @@
-\chapter{Praca z szablonem}
-\section{Organizacja szablonu}
-Szablon składa się z pliku głównego, plików z kodem kolejnych rozdziałów i dodatków (włączanych do kompilacji w dokumencie głównym), katalogów z plikami grafik (włączanymi do rysunków w rozdziałach), pliku ze skrótami (opcjonalny), pliku z danymi bibliograficznymi (plik \texttt{dokumentacja.bib}). Taki ,,układ'' zapewnia porządek oraz pozwala na selektywną kompilację rozdziałów. Wyjaśniając to dokładniej, podczas tworzenia szablonu przyjęto następującą konwencję:
-\begin{itemize}
-\item Plikiem głównym jest plik \texttt{Dyplom.tex}. To w nim znajdują się deklaracje wszystkich używanych styli, definicje makr oraz ustawień, jak również polecenie \verb+\begin{document}+.
-\item Teksty rozdziałów są redagowane w osobnych plikach o nazwach zawierających numer rozdziału. Pliki te zamieszczone są w katalogu głównym (tym samym, co plik \texttt{Dyplom.tex}). I~tak \texttt{rozdzial01.tex} to plik pierwszego rozdziału (ze Wstępem), \texttt{rozdzial02.tex} to plik z treścią drugiego rozdziału itd. 
-\item Teksty dodatków są redagowany w osobnych plikach o nazwach zawierających literę dodatku. Pliki te, podobnie do plików z tekstem rozdziałów, zamieszczane są w katalogu głównym. I~tak \texttt{dodatekA.tex} oraz \texttt{dodatekB.tex} to, odpowiednio, pliki z treścią dodatku A oraz dodatku B.
-\item Pewnym wyjątkiem od reguły nazewniczej w przypadku plików z tekstem rozdziałów i dodatków jest plik \texttt{skroty.tex}. Jest to plik, w którym zamieszczono wykaz użytych skrótów. W jego nazwie nie występuje żaden numer czy porządkowa litera. 
-\item Każdemu rozdziałowi i dodatkowi towarzyszy katalog przeznaczony do składowania dołączanych w nim grafik. I tak \texttt{rys01} to katalog na pliki z grafikami dołączanymi do rozdziału pierwszego, \texttt{rys02} to katalog na pliki z grafikami dołączanymi do rozdziału drugiego itd.
-Podobnie \texttt{rysA} to katalog na pliki z grafikami dołączanymi w dodatku A itd.
-\item W katalogu głównym zamieszczany jest plik \texttt{dokumentacja.bib} zawierający bazę danych bibliograficznych.
-\end{itemize}
+\chapter{Przygotowania \emph{Know-how}}
+\section{Tworzenie API}
+Projektowanie i tworzenie \texttt{API} (ang.~\emph{Application Programming Interface}) współcześnie jest jednym z podstawowych zadań programisty. Zadaniem API jest udostępnienie i ochrona swoich zasobów. Zasoby te to najczęściej dane i w zależności od uprawnień klient może je zmieniać, lub tylko pobierać. Klientem może być strona internetowa służąca do wyświetlania i zarządzania danymi, a także inna aplikacja serwerowa korzystająca z tych danych.
 
+Użycie API do dostarczania danych do aplikacji klienckiej pozwala rozdzielić logikę widoku po stronie klienta oraz logikę biznesową po stronie serwera. Zaletą tego rozwiązania jest uproszczenie implementacji i w perspektywie ułatwienia utrzymywania tworzonego programu. Ponadto tak tworzone oprogramowanie jest bardziej elastyczne i łatwiej można je integrować z innymi systemami. Stworzenie takiego API nie jest zadaniem łatwym. Dla tego w sekcji~\ref{sec:api-dobre-praktyki}. przedstawione zostaną dobre praktyki.
+
+Często trzeba szybko stworzyć nowe API, lub zmodyfikować już istniejące. Dodawanie funkcji filtrowania, sortowania, czy łączenia danych z różnych zasobów jest czasochłonne i nudne. Implementacja takich funkcjonalności zmusza nas do dodawania nowych punktów dostępu (ang.~\emph{endpoint}) do już istniejących zasobów, lub modyfikowania tych już istniejących. Problemem jest także budowanie adresu \texttt{URL} (ang.~\emph{Uniform Resource Locator}). Musi być on elastyczny i intuicyjny, aby można było pracować bez ciągłego wertowania dokumentacji. Z pomocą tutaj przychodzi zapoczątkowany przez Microsoft i zatwierdzony przez \texttt{ISO} (ang.~\emph{International Organization for Standardization}) protokół \texttt{OData} (ang.~\emph{Open Data Protoco}) i jego gotowe implementacje. Zostanie on opisany w sekcji~\ref{sec:odata}
+
+\subsection{Dobre praktyki tworzenia API} 
+\label{sec:api-dobre-praktyki}
+
+
+\subsection{Protokół OData}
+\label{sec:odata}
 \begin{table}[htb]
 \centering\small
 \caption{Pliki źródłowe szablonu oraz wyniki kompilacji}
@@ -53,36 +54,16 @@ Podobnie \texttt{rysA} to katalog na pliki z grafikami dołączanymi w dodatku A
 \end{tabularx}
 \end{table}
 
-Szablon przygotowano w systemie Windows stosując kodowanie \texttt{cp1250}. Można go wykorzystać również w innych systemach i przy innych kodowaniach. Jednakże wtedy konieczna jest korekta dokumentu \texttt{Dyplom.tex} odpowiednio do wybranego przypadku. Korekta ta polegać może na zamianie polecenia \verb+\usepackage[cp1250]{inputenc}+  na polecenie \verb+\usepackage[utf8]{inputenc}+ oraz konwersji kodowania istniejących plików ze źródłem latexowego kodu (plików o rozszerzeniu \texttt{*.tex} oraz \texttt{*.bib}).
-
-Samo kodowanie plików może być źródłem paru problemów. Chodzi o to, że użytkownicy pracujący z edytorami tekstów pod linuxem mogą generować pliki zakodowane w UTF-8 bez BOM lub z BOM, a pod windowsem -- pliki z kodowaniem znaków \texttt{cp1250} zakodowanych w~ANSI. A z takimi plikami różne edytory różnie sobie radzą (w szczególności edytor TeXnicCenter czasami z niewiadomego powodu traktuje zawartość pliku jako UTF8 lub ANSI -- chyba sprawdza, czy w bufore nie ma jakichś znaków specjalnych i na tej podstawie interpretuje kodowanie). Bywa, że choć wszystko wygląda OK to jednak kompilacja latexowa ,,nie idzie''. Problemem mogą być właśnie pierwsze bajty, których nie widać w edytorze. 
-
-Kodowanie znaków jest istotne również przy edytowaniu bazy danych bibliograficznych (pliku \texttt{dokumentacja.bib}). Aby \texttt{bibtex} poprawnie interpretował polskie znaki plik \texttt{dokumentacja.bib} powinien być zakodowany w ANSI, CR+LF (dla ustawień jak w szablonie). Do konwersji kodowania można użyć Notepad++ (jest tam opcja ,,konwertuj'' - nie mylić z opcją ,,koduj'', która przekodowuje znaki, jednak nie zmienia sposobu kodowania pliku).
-
-
-
-\section{Kompilacja szablonu}
-Kompilację szablonu może uruchamić na killka różnych sposobów. Wszystko zależy od używanego systemu operacyjnego, zaintalowanej na nim dystrybucji latexa oraz dostępnych narzędzi. Zazwyczaj kompilację rozpoczyna się wydając polecenie z linii komend lub uruchamia się ją za pomocą narzędzi zintegrowanych środowisk.
-
-Kompilacja z linii komend polega na uruchomieniu w katalogu, w którym rozpakowano źródła szablonu, następującego polecenia:
+\section{Użyte wzorce projektowe}
+\subsection{Mediator}
+\subsection{Podział odpowiedzialności czyli CQRS}
+\subsection{MVVM}
 \begin{lstlisting}[basicstyle=\ttfamily]
 > pdflatex Dyplom.tex
 \end{lstlisting}
-gdzie \texttt{pdflatex} to nazwa kompilatora, zaś \texttt{Dyplom.tex} to nazwa głównego pliku redagowanej pracy. 
-W przypadku korzystania ze środowiska \texttt{TeXnicCenter} należy otworzyć dostarczony w szablonie plik projektu \texttt{Dyplom.tcp}, a następnie uruchomić kompilację narzędziami dostępnymi w pasku narzędziowym.
 
-Aby poprawnie wygenerowały się wszystkie referencje (spis treści, odwołania do tabel, rysunków, pozycji literaturowych, równań itd.) kompilację \texttt{pdflatex} należy wykonać dwukrotnie, a~czasem nawet trzykrotnie, gdy wygenerowane mają zostać odwołania do pozycji literaturowych oraz wykazu literatury. 
-
-Wygenerowanie danych bibliograficznych zapewnia kompilacja \texttt{bibtex} uruchamiana po kompilacji \texttt{pdfltex}. Można to zrobić z linii komend:
 \begin{lstlisting}[basicstyle=\ttfamily]
 > bibtex Dyplom
-\end{lstlisting}
-lub wybierając odpowiednią pozycję z paska narzędziowego wykorzystywanego środowiska. Po kompilacji \texttt{bibtex} na dysku pojawi się plik \texttt{Dyplom.bbl}. Dopiero po kolejnych dwóch kompilacjach \texttt{pdflatex} dane z tego pliku pojawią się w wygenerowanym dokumencie. Podsumowując, po każdym wstawieniu nowego cytowania w kodzie dokumentu uzyskanie poprawnego formatowania dokumentu wynikowego wymaga powtórzenia następującej sekwencji kroków kompilacji:
-\begin{lstlisting}[basicstyle=\ttfamily]
-> pdflatex Document.tex
-> bibtex Document
-> latex Document.tex
-> latex Document.tex
 \end{lstlisting}
 Szczegóły dotyczące przygotowania danych bibliograficznych oraz zastosowania cytowań przedstawiono w podrozdziale \ref{sec:literatura}.
 
@@ -93,3 +74,4 @@ W szablonie wykorzystano klasę dokumentu \texttt{memoir} oraz wybrane pakiety. 
 
 Jeśli w szablonie będzie wykorzystany indeks rzeczowy, kompilację źródeł trzeba będzie rozszerzyć o kroki potrzebne na wygenerowanie plików pośrednich \texttt{Dokument.idx} oraz \texttt{Dokument.ind} oraz dołączenia ich do finalnego dokumentu (podobnie jak to ma miejsce przy generowaniu wykazu literatury).
 Szczegóły dotyczące generowania indeksu rzeczowego opisano w podrozdziale~\ref{sec:indeks}.
+\section{Autoryzacja OpenId Connect}
