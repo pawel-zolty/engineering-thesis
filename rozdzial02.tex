@@ -8,20 +8,108 @@ Często trzeba szybko stworzyć nowe API, lub zmodyfikować już istniejące. Do
 
 \subsection{Dobre praktyki tworzenia API} 
 \label{sec:api-dobre-praktyki}
-Aby stworzyć czytelne i elastyczne REST API należy zastosować się do wielu zasad. Oczywiście nie są one obowiązkowe. Najczęściej jednak stosowanie się do nich ułatwia konsumowanie API i integrowanie go z innymi systemami.
+Aby stworzyć czytelne i elastyczne REST API należy zastosować się do wielu zasad. Oczywiście nie są one obowiązkowe. Najczęściej jednak stosowanie się do nich ułatwia konsumowanie API i integrowanie go z innymi systemami. Jednym z koniecznych do szybkiej i bezproblemowej pracy z API kroków jest stworzenie i późniejsze aktualizowanie jego dokumentacji. Polecanym i nowoczesnym narzędziem służący do jej tworzenia jest \texttt{Swagger}. 
 
-API projektujemy dla zasobów, które są rzeczownikami. Dlatego adres URL, a dokładniej jego ścieżka zasobów (ang.~\emph{resource path}) powinna być złożona z rzeczowników. Zalecane jest, aby używać liczby mnogiej rzeczownika, gdyż zazwyczaj zasób to zbiór np.~kont bankowych. Natomiast, aby wyrazić akcję, którą wykonuje się na zasobie należy użyć odpowiedniej metody HTTP (ang.~\emph{HTTP Verb}). W tabeli~\ref{tab:http-verb} widać wzorzec zastosowania metod HTTP~\cite{api-good-practises-1}.
+API projektujemy dla zasobów, które są rzeczownikami. Dlatego adres URL, a dokładniej jego ścieżka zasobów (ang.~\emph{resource path}) powinna być złożona z rzeczowników. Zalecane jest, aby używać liczby mnogiej rzeczownika, gdyż zazwyczaj zasób to zbiór przykładowo kont bankowych. Natomiast, aby wyrazić akcję, którą wykonuje się na zasobie należy użyć odpowiedniej metody \texttt{HTTP} (ang.~\emph{HTTP Verb}). W tabeli~\ref{tab:http-verb} widać wzorzec zastosowania metod HTTP~\cite{api-good-practises-1}.
 
 \begin{table}
     \centering
     \caption{Użycie metod HTTP}
     \label{tab:http-verb}
     \begin{tcolorbox}[tab2,tabularx={X||Y|Y|Y|Y}]
-    Zasób      & GET     & POST    & PUT      & DELETE   \\\hline\hline
+    \texttt{Zasób}      & \texttt{GET}     & \texttt{POST}    & \texttt{PUT}      & \texttt{DELETE}   \\\hline\hline
     /bank-account   & Zwraca listę kont & Tworzy nowe konto &  Zbiorczo aktualizuje konta &  Usuwa wszystkie konta \\\hline
     /bank-account/1 & Zwraca określone konto & Metoda niedozwolona (405) &  Aktualizuje określone konto &  Usuwa określone konto \\\hline
     \end{tcolorbox}
 \end{table} 
+
+Kolejną ważną praktyką przy tworzeniu API jest zwracanie odpowiedniego kodu odpowiedzi HTTP (ang.~\emph{HTTP Status Code}), aby poinformować klienta o sposobie realizacji jego żądania. Żądanie może zakończone być sukcesem, bądź niepowodzeniem. Jednak konieczne jest używanie więcej niż dwóch kodów odpowiedzi, aby dokładnie określić co ten sukces, lub niepowodzenie oznaczają. Dokument \texttt{RFC7231} opisuje, kiedy i jak używać konkretnych kodów odpowiedzi HTTP. Statusy HTTP dzielimy na pięć klas, które rozróżniane są po pierwszej cyfrze kodu odpowiedzi HTTP~\cite{rfc7231}.
+
+\begin{itemize}
+\item \texttt{1XX} - Informacja - Żądanie zostało odebrane, proces jest kontynuowany  
+\item \texttt{2XX} - Sukces - Żądanie zostało pomyślnie odebrane, zrozumiane i zaakceptowane 
+\item \texttt{3XX} - Przekierowanie - Konieczne jest podjęcie dalszych działań w celu zakończenia żądania
+\item \texttt{4XX} - Błąd klienta - Żądanie zawiera złą składnię, lub nie może być zrealizowane
+\item \texttt{5XX} - Błąd serwera - Serwerowi nie udało zrealizować się poprawnego żądania
+\end{itemize}
+
+W tabeli~\ref{tab:http-status} przedstawiono najczęściej używane w REST API statusy HTTP i ich znaczenie~\cite{api-good-practises-2, rfc7231}.  
+Warto wspomnieć, że statusu \texttt{204} używa się najczęściej, gdy serwer nie zwraca w ciele odpowiedzi żadnych danych. Sytuacją taką jest między innymi usuwanie zasobu.
+
+\begin{table}
+    \centering
+    \caption{Kody odpowiedzi HTTP}
+    \label{tab:http-status}
+    \begin{tcolorbox}[tab2,tabularx={p{.30\linewidth}|Y}]
+    \texttt{Kod HTTP}    & \texttt{Opis}   \\\hline\hline
+    \texttt{200: OK}
+        & Żądanie zakończone sukcesem. \\\hline
+    \texttt{201: Created}
+        & Stworzony został nowy zasób. \\\hline
+    \texttt{204: No Content}
+        & W ciele odpowiedzi nie ma żadnej dodatkowej treści.\\\hline
+    \texttt{400: Bad Request}
+        & Serwer nie może przetworzyć żądania z powodu błędu klienta.   \\\hline
+    \texttt{401: Unauthorized}
+        & Żądanie nie zostało przetworzone, ponieważ brakuje poprawnych danych uwierzytelniających dla docelowego zasobu. \\\hline
+    \texttt{403: Forbidden}
+        & Podane dane uwierzytelniające nie są wystarczające do autoryzacji żądania. \\\hline
+    \texttt{404: Not Found}
+        & Serwer źródłowy nie znalazł bieżącej reprezentacji zasobu docelowego, lub nie chce ujawnić, że istnieje. \\\hline
+    \texttt{500: Internal Server Error}
+        & Serwer napotkał nieoczekiwany warunek, który uniemożliwił mu spełnienie żądania. \\\hline
+    \end{tcolorbox}
+\end{table}
+
+Ważną zasadą dotyczącą API jest to, aby po stworzeniu nowego zasobu zwróciła jego reprezentację na przykład w postaci \texttt{JSON} (ang.~\emph{JavaScript Object Notation}). Dotyczy to w szczególności metody \texttt{POST}. W przypadku powodzenia serwer powinien zwrócić w takim wypadku odpowiedź z kodem \texttt{201}, a także dodatkowy nagłówek z lokalizacją nowostworzonego zasobu (ang.~\emph{Location Header}). Dodatkowo rekomendowane jest, aby dane stworzonego obiektu, lub obiektów zapakować w pole danych (ang.~\emph{data} co~pokazano na listingu~\ref{list:response200}. 
+
+{\belowcaptionskip=-10pt
+\begin{lstlisting}[label=list:response200,
+    caption=Przykład pomyślnej odpowiedzi serwera]
+//200 OK
+{
+  "errors": [],
+  "data": {
+    "firstName": "Paweł",
+    "lastName": "Żółaniecki",
+    "age": 24
+  },
+}
+\end{lstlisting}
+}
+
+Umieszczanie lokalizacji dostępnych zasobów wpisuję się w realizację koncepcji \texttt{HATEOAS} (ang.~\emph{Hypermedia As Transfer Engine Of Application State}). Pełna realizacja tej koncepcji zapewnia łatwą nawigację pomiędzy powiązanymi zasobami i przedstawia dostępne akcje na danym zasobie, poprzez umieszczanie w metadanych odpowiedzi linków URL do konkretnych akcji i zasobów.
+
+W zależności od strategii biznesowej przyjętej w projekcie, gdy klient nie ma uprawnień do zasobu można zwrócić nie tylko kod \texttt{403}, ale także \texttt{404}, gdy serwer chce ukryć istnienie zasobu.
+
+Dobrym zwyczajem jest umieszczanie w odpowiedzi z kodem \texttt{400} i \texttt{403} dokładniejszej informacji o przyczynie braku realizacji żądania. W podobny sposób powinno się informować klienta, także o błędach. Częstą praktyką jest zwracanie w ciele odpowiedzi tabeli z listą błędów~\ref{list:response400}
+
+{\belowcaptionskip=-10pt
+\begin{lstlisting}[label=list:response400,
+    caption=Odpowiedź serwera zawierająca opis błędu]
+//400 Bad Request
+{
+  "errors": [
+    {
+      "status": 400,
+      "details": "Invalid state. Valid state are 'draft', 'success' or 'failure'"
+    }
+  ]
+}
+\end{lstlisting}
+}
+
+Istotnym także jest, żeby nie tworzyć nowych adresów \texttt{URL} dla filtrowanego, czy sortowanego zasobu. Lepszym podejściem jest przedstawić wyżej wymienione kryteria w ścieżce wyszukiwania adresu \texttt{URL} (ang.~\emph{query string}). W sekcji~\ref{sec:odata} przedstawiony zostanie wybrany przez autora elastyczny protokół określający strategię wyszukiwania i filtrowania zasobów, za pomocą określonych parametrów ścieżki wyszukiwania adresu URL.
+
+
+Stateless Authentication & Authorization -> sekcja autoryzacji
+Use Two URLs per Resource
+Use PATCH for Partial Updates of a Resource 
+
+
+Design Relationships Appropriately 
+
+Pagination Versioning PATCH
 
 \subsection{Protokół OData}
 \label{sec:odata}
@@ -71,7 +159,6 @@ API projektujemy dla zasobów, które są rzeczownikami. Dlatego adres URL, a do
 \section{Użyte wzorce projektowe}
 \subsection{Mediator}
 \subsection{Podział odpowiedzialności czyli CQRS}
-\subsection{MVVM}
 \begin{lstlisting}[basicstyle=\ttfamily]
 > pdflatex Dyplom.tex
 \end{lstlisting}
