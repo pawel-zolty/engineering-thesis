@@ -26,11 +26,11 @@ API projektujemy dla zasobów, które są rzeczownikami. Dlatego adres URL, a do
 Kolejną ważną praktyką przy tworzeniu API jest zwracanie odpowiedniego kodu odpowiedzi HTTP (ang.~\emph{HTTP Status Code}), aby poinformować klienta o sposobie realizacji jego żądania. Żądanie może zakończone być sukcesem, bądź niepowodzeniem. Jednak konieczne jest używanie więcej niż dwóch kodów odpowiedzi, aby dokładnie określić co ten sukces, lub niepowodzenie oznaczają. Dokument \texttt{RFC7231} opisuje, kiedy i jak używać konkretnych kodów odpowiedzi HTTP. Statusy HTTP dzielimy na pięć klas, które rozróżniane są po pierwszej cyfrze kodu odpowiedzi HTTP~\cite{rfc7231}.
 
 \begin{itemize}
-\item \texttt{1XX} - Informacja - Żądanie zostało odebrane, proces jest kontynuowany  
-\item \texttt{2XX} - Sukces - Żądanie zostało pomyślnie odebrane, zrozumiane i zaakceptowane 
-\item \texttt{3XX} - Przekierowanie - Konieczne jest podjęcie dalszych działań w celu zakończenia żądania
-\item \texttt{4XX} - Błąd klienta - Żądanie zawiera złą składnię, lub nie może być zrealizowane
-\item \texttt{5XX} - Błąd serwera - Serwerowi nie udało zrealizować się poprawnego żądania
+\item \texttt{1XX} -- Informacja -- Żądanie zostało odebrane, proces jest kontynuowany  
+\item \texttt{2XX} -- Sukces -- Żądanie zostało pomyślnie odebrane, zrozumiane i zaakceptowane 
+\item \texttt{3XX} -- Przekierowanie -- Konieczne jest podjęcie dalszych działań w celu zakończenia żądania
+\item \texttt{4XX} -- Błąd klienta -- Żądanie zawiera złą składnię, lub nie może być zrealizowane
+\item \texttt{5XX} -- Błąd serwera -- Serwerowi nie udało zrealizować się poprawnego żądania
 \end{itemize}
 
 W tabeli~\ref{tab:http-status} przedstawiono najczęściej używane w REST API statusy HTTP i ich znaczenie~\cite{api-good-practises-2, rfc7231}.  
