@@ -1,5 +1,7 @@
 \chapter{Wstęp}
+\label{chap:wstep}
 \section{Wprowadzenie}
+\label{sec:wprowadzenie}
 Bez względu na rodzaj działalności, a także liczbę pracowników, zarządzanie finansami to jeden z ważniejszych aspektów funkcjonowania każdego przedsiębiorstwa. Rozliczanie przychodów i wydatków jest nie tylko bardzo często obowiązkiem, ale zarówno pomocą w panowaniu nad przepływem pieniędzy, wynikającym z prowadzenia działalności gospodarczej. Jako szczególny typ przedsiębiorstwa można podać gospodarstwo domowe, czyli po prostu rodzinę.
 
 Z ekonomicznego punktu widzenia, gospodarstwo domowe to jednostka gospodarująca, której celem jest zaspokajanie wspólnych i osobistych potrzeb. Jest to zespół osób, które wspólnie podejmują decyzję o swoim podstawowym utrzymaniu i zarządzaniu środkami pieniężnymi, wniesionymi do budżetu domowego. Gospodarstwem domowym można także nazwać pojedynczą osobę utrzymującą się samodzielnie~\cite{gospodarstwo-domowe}.
@@ -14,13 +16,44 @@ Osoba mądrze kierująca gospodarstwem domowym szanuje pieniądze. Coraz częśc
 
 Kolejnym ważnym aspektem domowych finansów jest trwałość zakupionych towarów takich jak np. ubrania oraz sprzęt RTV i AGD. Rozklejające się po kilku miesiącach buty, psująca się lodówka, jak również innego rodzaju uszkodzenia i usterki, mogą prowadzić do nadwyrężenia budżetu domowego. Dlatego w wielu domach trzyma się paragony i faktury w celu dokonania potencjalnej reklamacji. Spotykane są rozwiązania umożliwiające zarówno powiązania zakupów z kontem w aplikacji lojalnościowej, jak i dedykowane programy do trzymania dokumentów sprzedażowych w formie elektronicznej.
 
-Popularną aplikacją, która pozwala na elektroniczne przechowywanie paragonów jest ,,Pan Paragon''. Umożliwia on nie tylko na trzymanie dokumentów sprzedażowych w pamięci lokalnej telefonu, ale także na ich archiwizację w chmurze. Pozwala on także na przechowywanie kart lojalnościowych. Niestety nie daje możliwości do zarządzania wydatkami i planowania budżetu. Jest też aplikacją dedykowaną jednostce, a nie rodzinie.
+Popularną aplikacją, która pozwala na elektroniczne przechowywanie paragonów jest ,,Pan Paragon''. Umożliwia on nie tylko na trzymanie dokumentów sprzedażowych w pamięci lokalnej telefonu, ale również na ich archiwizację w chmurze. Pozwala on także na przechowywanie kart lojalnościowych. Niestety nie daje możliwości do zarządzania wydatkami i planowania budżetu. Jest też aplikacją dedykowaną jednostce, a nie rodzinie.
 
 W ostatnim czasie również supermarkety czy sklepy odzieżowe wypuszczają własne oprogramowanie, umożliwiające branie udziału w programach lojalnościowych. Jednym z nich jest Lidl, którego rozwiązanie oferuje też zapisanie paragonu w aplikacji. Cały proces odbywa się poprzez zeskanowanie kodu QR (ang.~\emph{quick response}) w telefonie. W przypadku tego typu programów, problemem staje się mnogość rozwiązań dla pojedynczych sieci i marek.
 
 Jak widać dbanie o budżet gospodarstwa domowego nie jest rzeczą trywialną. Wielowymiarowość tego zadania może przyprawić osobę odpowiedzialną o zawrót głowy. Dużym utrudnieniem jest brak możliwości synchronizowania działań całej rodziny w ramach jednego systemu. Ponadto nie wystarczy tylko panować nad przychodami i wydatkami. Trzeba wziąć pod uwagę czynniki, takie jak zabezpieczenie się przed utratą środków z powodu przedwczesnego zużycia się produktów, a także  programy lojalnościowe, które oferują atrakcyjne promocje. Tutaj sprawę komplikuje ilość potencjalnych kart i możliwość współdzielenia ich między członkami rodziny. 
 
-W tej pracy dyplomowej zdecydowano się przedstawić projekt aplikacji budżetu domowego, która łączyć będzie wszystkie wyżej wymienione funkcje. Aplikacja ma stać się uniwersalnym narzędziem do zarządzania finansami całej rodziny, ze szczególnym uwzględnieniem roli rodziców i dzieci. Ważnymi funkcjami projektu mają być także te związane z tworzeniem kopi zapasowej paragonów, a także zarządzaniem gwarancjami i mnogością kart lojalnościowych.
+W tej pracy dyplomowej zdecydowano się przedstawić projekt aplikacji budżetu domowego, która łączyć będzie wszystkie wyżej wymienione funkcje. Aplikacja ma stać się uniwersalnym narzędziem do zarządzania finansami całej rodziny, ze szczególnym uwzględnieniem roli rodziców i dzieci. Ważnymi funkcjami projektu mają być również te związane z tworzeniem kopii zapasowej paragonów, a także zarządzaniem gwarancjami i mnogością kart lojalnościowych.
+
 \section{Cel i zakres pracy}
+\label{sec:cel-zakres}
+\subsection{Cel}
+\label{subsec:cel}
+Celem pracy jest stworzenie aplikacji do zarządzania budżetem domowym, oferującej użytkownikowi podstawowe funkcjonalności, czyli produktu MVP (ang.~\emph{minimum valuable product}). Program ma posiadać minimalną wartość użytkową, a także umożliwiać bezpieczne i płynne korzystanie z dostarczanych funkcji.  
+
+Kolejnym celem pracy jest zaprojektowanie elastycznego systemu z wykorzystaniem nowoczesnej architektury, umożliwiającej łatwe dodawanie nowych funkcji i integrację z zewnętrznymi dostawcami usług.
+
+Celem pracy jest także przedstawienie koncepcji aplikacji uniwersalnej dla domowego budżetu, która łączyłaby w sobie funkcje innych programów tego typu z~ funkcjami programów przechowujących kopie paragonów, a także oferujących możliwość przechowywania kart lojalnościowych, bonów i gwarancji.
+
+\subsection{Zakres}
+\label{subsec:zakres}
+W ramach pracy inżynierskiej autor stworzy dwie aplikacje webowe. Pierwsza z nich będzie pełniła rolę API, a druga z nich będzie oferować podstawowy interfejs użytkownika w przeglądarce internetowej.
+
+Funkcje, które zostaną zaimplementowane dotyczyć będą tworzenia i zarządzania  rachunkiem, tudzież kontem pieniężnym, wraz z możliwością tworzenia wydatków i przychodów. Dodana będzie także możliwość tworzenia i przypisywania kategorii operacji pieniężnych.
+
+Autor zapewni także mechanizm bezpiecznego i nowoczesnego rejestrowania oraz logowania się użytkownika w systemie, z wykorzystaniem mechanizmu tokenów.
+
+Aplikacja zostanie dostarczona na środowisko produkcyjne stworzone na platformie Azure. System zostanie również przetestowany w środowisku deweloperskim oraz produkcyjnym, co~zostanie opisane w rozdziale~\ref{chap:testy}.
+
+Spisana zostanie także dokumentacja dla API, jak i również dokument pracy inżynierskiej.
 
 \section{Układ pracy}
+\label{sec:uklad-pracy}
+W rozdziale~\ref{chap:wstep} autor przedstawi współczesne problemy związane z prowadzeniem domowych finansów i uzasadni konieczność stworzenia aplikacji budżetu domowego -- punkt~\ref{sec:wprowadzenie}. W sekcji~\ref{sec:cel-zakres} omówione zostaną cele pracy inżynierskiej, jak również zakres prac wykonanych  przez studenta.
+
+Rozdział~\ref{chap:know-how} zawierać będzie wstęp teoretyczny -- bazę wiedzy, którą autor uzyskał podczas przygotowań do pisania pracy inżynierskiej. W punkcie~\ref{sec:projektowanie-api} opisane zostaną dobre praktyki tworzenia API~i przydatne narzędzia. Natomiast w sekcji~\ref{sec:wzorce} przybliżone będą wykorzystane w kodzie wzorce projektowe. Punkt~\ref{sec:autoryzacja} będzie miejscem prezentacji użytego mechanizmu autoryzacji i uwierzytelniania.
+
+W \ref{chap:zalozenia-projektowe} rozdziale przedstawione zostaną założenia projektowe wraz z~zarysem architektury systemu i~poszczególnych jego komponentów. Autor ustali, także wymagania funkcjonalne i niefunkcjonalne aplikacji.
+
+Szczegóły implementacji będą zaprezentowane w~rozdziale~\ref{chap:implementacja}. Punkt~\ref{sec:struktura-projektu} będzie przedstawiać fizyczną i logiczną strukturę projektu, a~punkt~\ref{sec:szczegoly-implementacji} detale realizacji aplikacji klienckiej (ang.~\emph{frontend}) i działającego po stronie serwera API (ang.~\emph{backend}).
+
+Omówienie testów API i aplikacji klienckiej znajdzie się w rozdziale~\ref{chap:testy}. Na końcu autor podsumuje pracę i swoje doświadczenia w rozdziale~\ref{chap:podsumowanie}.

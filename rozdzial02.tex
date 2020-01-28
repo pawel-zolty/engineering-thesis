@@ -1,13 +1,15 @@
 \chapter{Przygotowania \emph{Know-how}}
-\section{Tworzenie REST API}
+\label{chap:know-how}
+\section{Projektowanie REST API}
+\label{sec:projektowanie-api}
 Projektowanie i tworzenie \texttt{API} (ang.~\emph{Application Programming Interface}) współcześnie jest jednym z podstawowych zadań programisty. Zadaniem API jest udostępnienie i ochrona swoich zasobów. Zasoby te to najczęściej dane i w zależności od uprawnień klient może je zmieniać, lub tylko pobierać. Klientem może być strona internetowa służąca do wyświetlania i zarządzania danymi, a także inna aplikacja serwerowa korzystająca z tych danych.
 
-Użycie API do dostarczania danych do aplikacji klienckiej pozwala rozdzielić logikę widoku po stronie klienta oraz logikę biznesową po stronie serwera. Zaletą tego rozwiązania jest uproszczenie implementacji i w perspektywie ułatwienia utrzymywania tworzonego programu. Ponadto tak tworzone oprogramowanie jest bardziej elastyczne i łatwiej można je integrować z innymi systemami. Stworzenie takiego API nie jest zadaniem łatwym. Dla tego w sekcji~\ref{sec:api-dobre-praktyki}. przedstawione zostaną dobre praktyki.
+Użycie API do dostarczania danych do aplikacji klienckiej pozwala rozdzielić logikę widoku po stronie klienta oraz logikę biznesową po stronie serwera. Zaletą tego rozwiązania jest uproszczenie implementacji i w perspektywie ułatwienia utrzymywania tworzonego programu. Ponadto tak tworzone oprogramowanie jest bardziej elastyczne i łatwiej można je integrować z innymi systemami. Stworzenie takiego API nie jest zadaniem łatwym. Dla tego w sekcji~\ref{subsec:api-dobre-praktyki}. przedstawione zostaną dobre praktyki.
 
-Często trzeba szybko stworzyć nowe API, lub zmodyfikować już istniejące. Dodawanie funkcji filtrowania, sortowania, czy łączenia danych z różnych zasobów jest czasochłonne i nudne. Implementacja takich funkcjonalności zmusza nas do dodawania nowych punktów dostępu (ang.~\emph{endpoint}) do już istniejących zasobów, lub modyfikowania tych już istniejących. Problemem jest także budowanie adresu \texttt{URL} (ang.~\emph{Uniform Resource Locator}). Musi być on elastyczny i intuicyjny, aby można było pracować bez ciągłego wertowania dokumentacji. Z pomocą tutaj przychodzi zapoczątkowany przez Microsoft i zatwierdzony przez \texttt{ISO} (ang.~\emph{International Organization for Standardization}) protokół \texttt{OData} (ang.~\emph{Open Data Protocol}) i jego gotowe implementacje. Zostanie on opisany w sekcji~\ref{sec:odata}
+Często trzeba szybko stworzyć nowe API, lub zmodyfikować już istniejące. Dodawanie funkcji filtrowania, sortowania, czy łączenia danych z różnych zasobów jest czasochłonne i nudne. Implementacja takich funkcjonalności zmusza nas do dodawania nowych punktów dostępu (ang.~\emph{endpoint}) do już istniejących zasobów, lub modyfikowania tych już istniejących. Problemem jest także budowanie adresu \texttt{URL} (ang.~\emph{Uniform Resource Locator}). Musi być on elastyczny i intuicyjny, aby można było pracować bez ciągłego wertowania dokumentacji. Z pomocą tutaj przychodzi zapoczątkowany przez Microsoft i zatwierdzony przez \texttt{ISO} (ang.~\emph{International Organization for Standardization}) protokół \texttt{OData} (ang.~\emph{Open Data Protocol}) i jego gotowe implementacje. Zostanie on opisany w sekcji~\ref{subsec:odata}
 
 \subsection{Dobre praktyki tworzenia API} 
-\label{sec:api-dobre-praktyki}
+\label{subsec:api-dobre-praktyki}
 Aby stworzyć czytelne i elastyczne REST API należy zastosować się do wielu zasad. Oczywiście nie są one obowiązkowe. Najczęściej jednak stosowanie się do nich ułatwia konsumowanie API i integrowanie go z innymi systemami. Jednym z koniecznych do szybkiej i bezproblemowej pracy z API kroków jest stworzenie i późniejsze aktualizowanie jego dokumentacji. Polecanym i nowoczesnym narzędziem służący do jej tworzenia jest \texttt{Swagger}. 
 
 API projektujemy dla zasobów, które są rzeczownikami. Dlatego adres URL, a dokładniej jego ścieżka zasobów (ang.~\emph{resource path}) powinna być złożona z rzeczowników. Zalecane jest, aby używać liczby mnogiej rzeczownika, gdyż zazwyczaj zasób to zbiór przykładowo kont bankowych. Natomiast, aby wyrazić akcję, którą wykonuje się na zasobie należy użyć odpowiedniej metody \texttt{HTTP} (ang.~\emph{HTTP Verb}). W tabeli~\ref{tab:http-verb} widać wzorzec zastosowania metod HTTP~\cite{api-good-practises-1}.
@@ -19,7 +21,7 @@ API projektujemy dla zasobów, które są rzeczownikami. Dlatego adres URL, a do
     \begin{tcolorbox}[tab2,tabularx={X||Y|Y|Y|Y}]
     \texttt{Zasób}      & \texttt{GET}     & \texttt{POST}    & \texttt{PUT}      & \texttt{DELETE}   \\\hline\hline
     /bank-account   & Zwraca listę kont & Tworzy nowe konto &  Zbiorczo aktualizuje konta &  Usuwa wszystkie konta \\\hline
-    /bank-account/1 & Zwraca określone konto & Metoda niedozwolona (405) &  Aktualizuje określone konto &  Usuwa określone konto \\\hline
+    {\small /bank-account/1} & Zwraca określone konto & Metoda niedozwolona (405) &  Aktualizuje określone konto &  Usuwa określone konto \\\hline
     \end{tcolorbox}
 \end{table} 
 
@@ -99,10 +101,10 @@ Dobrym zwyczajem jest umieszczanie w odpowiedzi z kodem \texttt{400} i \texttt{4
 \end{lstlisting}
 }
 
-Istotnym także jest, żeby nie tworzyć nowych adresów \texttt{URL} dla filtrowanego, czy sortowanego zasobu. Lepszym podejściem jest przedstawić wyżej wymienione kryteria w ścieżce wyszukiwania adresu \texttt{URL} (ang.~\emph{query string}). W sekcji~\ref{sec:odata} przedstawiony zostanie wybrany przez autora elastyczny protokół określający strategię wyszukiwania i filtrowania zasobów, za pomocą określonych parametrów ścieżki wyszukiwania adresu URL.
+Istotnym także jest, żeby nie tworzyć nowych adresów \texttt{URL} dla filtrowanego, czy sortowanego zasobu. Lepszym podejściem jest przedstawić wyżej wymienione kryteria w ścieżce wyszukiwania adresu \texttt{URL} (ang.~\emph{query string}). W sekcji~\ref{subsec:odata} przedstawiony zostanie wybrany przez autora elastyczny protokół określający strategię wyszukiwania i filtrowania zasobów, za pomocą określonych parametrów ścieżki wyszukiwania adresu URL.
 
 
-Stateless Authentication & Authorization -> sekcja autoryzacji
+Stateless Authentication \verb+&+ Authorization -> sekcja autoryzacji
 Use Two URLs per Resource
 Use PATCH for Partial Updates of a Resource 
 
@@ -112,7 +114,7 @@ Design Relationships Appropriately
 Pagination Versioning PATCH
 
 \subsection{Protokół OData}
-\label{sec:odata}
+\label{subsec:odata}
 
 \begin{table}[htb]
 \centering\small
@@ -157,8 +159,14 @@ Pagination Versioning PATCH
 \end{table}
 
 \section{Użyte wzorce projektowe}
+\label{sec:wzorce}
+
 \subsection{Mediator}
+\label{subsec:mediator}
+
 \subsection{Podział odpowiedzialności czyli CQRS}
+\label{subsec:cqrs}
+
 \begin{lstlisting}[basicstyle=\ttfamily]
 > pdflatex Dyplom.tex
 \end{lstlisting}
@@ -176,3 +184,4 @@ W szablonie wykorzystano klasę dokumentu \texttt{memoir} oraz wybrane pakiety. 
 Jeśli w szablonie będzie wykorzystany indeks rzeczowy, kompilację źródeł trzeba będzie rozszerzyć o kroki potrzebne na wygenerowanie plików pośrednich \texttt{Dokument.idx} oraz \texttt{Dokument.ind} oraz dołączenia ich do finalnego dokumentu (podobnie jak to ma miejsce przy generowaniu wykazu literatury).
 Szczegóły dotyczące generowania indeksu rzeczowego opisano w podrozdziale~\ref{sec:indeks}.
 \section{Autoryzacja OpenId Connect}
+\label{sec:autoryzacja}
