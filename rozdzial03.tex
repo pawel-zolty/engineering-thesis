@@ -17,11 +17,11 @@
 
 \item System składać ma się z~dwóch głównych części:
 \begin{enumerate}[label=\alph*)]
-\item Aplikacji serwerowej -- API. Jej zadaniem będzie dostarczanie interfejsu programistycznego do pobierania danych i~modyfikowania stanu systemu.
-\item Aplikacja webowa, dostarczająca graficzny interfejs użytkownika -- \texttt{GUI} (ang.~\emph{Graphical user interface}). Aplikacja ta będzie konsumować API.
+\item aplikacji serwerowej -- API. Jej zadaniem będzie dostarczanie interfejsu programistycznego do pobierania danych i~modyfikowania stanu systemu.
+\item aplikacja webowej, dostarczająca graficzny interfejs użytkownika -- \texttt{GUI} (ang.~\emph{Graphical user interface}). Aplikacja ta będzie konsumować API.
 \end{enumerate}
 
-\item Zarówno aplikacja webowa, jak i API będą stworzone przy pomocy frameworka ASP.NET Core w wersji conajmniej 2.2. 
+\item Zarówno aplikacja webowa, jak i API będą stworzone przy pomocy frameworka ASP.NET Core w wersji co najmniej 2.2: 
 \begin{enumerate}[label=\alph*)]
 \item Do napisania aplikacji webowej użyte zostaną \texttt{Razor Pages} oraz komponenty widoku (ang.~\emph{view components}). 
 \item Warstwa persystencji danych w aplikacji API stworzona zostanie z pomocą Entity Framework Core 2.2. Wykorzystane zostanie podejście \emph{code first} i mechanizm migracji.
@@ -29,15 +29,15 @@
 
 \item Pobieranie danych z API ma odbywać się za pomocą protokołu OData.
 
-\item API używać będzie bazy danych na serwerze Microsoft SQL Server 2017, lub nowszym.
+\item API używać będzie bazy danych na serwerze Microsoft SQL Server 2017 (lub nowszym).
 
 \item Aplikacja webowa powinna poprawnie działać co najmniej w przeglądarkach: Mozilla Firefox, Google Chrome, Opera, Microsoft Edge oraz Safari, a~także przeglądarkach mobilnych: Opera Mobile, Google Chrome, Mozilla Firefox i Safari.
 
 \item Aplikacja będzie wymuszać działanie z wykorzystaniem protokołu \texttt{HTTPS} (ang.~\emph{Hypertext Transfer Protocol Secure}).
 
-\item Autoryzacja i uwierzytelnienie ma być przeprowadzona z wykorzystaniem protokołu OpenId Connect i frameworka autoryzacji OAuth 2.0. Użyty powinien zostać \emph{Hybrid Flow}, lub \emph{Authorization Code Flow}.
+\item Autoryzacja i uwierzytelnienie ma być przeprowadzona z wykorzystaniem protokołu OpenId Connect i frameworka autoryzacji OAuth 2.0. Użyty powinien zostać \emph{Hybrid Flow} lub \emph{Authorization Code Flow}.
 
-\item Dostawcą tożsamości w systemie powinna być osobna aplikacja, posiadająca własną bazę danych, lub zewnętrzy system autoryzacji np.~\texttt{Auth0}.
+\item Dostawcą tożsamości w systemie powinna być osobna aplikacja, posiadająca własną bazę danych lub zewnętrzy system autoryzacji, np.~\texttt{Auth0}.
 
 \item API ma posiadać dokumentację stworzoną przy pomocy narzędzia \texttt{Swagger}.
 
@@ -47,7 +47,7 @@
 
 \item Poszczególne składowe systemu w chmurze powinny być automatycznie skalowalne.
 
-\item Aplikacja webowa powinna być bezpieczna i odporna na ataki. Zostanie wykorzystany mechanizm obrony przed \texttt{CSRF} (ang.~Cross-Site Request Forgery) -- \texttt{anti-forgery token}
+\item Aplikacja webowa powinna być bezpieczna i odporna na ataki. Zostanie wykorzystany mechanizm obrony przed \texttt{CSRF} (ang.~Cross-Site Request Forgery) -- \texttt{anti-forgery token}.
 
 \end{enumerate}
 

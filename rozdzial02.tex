@@ -4,9 +4,9 @@
 \label{sec:projektowanie-api}
 Projektowanie i tworzenie \texttt{API} (ang.~\emph{Application Programming Interface}) współcześnie jest jednym z podstawowych zadań programisty. Zadaniem API jest udostępnienie i ochrona swoich zasobów. Zasoby te to najczęściej dane i w zależności od uprawnień klient może je zmieniać, lub tylko pobierać. Klientem może być strona internetowa służąca do wyświetlania i zarządzania danymi, a także inna aplikacja serwerowa korzystająca z tych danych.
 
-Użycie API do dostarczania danych do aplikacji klienckiej pozwala rozdzielić logikę widoku po stronie klienta oraz logikę biznesową po stronie serwera. Zaletą tego rozwiązania jest uproszczenie implementacji i w perspektywie ułatwienia utrzymywania tworzonego programu. Ponadto tak tworzone oprogramowanie jest bardziej elastyczne i łatwiej można je integrować z innymi systemami. Stworzenie takiego API nie jest zadaniem łatwym. Dla tego w sekcji~\ref{subsec:api-dobre-praktyki}. przedstawione zostaną dobre praktyki.
+Użycie API do dostarczania danych do aplikacji klienckiej pozwala rozdzielić logikę widoku po stronie klienta oraz logikę biznesową po stronie serwera. Zaletą tego rozwiązania jest uproszczenie implementacji i w perspektywie ułatwienia utrzymywania tworzonego programu. Ponadto tak tworzone oprogramowanie jest bardziej elastyczne i łatwiej można je integrować z innymi systemami. Stworzenie takiego API nie jest zadaniem łatwym. Dlatego w sekcji~\ref{subsec:api-dobre-praktyki} przedstawione zostaną dobre praktyki.
 
-Często trzeba szybko stworzyć nowe API, lub zmodyfikować już istniejące. Dodawanie funkcji filtrowania, sortowania, czy łączenia danych z różnych zasobów jest czasochłonne i nudne. Implementacja takich funkcjonalności zmusza nas do dodawania nowych punktów dostępu (ang.~\emph{endpoint}) do już istniejących zasobów, lub modyfikowania tych już istniejących. Problemem jest także budowanie adresu \texttt{URL} (ang.~\emph{Uniform Resource Locator}). Musi być on elastyczny i intuicyjny, aby można było pracować bez ciągłego wertowania dokumentacji. Z pomocą tutaj przychodzi zapoczątkowany przez Microsoft i zatwierdzony przez \texttt{ISO} (ang.~\emph{International Organization for Standardization}) protokół \texttt{OData} (ang.~\emph{Open Data Protocol}) i jego gotowe implementacje. Zostanie on opisany w sekcji~\ref{subsec:odata}
+Często trzeba szybko stworzyć nowe API lub zmodyfikować już istniejące. Dodawanie funkcji filtrowania, sortowania czy łączenia danych z~różnych zasobów jest czasochłonne i~nudne. Implementacja takich funkcjonalności zmusza nas do dodawania nowych punktów dostępu (ang.~\emph{endpoint}) do już istniejących zasobów lub modyfikowania tych już istniejących. Problemem jest także budowanie adresu \texttt{URL} (ang.~\emph{Uniform Resource Locator}). Musi być on elastyczny i intuicyjny, aby można było pracować bez ciągłego wertowania dokumentacji. Z pomocą tutaj przychodzi zapoczątkowany przez Microsoft i zatwierdzony przez \texttt{ISO} (ang.~\emph{International Organization for Standardization}) protokół \texttt{OData} (ang.~\emph{Open Data Protocol}) i jego gotowe implementacje. Zostanie on opisany w sekcji~\ref{subsec:odata}
 
 \subsection{Dobre praktyki tworzenia API} 
 \label{subsec:api-dobre-praktyki}
@@ -25,14 +25,14 @@ API projektujemy dla zasobów, które są rzeczownikami. Dlatego adres URL, a do
     \end{tcolorbox}
 \end{table} 
 
-Kolejną ważną praktyką przy tworzeniu API jest zwracanie odpowiedniego kodu odpowiedzi HTTP (ang.~\emph{HTTP Status Code}), aby poinformować klienta o sposobie realizacji jego żądania. Żądanie może zakończone być sukcesem, bądź niepowodzeniem. Jednak konieczne jest używanie więcej niż dwóch kodów odpowiedzi, aby dokładnie określić co ten sukces, lub niepowodzenie oznaczają. Dokument \texttt{RFC7231} opisuje, kiedy i jak używać konkretnych kodów odpowiedzi HTTP. Statusy HTTP dzielimy na pięć klas, które rozróżniane są po pierwszej cyfrze kodu odpowiedzi HTTP~\cite{rfc7231}.
+Kolejną ważną praktyką przy tworzeniu API jest zwracanie odpowiedniego kodu odpowiedzi HTTP (ang.~\emph{HTTP Status Code}), aby poinformować klienta o sposobie realizacji jego żądania. Żądanie może zakończone być sukcesem bądź niepowodzeniem. Jednak konieczne jest używanie więcej niż dwóch kodów odpowiedzi, aby dokładnie określić, co ten sukces lub niepowodzenie oznaczają. Dokument \texttt{RFC7231} opisuje, kiedy i jak używać konkretnych kodów odpowiedzi HTTP. Statusy HTTP dzielimy na pięć klas, które rozróżniane są po pierwszej cyfrze kodu odpowiedzi HTTP~\cite{rfc7231}.
 
 \begin{itemize}
-\item \texttt{1XX} -- Informacja -- Żądanie zostało odebrane, proces jest kontynuowany  
-\item \texttt{2XX} -- Sukces -- Żądanie zostało pomyślnie odebrane, zrozumiane i zaakceptowane 
-\item \texttt{3XX} -- Przekierowanie -- Konieczne jest podjęcie dalszych działań w celu zakończenia żądania
-\item \texttt{4XX} -- Błąd klienta -- Żądanie zawiera złą składnię, lub nie może być zrealizowane
-\item \texttt{5XX} -- Błąd serwera -- Serwerowi nie udało zrealizować się poprawnego żądania
+\item \texttt{1XX} -- Informacja -- Żądanie zostało odebrane, proces jest kontynuowany.  
+\item \texttt{2XX} -- Sukces -- Żądanie zostało pomyślnie odebrane, zrozumiane i zaakceptowane. 
+\item \texttt{3XX} -- Przekierowanie -- Konieczne jest podjęcie dalszych działań w celu zakończenia żądania.
+\item \texttt{4XX} -- Błąd klienta -- Żądanie zawiera złą składnię lub nie może być zrealizowane.
+\item \texttt{5XX} -- Błąd serwera -- Serwerowi nie udało zrealizować się poprawnego żądania.
 \end{itemize}
 
 W tabeli~\ref{tab:http-status} przedstawiono najczęściej używane w REST API statusy HTTP i ich znaczenie~\cite{api-good-practises-2, rfc7231}.  
@@ -57,13 +57,13 @@ Warto wspomnieć, że statusu \texttt{204} używa się najczęściej, gdy serwer
     \texttt{403: Forbidden}
         & Podane dane uwierzytelniające nie są wystarczające do autoryzacji żądania. \\\hline
     \texttt{404: Not Found}
-        & Serwer źródłowy nie znalazł bieżącej reprezentacji zasobu docelowego, lub nie chce ujawnić, że istnieje. \\\hline
+        & Serwer źródłowy nie znalazł bieżącej reprezentacji zasobu docelowego lub nie chce ujawnić, że istnieje. \\\hline
     \texttt{500: Internal Server Error}
         & Serwer napotkał nieoczekiwany warunek, który uniemożliwił mu spełnienie żądania. \\\hline
     \end{tcolorbox}
 \end{table}
 
-Ważną zasadą dotyczącą API jest to, aby po stworzeniu nowego zasobu zwróciła jego reprezentację na przykład w postaci \texttt{JSON} (ang.~\emph{JavaScript Object Notation}). Dotyczy to w szczególności metody \texttt{POST}. W przypadku powodzenia serwer powinien zwrócić w takim wypadku odpowiedź z kodem \texttt{201}, a także dodatkowy nagłówek z lokalizacją nowostworzonego zasobu (ang.~\emph{Location Header}). Dodatkowo rekomendowane jest, aby dane stworzonego obiektu, lub obiektów zapakować w pole danych (ang.~\emph{data} co~pokazano na listingu~\ref{list:response200}. 
+Ważną zasadą dotyczącą API jest to, aby po stworzeniu nowego zasobu zwróciła jego reprezentację, na przykład w postaci \texttt{JSON} (ang.~\emph{JavaScript Object Notation}). Dotyczy to w szczególności metody \texttt{POST}. W przypadku powodzenia serwer powinien zwrócić w takim wypadku odpowiedź z kodem \texttt{201}, a także dodatkowy nagłówek z lokalizacją nowostworzonego zasobu (ang.~\emph{Location Header}). Dodatkowo rekomendowane jest, aby dane stworzonego obiektu lub obiektów zapakować w pole danych (ang.~\emph{data} co~pokazano na listingu~\ref{list:response200}. 
 
 {\belowcaptionskip=-10pt
 \begin{lstlisting}[label=list:response200,
@@ -82,9 +82,9 @@ Ważną zasadą dotyczącą API jest to, aby po stworzeniu nowego zasobu zwróci
 
 Umieszczanie lokalizacji dostępnych zasobów wpisuję się w realizację koncepcji \texttt{HATEOAS} (ang.~\emph{Hypermedia As Transfer Engine Of Application State}). Pełna realizacja tej koncepcji zapewnia łatwą nawigację pomiędzy powiązanymi zasobami i przedstawia dostępne akcje na danym zasobie, poprzez umieszczanie w metadanych odpowiedzi linków URL do konkretnych akcji i zasobów.
 
-W zależności od strategii biznesowej przyjętej w projekcie, gdy klient nie ma uprawnień do zasobu można zwrócić nie tylko kod \texttt{403}, ale także \texttt{404}, gdy serwer chce ukryć istnienie zasobu.
+W zależności od strategii biznesowej przyjętej w projekcie, gdy klient nie ma uprawnień do zasobu, można zwrócić nie tylko kod \texttt{403}, ale także \texttt{404}, gdy serwer chce ukryć istnienie zasobu.
 
-Dobrym zwyczajem jest umieszczanie w odpowiedzi z kodem \texttt{400} i \texttt{403} dokładniejszej informacji o przyczynie braku realizacji żądania. W podobny sposób powinno się informować klienta, także o błędach. Częstą praktyką jest zwracanie w ciele odpowiedzi tabeli z listą błędów~\ref{list:response400}
+Dobrym zwyczajem jest umieszczanie w odpowiedzi z kodem \texttt{400} i \texttt{403} dokładniejszej informacji o przyczynie braku realizacji żądania. W podobny sposób powinno się informować klienta także o błędach. Częstą praktyką jest zwracanie w ciele odpowiedzi tabeli z listą błędów~\ref{list:response400}
 
 {\belowcaptionskip=-10pt
 \begin{lstlisting}[label=list:response400,
@@ -101,7 +101,7 @@ Dobrym zwyczajem jest umieszczanie w odpowiedzi z kodem \texttt{400} i \texttt{4
 \end{lstlisting}
 }
 
-Istotnym także jest, żeby nie tworzyć nowych adresów \texttt{URL} dla filtrowanego, czy sortowanego zasobu. Lepszym podejściem jest przedstawić wyżej wymienione kryteria w ścieżce wyszukiwania adresu \texttt{URL} (ang.~\emph{query string}). W sekcji~\ref{subsec:odata} przedstawiony zostanie wybrany przez autora elastyczny protokół określający strategię wyszukiwania i filtrowania zasobów, za pomocą określonych parametrów ścieżki wyszukiwania adresu URL.
+Istotnym także jest, żeby nie tworzyć nowych adresów \texttt{URL} dla filtrowanego czy sortowanego zasobu. Lepszym podejściem jest przedstawić wyżej wymienione kryteria w ścieżce wyszukiwania adresu \texttt{URL} (ang.~\emph{query string}). W sekcji~\ref{subsec:odata} przedstawiony zostanie wybrany przez autora elastyczny protokół, określający strategię wyszukiwania i filtrowania zasobów za pomocą określonych parametrów ścieżki wyszukiwania adresu URL.
 
 
 Stateless Authentication \verb+&+ Authorization -> sekcja autoryzacji
@@ -115,6 +115,15 @@ Pagination Versioning PATCH
 
 \subsection{Protokół OData}
 \label{subsec:odata}
+
+\section{Użyte wzorce projektowe}
+\label{sec:wzorce}
+
+\subsection{Mediator}
+\label{subsec:mediator}
+
+\subsection{Podział odpowiedzialności czyli CQRS}
+\label{subsec:cqrs}
 
 \begin{table}[htb]
 \centering\small
@@ -158,14 +167,6 @@ Pagination Versioning PATCH
 \end{tabularx}
 \end{table}
 
-\section{Użyte wzorce projektowe}
-\label{sec:wzorce}
-
-\subsection{Mediator}
-\label{subsec:mediator}
-
-\subsection{Podział odpowiedzialności czyli CQRS}
-\label{subsec:cqrs}
 
 \begin{lstlisting}[basicstyle=\ttfamily]
 > pdflatex Dyplom.tex
@@ -183,5 +184,6 @@ W szablonie wykorzystano klasę dokumentu \texttt{memoir} oraz wybrane pakiety. 
 
 Jeśli w szablonie będzie wykorzystany indeks rzeczowy, kompilację źródeł trzeba będzie rozszerzyć o kroki potrzebne na wygenerowanie plików pośrednich \texttt{Dokument.idx} oraz \texttt{Dokument.ind} oraz dołączenia ich do finalnego dokumentu (podobnie jak to ma miejsce przy generowaniu wykazu literatury).
 Szczegóły dotyczące generowania indeksu rzeczowego opisano w podrozdziale~\ref{sec:indeks}.
+
 \section{Autoryzacja OpenId Connect}
 \label{sec:autoryzacja}
