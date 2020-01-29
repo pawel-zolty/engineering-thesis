@@ -120,10 +120,6 @@ Filtrowanie i sortowanie to operacje, które często implementuje się w API z w
 GET http://localhost:44300/api/odata/Person?$select=firstName, lastName$orderby=age desc
 \end{lstlisting}
 
-\begin{lstlisting}[numbers=left, breaklines=true]
-$subject = "<owamp:subject xmlns:owamp=\"http://ggf.org/ns/nmwg/tools/owamp/2.0/\" id=\"subject\">\n";
-\end{lstlisting}
-
 O ile jest to zadanie proste, lecz żmudne, o tyle przy projektowaniu złączenia danych zasobów, programista mając do wykonania owo zadanie, często stworzy w API całkiem nowy zasób z nowym adresem URL. W większości takich przypadków dobrym rozwiązaniem jest użycie biblioteki implementującej protokół OData, która pozwala zautomatyzować wymagane funkcje.
 
 
