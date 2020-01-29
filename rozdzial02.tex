@@ -106,6 +106,23 @@ Istotnym także jest, żeby nie tworzyć nowych adresów \texttt{URL} dla filtro
 \subsection{Protokół OData}
 \label{subsec:odata}
 
+OData jest protokołem, definiującym nowe standardy i~praktyki budowania i konsumowania REST API. Biblioteki implementujące ten standard niejako zwalniają programistę z dbania o konwencje adresów URL, nagłówki żądań i kody odpowiedzi HTTP. OData wykorzystywany jest w produktach firm takich jak: Microsoft, IBM, Telerik czy SAP.
+
+OData i jego implementacje świetnie nadają się do szybkiego tworzenia REST API, a na pewno już tej jego części, która odpowiada za przetwarzanie zapytań (ang.~\emph{queries}). Zapytania są to operacje, które nie modyfikują stanu systemu, a jedynie zwracają dane, o które pyta klient. Zazwyczaj wykonywane są za pomocą metody HTTP GET. 
+
+Charakterystyką zapytań jest to, że najczęściej klient nie potrzebuje wszystkich danych jakie są w systemie. Często na danych chce się wykonać projekcję, filtrowanie czy sortowanie. Nierzadko też potrzeba dokonać złączenia danych jednego zasobu z danymi innego zasobu. 
+
+Filtrowanie i sortowanie to operacje, które często implementuje się w API z wykorzystaniem ścieżki wyszukiwania adresu URL. Operacja na listingu~\ref{list:odata-projekcja-sortowanie} pobiera imiona i nazwiska  wszystkich ludzi, posortowane malejące według ich wieku.
+
+{\belowcaptionskip=-10pt
+\begin{lstlisting}[label=list:odata-projekcja-sortowanie,
+    caption=OData -- przykład projekcji i sortowania]
+GET http://localhost:44300/api/odata/Person?$select=firstName, lastName
+    $orderby=age desc
+\end{lstlisting}
+}
+
+O ile jest to zadanie proste, lecz żmudne, o tyle przy projektowaniu złączenia danych zasobów, programista mając do wykonania owo zadanie, często stworzy w API całkiem nowy zasób z nowym adresem URL. W większości takich przypadków dobrym rozwiązaniem jest użycie biblioteki implementującej protokół OData, która pozwala zautomatyzować wymagane funkcje.
 
 
 \section{Użyte wzorce projektowe}
