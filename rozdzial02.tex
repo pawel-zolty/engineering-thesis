@@ -114,13 +114,15 @@ Charakterystyką zapytań jest to, że najczęściej klient nie potrzebuje wszys
 
 Filtrowanie i sortowanie to operacje, które często implementuje się w API z wykorzystaniem ścieżki wyszukiwania adresu URL. Operacja na listingu~\ref{list:odata-projekcja-sortowanie} pobiera imiona i nazwiska  wszystkich ludzi, posortowane malejące według ich wieku.
 
-{\belowcaptionskip=-10pt
+
 \begin{lstlisting}[label=list:odata-projekcja-sortowanie,
     caption=OData -- przykład projekcji i sortowania]
-GET http://localhost:44300/api/odata/Person?$select=firstName, lastName
-    $orderby=age desc
+GET http://localhost:44300/api/odata/Person?$select=firstName, lastName$orderby=age desc
 \end{lstlisting}
-}
+
+\begin{lstlisting}[numbers=left, breaklines=true]
+$subject = "<owamp:subject xmlns:owamp=\"http://ggf.org/ns/nmwg/tools/owamp/2.0/\" id=\"subject\">\n";
+\end{lstlisting}
 
 O ile jest to zadanie proste, lecz żmudne, o tyle przy projektowaniu złączenia danych zasobów, programista mając do wykonania owo zadanie, często stworzy w API całkiem nowy zasób z nowym adresem URL. W większości takich przypadków dobrym rozwiązaniem jest użycie biblioteki implementującej protokół OData, która pozwala zautomatyzować wymagane funkcje.
 

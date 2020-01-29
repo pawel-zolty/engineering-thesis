@@ -60,30 +60,25 @@ coltitle=black,center title}}
 %                on                  niestety polskie literki są zlepkami
 %\usepackage{newtxmath,tgtermes} % można też połączyć czcionki do tekstu i czcionki do wzorów
 
-%\usepackage{listings} % pakiet do prezentacji kodu. 
+\usepackage[cache=false]{listings} % pakiet do prezentacji kodu. 
 %Wcześniej był problem z polskimi znakami w otoczeniu lstlisting, stąd pozostawiono w komentarzu zastosowane wtedy rozwiązanie: 
-\usepackage{lmodern}  % for bold teletype font
-\usepackage{amsmath}  % for \hookrightarrow
-\usepackage{xcolor}   % for \textcolor
-\usepackage[cache=false]{listings}
-\usepackage{lmodern} % for bold teletype font
 
 \lstset{
   basicstyle=\footnotesize\ttfamily,
   columns=fullflexible,
-  %frame=single,
   breaklines=true,
   breakatwhitespace=true,
-  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+  postbreak=\space,
+  %postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
 }
 
 \lstset{literate=%-
-{ą}{{\k{a}}}1 {ć}{{\'c}}1 {ę}{{\k{e}}}1 {ł}{{\l{}}}1 {ń}{{\'n}}1 {ó}{{\'o}}1 {ś}{{\'s}}1 {ż}{{\.z}}1 {ź}{{\'z}}1 {Ą}{{\k{A}}}1 {Ć}{{\'C}}1 {Ę}{{\k{E}}}1 {Ł}{{\L{}}}1 {Ń}{{\'N}}1 {Ó}{{\'O}}1 {Ś}{{\'S}}1 {Ż}{{\.Z}}1 {Ź}{{\'Z}}1, }%{\ \ }{{\ }}1}
+{ą}{{\k{a}}}1 {ć}{{\'c}}1 {ę}{{\k{e}}}1 {ł}{{\l{}}}1 {ń}{{\'n}}1 {ó}{{\'o}}1 {ś}{{\'s}}1 {ż}{{\.z}}1 {ź}{{\'z}}1 {Ą}{{\k{A}}}1 {Ć}{{\'C}}1 {Ę}{{\k{E}}}1 {Ł}{{\L{}}}1 {Ń}{{\'N}}1 {Ó}{{\'O}}1 {Ś}{{\'S}}1 {Ż}{{\.Z}}1 {Ź}{{\'Z}}1 }%{\ \ }{{\ }}1}
 
 % Choć możliwe jest zastosowanie różnych pakietów formatujących tabele, zaleca się tego nie robić.
-\usepackage{longtable}
-\usepackage{ltxtable}
-\usepackage{tabulary}
+%\usepackage{longtable}
+%\usepackage{ltxtable}
+%\usepackage{tabulary}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Ustawienia odpowiedzialne za sposób łamania dokumentu
@@ -92,8 +87,8 @@ coltitle=black,center title}}
 %\hyphenpenalty=10000		% nie dziel wyrazów zbyt często
 \clubpenalty=10000      %kara za sierotki
 \widowpenalty=10000  % nie pozostawiaj wdów
-\brokenpenalty=10000		% nie dziel wyrazów między stronami
-\exhyphenpenalty=999999		% nie dziel słów z myślnikiem
+%\brokenpenalty=10000		% nie dziel wyrazów między stronami
+%\exhyphenpenalty=999999		% nie dziel słów z myślnikiem
 \righthyphenmin=3			% dziel minimum 3 litery
 
 %\tolerance=4500
