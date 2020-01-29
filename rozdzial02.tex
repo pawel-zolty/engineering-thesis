@@ -21,7 +21,7 @@ API projektujemy dla zasobów, które są rzeczownikami. Dlatego adres URL, a do
     \begin{tcolorbox}[tab2,tabularx={X||Y|Y|Y|Y}]
     \texttt{Zasób}      & \texttt{GET}     & \texttt{POST}    & \texttt{PUT}      & \texttt{DELETE}   \\\hline\hline
     /bank-account   & Zwraca listę kont & Tworzy nowe konto &  Zbiorczo aktualizuje konta &  Usuwa wszystkie konta \\\hline
-    {\small /bank-account/1} & Zwraca określone konto & Metoda niedozwolona (405) &  Aktualizuje określone konto &  Usuwa określone konto \\\hline
+    /bank-account/1 & Zwraca określone konto & Metoda niedozwolona (405) &  Aktualizuje określone konto &  Usuwa określone konto \\\hline
     \end{tcolorbox}
 \end{table} 
 
@@ -106,22 +106,64 @@ Istotnym także jest, żeby nie tworzyć nowych adresów \texttt{URL} dla filtro
 \subsection{Protokół OData}
 \label{subsec:odata}
 
-OData jest protokołem, definiującym nowe standardy i~praktyki budowania i konsumowania REST API. Biblioteki implementujące ten standard niejako zwalniają programistę z dbania o konwencje adresów URL, nagłówki żądań i kody odpowiedzi HTTP. OData wykorzystywany jest w produktach firm takich jak: Microsoft, IBM, Telerik czy SAP.
+OData jest protokołem zbudowanym w oparciu o architekturę REST. Definiuje on nowe standardy i~praktyki budowania oraz konsumowania API. OData jest nie tylko standardem ISO, ale także \texttt{OASIS} (ang.~\emph{Organization for the Advancement of Structured Information Standards}). OData wykorzystywany jest w produktach firm takich jak: Microsoft, IBM, Telerik czy SAP. Standard definiowany przez OData sprawia, że konsumowanie API różnych dostawców opartych o ten protokół, staje się jednolite. Proces integracji nie wymaga przeznaczania dodatkowych nakładów pracy na naukę standardu danej organizacji~\cite{odata-why-use}.
 
-OData i jego implementacje świetnie nadają się do szybkiego tworzenia REST API, a na pewno już tej jego części, która odpowiada za przetwarzanie zapytań (ang.~\emph{queries}). Zapytania są to operacje, które nie modyfikują stanu systemu, a jedynie zwracają dane, o które pyta klient. Zazwyczaj wykonywane są za pomocą metody HTTP GET. 
+OData umożliwia udostępnianie zasobów w postaci JSON, a także \texttt{XML} (ang.~\emph{Extensible Markup Language}). W obu wypadkach konwencje adresów URL, nagłówki itd.~pozostają takie same.
+Biblioteki implementujące ten standard niejako zwalniają programistę z dbania o konwencje adresów URL, nagłówki żądań, metadane i kody odpowiedzi HTTP. 
 
-Charakterystyką zapytań jest to, że najczęściej klient nie potrzebuje wszystkich danych jakie są w systemie. Często na danych chce się wykonać projekcję, filtrowanie czy sortowanie. Nierzadko też potrzeba dokonać złączenia danych jednego zasobu z danymi innego zasobu. 
+OData oraz jego implementacje świetnie nadają się do szybkiego tworzenia REST API, a~na~pewno już tej jego części, która odpowiada za przetwarzanie zapytań (ang.~\emph{queries}). Zapytania są to operacje, które nie modyfikują stanu systemu, a jedynie zwracają dane, o które pyta klient. Zazwyczaj wykonywane są za pomocą metody HTTP GET. 
 
-Filtrowanie i sortowanie to operacje, które często implementuje się w API z wykorzystaniem ścieżki wyszukiwania adresu URL. Operacja na listingu~\ref{list:odata-projekcja-sortowanie} pobiera imiona i nazwiska  wszystkich ludzi, posortowane malejące według ich wieku.
-
+Charakterystyką zapytań jest to, że najczęściej klient nie potrzebuje wszystkich danych jakie są w systemie. Często na danych chce się wykonać projekcję, filtrowanie czy sortowanie. Nierzadko też potrzeba dokonać złączenia danych jednego zasobu z danymi innego zasobu. Filtrowanie i sortowanie to operacje, które często implementuje się w API z wykorzystaniem ścieżki wyszukiwania adresu URL. Operacja na listingu~\ref{list:odata-projekcja-sortowanie} pobiera imiona i wszystkich ludzi, posortowane malejąco według ich identyfikatora.
 
 \begin{lstlisting}[label=list:odata-projekcja-sortowanie,
     caption=OData -- przykład projekcji i sortowania]
-GET http://localhost:44300/api/odata/Person?$select=firstName, lastName$orderby=age desc
+GET http://localhost:44300/api/odata/persons?$select=name, $orderby=id desc
+
+{
+  "odata.metadata":"http://localhost/odata/$metadata#Persons",
+  "value":[
+    {
+      "name":"Paweł"
+    },
+    {
+      "name":"Adaś"
+    }
+  ]
+}
 \end{lstlisting}
 
-O ile jest to zadanie proste, lecz żmudne, o tyle przy projektowaniu złączenia danych zasobów, programista mając do wykonania owo zadanie, często stworzy w API całkiem nowy zasób z nowym adresem URL. W większości takich przypadków dobrym rozwiązaniem jest użycie biblioteki implementującej protokół OData, która pozwala zautomatyzować wymagane funkcje.
+Podobne adresy URL można zaobserwować na innych stronach internetowych, które nie mają nic wspólnego z protokołem OData. Jednak prawdziwą zaletą OData jest umożliwienie agregacji danych kilku zasobów. To wszystko jest umożliwione programiście po napisaniu kilku dodatkowych linii kodu. Przykład agregacji widać na listingu~\ref{list:odata-agregacja}
 
+\begin{lstlisting}[label=list:odata-agregacja,
+    caption=OData -- przykład agregacji danych]
+GET http://localhost/odata/persons?$expand=bank-accounts
+
+{
+  "odata.metadata":"http://localhost/odata/$metadata#Persons",
+  "value":[
+    {
+      "bankAccounts":[
+        {"id":1,"name":"Konto debetowe","balance":"15.49","ownerId":1},
+        {"id":4,"name":"Lokata mobilna","balance":"10000.00","ownerId":1},
+        {"id":5,"name":"Konto walutowe","balance":"00.00","ownerId":1}
+      ],
+      "id":1,
+      "name":"Paweł"
+    },
+    {
+      "bankAccounts":[
+        {"id":3,"name":"Konto młodzieżowe","balance":"149.17","ownerId":2}
+      ],
+      "id":2,
+      "name":"Adaś"
+    }
+  ]
+}
+\end{lstlisting}
+
+Warto także zwrócić uwagę, że OData domyślnie dba za programistę o opakowanie informacji pobranych z API w pole danych, w tym wypadku \emph{values}. Tę dobrą praktykę wspomniano w punkcie~\ref{subsec:api-dobre-praktyki}. Obok interesujących nas danych znalazł się link do metadanych zasobu. Przy odpowiedniej konfiguracji i parametrach żądania pojawią się także parametry potrzebne m.in.~do~stronicowania.
+
+Jak widać OData jest bardzo prosta w użyciu. Narzuca z góry dobrą konwencję adresów URL, a także zapewnia wiele wbudowanych generycznych funkcji, które znacząco przyśpieszają proces tworzenia oprogramowania.
 
 \section{Użyte wzorce projektowe}
 \label{sec:wzorce}
