@@ -181,14 +181,37 @@ Ostatnia z~ww.~zasad -- zasada odwrócenia zależności (ang.~\emph{dependency i
 
 Mediator to wzorzec projektowy, którego głównym zadaniem jest utrzymywać w kodzie luźne powiązania i ograniczyć zależności między różnymi klasami. Mediator hermetyzuje komunikacje pomiędzy obiektami różnych klas udostępniając im interfejs, za pomocą którego się one komunikują. Tak więc celem mediatora jest usprawnienie czytania i utrzymania istniejącego kodu.
 
-Popularną implementacją wzorca mediator jest biblioteka \texttt{MediatR}. Obudowuje ona proces komunikacji między klasami w abstrakcję żądań (ang.~\emph{request}) i zdarzeń (ang.~\emph{notification/event}). Obiekt używający mediatora może wysłać żądanie, które zostanie przechwycone przez inny obiekt tzw. ~\emph{handler}. Handler wykonuje zleconą operację i w zależności od implementacji może też zwrócić rezultat (ang.\emph{response})~\ref{pic:mediator-request}. Za przekazywanie tego żądania i odpowiedzi odpowiada mediator. 
+Popularną implementacją wzorca mediator jest biblioteka \texttt{MediatR}. Obudowuje ona proces komunikacji między klasami w abstrakcję żądań (ang.~\emph{request}) i zdarzeń (ang.~\emph{notification/event}). Obiekt używający mediatora może wysłać żądanie (ang.~\emph{send reqest}), które zostanie przechwycone przez inny obiekt tzw. ~\emph{handler}. Handler wykonuje zleconą operację i w zależności od implementacji może też zwrócić rezultat (ang.\emph{response})~\ref{fig:mediatR-Request}. Za przekazywanie tego żądania i odpowiedzi odpowiada mediator. Na rysunku~\ref{fig:mediatR-Request} widać przykład przepływu żądania wysłanego przez serwis.
 
-Zdarzenia różnią się od żądań tym, że mogą być przechwytywane przez wiele handlerów. Z tego też powodu nie można zwrócić rezultatu zdarzenia. W pewnym sensie można w wielu scenariuszach odpowiedzieć na zdarzenie innym zdarzeniem. Jest to nowoczesna technika, która umożliwia asynchroniczne wywoływanie innych funkcji systemu, w szczególności w architekturze \texttt{mikroserwisów} (ang.~\emph{micorservices architecture}).
+\begin{figure}
+	\centering
+	\fbox{\includegraphics[width=.8\linewidth]{rys02/mediatR-Command.png}}
+	\caption{Przykład wysłania żądania}
+	\label{fig:mediatR-Request}
+\end{figure}
+
+Zdarzenia różnią się od żądań tym, że mogą być przechwytywane przez wiele handlerów. Z tego też powodu nie można zwrócić rezultatu zdarzenia. W pewnym sensie można w wielu scenariuszach odpowiedzieć na zdarzenie publikacją innego zdarzenia (ang.~\emph{publish event}). Jest to nowoczesna technika, która umożliwia asynchroniczne wywoływanie innych funkcji systemu, w szczególności w architekturze \texttt{mikroserwisów} (ang.~\emph{micorservices architecture}). Przykład publikacji zdarzeń można zaobserwować na rysunku~\ref{fig:mediatR-Event}.
+
+\begin{figure}[h]
+	\centering
+	\fbox{\includegraphics[width=.8\linewidth]{rys02/mediatR-Notification.png}}
+	\caption{Przykład publikacji notyfikacji}
+	\label{fig:mediatR-Event}
+\end{figure}
 
 \subsection{Podział odpowiedzialności czyli CQRS}
 \label{subsec:cqrs}
 
 Kolejnym wzorcem projektowym wartym uwagi w perspektywie tworzenia nowej aplikacji jest \texttt{CQRS} (ang.~\emph{Command Query Responsibility Segregation}). Pozwala on na użycie innego modelu do zapytań (ang.~\emph{queries}), czytających dane oraz do komend (ang.~\emph{command}), które modyfikują stan systemu. 
+
+Na rysunku \ref{fig:cqrs-architecture} widać zarys architektury w przypadku bezstanowego API. Kierowane do API żądania HTTP GET przekazywane są do \emph{query} modelu, który czyta odpowiednie informację z bazy danych. Żądania POST przechwytuje \emph{command} model, posiadający skomplikowaną logikę biznesową, a następnie jeśli reguły biznesowe na to pozwalają, aktualizuje dane w magazynie danych. Wartym uwagi jest fakt, że oba modele mogą korzystać z innych połączeń do bazy danych, a więc model dla zapytań może nawet nie mieć uprawnień do zapisu w bazie danych. 
+
+\begin{figure}[h]
+	\centering
+	\fbox{\includegraphics[width=.8\linewidth]{rys02/cqrs.png}}
+	\caption{Architektura CQRS}
+	\label{fig:cqrs-architecture}
+\end{figure}
 
 Gdy czytamy dane, często traktujemy aplikację serwerową jako opakowanie bazy danych -- swoisty kontener informacji~\cite{cqrs-fowler}. Najczęstszym, a także najważniejszym wymaganiem wobec zapytań jest ich wydajność. Natomiast podczas modyfikowania stanu systemu szybkość nie jest już krytycznym wymaganiem. Ważniejsze od niej są walidacja danych wejściowych, zgodność z regułami biznesowymi, obsługa wyjątków domenowych, a także atomowość operacji, tak aby pozostawić system w poprawnym stanie.
 
