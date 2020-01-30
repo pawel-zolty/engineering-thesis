@@ -18,21 +18,10 @@
 %\DisemulatePackage{setspace}
 \usepackage{setspace}
 \usepackage{tabularx}
-
-\usepackage[usenames,dvipsnames]{xcolor}
-\usepackage{tcolorbox}
-%\usepackage{array}
-\usepackage{colortbl}
-\tcbuselibrary{skins}
-
-\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
-
-\tcbset{tab2/.style={enhanced,fonttitle=\bfseries,fontupper=\normalsize\sffamily,
-colback=yellow!10!white,colframe=red!50!black,colbacktitle=Salmon!40!white,
-coltitle=black,center title}}
-
-\usepackage{color,calc}
+\usepackage{xcolor,calc}
 %\usepackage{soul} % pakiet z komendami do podkreślania tekstu
+
+%\usepackage[usenames,dvipsnames]{xcolor}
 
 \usepackage{ebgaramond} % pakiet z czcionkami garamond, potrzebny tylko do strony tytułowej, musi wystąpić przed pakietem tgtermes
 
@@ -62,22 +51,52 @@ coltitle=black,center title}}
 
 \usepackage{listings} % pakiet do prezentacji kodu. 
 %Wcześniej był problem z polskimi znakami w otoczeniu lstlisting, stąd pozostawiono w komentarzu zastosowane wtedy rozwiązanie: 
+\lstset{literate=%-
+{ą}{{\k{a}}}1 {ć}{{\'c}}1 {ę}{{\k{e}}}1 {ł}{{\l{}}}1 {ń}{{\'n}}1 {ó}{{\'o}}1 {ś}{{\'s}}1 {ż}{{\.z}}1 {ź}{{\'z}}1 {Ą}{{\k{A}}}1 {Ć}{{\'C}}1 {Ę}{{\k{E}}}1 {Ł}{{\L{}}}1 {Ń}{{\'N}}1 {Ó}{{\'O}}1 {Ś}{{\'S}}1 {Ż}{{\.Z}}1 {Ź}{{\'Z}}1 }%{\ \ }{{\ }}1}
+
+\newcommand{\listingcaption}[1]% dodane, by można było robić podpis nad dwukolumnowym listingiem
+{%
+\vspace*{\abovecaptionskip}\small 
+\refstepcounter{lstlisting}\hfill%
+Listing \thelstlisting: #1\hfill%\hfill%
+\addcontentsline{lol}{lstlisting}{\protect\numberline{\thelstlisting}#1}
+}%
 
 \lstset{
   basicstyle=\footnotesize\ttfamily,
   columns=fullflexible,
+	showstringspaces=false,
+	showspaces=false,
   breaklines=true,
-  breakatwhitespace=true,
-  postbreak=\mbox{\textcolor{black}{$\hookrightarrow$}\space},
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+  numbers=left,
+  firstnumber=1,
+  numberfirstline=true,
+	xleftmargin=17pt,
+  framexleftmargin=17pt,
+  framexrightmargin=5pt,
+  framexbottommargin=4pt
 }
 
-\lstset{literate=%-
-{ą}{{\k{a}}}1 {ć}{{\'c}}1 {ę}{{\k{e}}}1 {ł}{{\l{}}}1 {ń}{{\'n}}1 {ó}{{\'o}}1 {ś}{{\'s}}1 {ż}{{\.z}}1 {ź}{{\'z}}1 {Ą}{{\k{A}}}1 {Ć}{{\'C}}1 {Ę}{{\k{E}}}1 {Ł}{{\L{}}}1 {Ń}{{\'N}}1 {Ó}{{\'O}}1 {Ś}{{\'S}}1 {Ż}{{\.Z}}1 {Ź}{{\'Z}}1 }%{\ \ }{{\ }}1}
+
+\renewcommand\lstlistlistingname{Spis listingów}
+\makeatletter
+%\renewcommand*{\l@lstlisting}[2]{\@dottedtocline{1}{0em}{2.3em}{#1}{#2}}
+\g@addto@macro\insertchapterspace{\addtocontents{lol}{\protect\addvspace{10pt}}}
+\renewcommand*{\l@lstlisting}{\@dottedtocline{1}{0em}{2.3em}}
+\makeatother
+
+\renewcommand*{\lstlistlistingname}{Spis listingów} \newlistof{lstlistoflistings}{lol}{\lstlistlistingname}
+
+%\usepackage{amsmath}  % for \hookrightarrow
+%\usepackage{xcolor}   % for \textcolor
+%\usepackage{lmodern} % for bold teletype font
+
 
 % Choć możliwe jest zastosowanie różnych pakietów formatujących tabele, zaleca się tego nie robić.
-%\usepackage{longtable}
-%\usepackage{ltxtable}
-%\usepackage{tabulary}
+\usepackage{longtable}
+\usepackage{ltxtable}
+\usepackage{tabulary}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Ustawienia odpowiedzialne za sposób łamania dokumentu
@@ -86,7 +105,7 @@ coltitle=black,center title}}
 %\hyphenpenalty=10000		% nie dziel wyrazów zbyt często
 \clubpenalty=10000      %kara za sierotki
 \widowpenalty=10000  % nie pozostawiaj wdów
-%\brokenpenalty=10000		% nie dziel wyrazów między stronami
+%\brokenpenalty=10000		% nie dziel wyrazów między stronami (trzeba było zamarkować, bo w lstlistings nie działało dzielenie linii)
 %\exhyphenpenalty=999999		% nie dziel słów z myślnikiem
 \righthyphenmin=3			% dziel minimum 3 litery
 
@@ -135,13 +154,13 @@ coltitle=black,center title}}
 %%  Pakiety i komendy zastosowane tylko do zamieszczenia informacji o użytych komendach i fontach
 %%  Normalnie nie są potrzebne, można je zamarkować podczas redakcji pracy
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{memlays}     % extra layout diagrams, zastosowane w szblonie do 'debuggowania', używa pakietu layouts
-%\usepackage{layouts}
-\usepackage{printlen} % pakiet do wyświetlania wartości zdefiniowanych długości, stosowany do 'debuggowania'
-\uselengthunit{pt}
-\makeatletter
-\newcommand{\showFontSize}{\f@size pt} % makro wypisujące wielkość bieżącej czcionki
-\makeatother
+%%\usepackage{memlays}     % extra layout diagrams, zastosowane w szblonie do 'debuggowania', używa pakietu layouts
+%%%\usepackage{layouts}
+%%\usepackage{printlen} % pakiet do wyświetlania wartości zdefiniowanych długości, stosowany do 'debuggowania'
+%%\uselengthunit{pt}
+%%\makeatletter
+%%\newcommand{\showFontSize}{\f@size pt} % makro wypisujące wielkość bieżącej czcionki
+%%\makeatother
 % do pokazania ramek można byłoby użyć:
 %\usepackage{showframe} 
 
@@ -206,11 +225,11 @@ coltitle=black,center title}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Pakiet do generowania indeksu (ważne, aby wstawić przed hyperref)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\DisemulatePackage{imakeidx}
-\usepackage[makeindex,noautomatic]{imakeidx} % tutaj mówimy, żeby indeks nie generował się automatycznie, 
-
-%\usepackage[noautomatic]{imakeidx} 
-\makeindex
+%%\DisemulatePackage{imakeidx}
+%%\usepackage[makeindex,noautomatic]{imakeidx} % tutaj mówimy, żeby indeks nie generował się automatycznie, 
+%%
+%%%\usepackage[noautomatic]{imakeidx} 
+%%\makeindex
 
 \makeatletter
 %%%\renewenvironment{theindex}
@@ -259,7 +278,16 @@ coltitle=black,center title}}
 \fi
 \sloppy
 
+\usepackage{tcolorbox} % przerzucono za ifpdf, bo był konflikt opcji
+%\usepackage{array}
+\usepackage{colortbl}
+\tcbuselibrary{skins}
 
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\tcbset{tab2/.style={enhanced,fonttitle=\bfseries,fontupper=\normalsize\sffamily,
+colback=yellow!10!white,colframe=red!50!black,colbacktitle=Salmon!40!white,
+coltitle=black,center title}}
 %\graphicspath{{rys01/}{rys02/}}
 
 
@@ -514,7 +542,7 @@ SPECJALNOŚĆ: & \@specjalnosc\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                  Początek dokumentu 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\includeonly{rozdzial01, rozdzial02, rozdzial03, skroty} % jeśli chcemy kompilować tylko fragmenty, to można tu je wpisać
+\includeonly{rozdzial01, rozdzial02, rozdzial03, skroty} % jeśli chcemy kompilować tylko fragmenty, to można tu je wpisać
 
 \begin{document}
 % Tutaj można przełączyć odstęp między liniami
@@ -527,16 +555,16 @@ SPECJALNOŚĆ: & \@specjalnosc\\
 \maketitle
 
 \newpage
-\thispagestyle{empty}
-\mbox{}\vfill
-\noindent\begin{tabular}{@{}ll} Opracował: & Tomasz Kubik <tomasz.kubik@pwr.edu.pl>\\
- Data: & maj 2016 
- \end{tabular}\\[15mm]
-\noindent\includegraphics[width=3cm]{by-nc-sa}\newline
-{\normalfont 
-Szablon jest udostępniany na licencji Creative Commons: \emph{Uznanie autorstwa -- Użycie niekomercyjne -- Na tych samych warunkach, 3.0 Polska}, Wrocław 2016. \\[2pt]
-Oznacza to, że wszystkie zawarte  nim treści można kopiować i  wykorzystywać do celów niekomercyjnych, a także tworzyć na ich podstawie utwory zależne pod warunkiem podania autora i~nazwy licencjodawcy oraz udzielania na utwory zależne takiej samej licencji. Tekst licencji jest dostępny pod adresem: \url{http://creativecommons.org/licenses/by-nc-sa/3.0/pl/}.}
-\newpage
+%%\thispagestyle{empty}
+%%\mbox{}\vfill
+%%\noindent\begin{tabular}{@{}ll} Opracował: & Tomasz Kubik <tomasz.kubik@pwr.edu.pl>\\
+ %%Data: & maj 2016 
+ %%\end{tabular}\\[15mm]
+%%\noindent\includegraphics[width=3cm]{by-nc-sa}\newline
+%%{\normalfont 
+%%Szablon jest udostępniany na licencji Creative Commons: \emph{Uznanie autorstwa -- Użycie niekomercyjne -- Na tych samych warunkach, 3.0 Polska}, Wrocław 2016. \\[2pt]
+%%Oznacza to, że wszystkie zawarte  nim treści można kopiować i  wykorzystywać do celów niekomercyjnych, a także tworzyć na ich podstawie utwory zależne pod warunkiem podania autora i~nazwy licencjodawcy oraz udzielania na utwory zależne takiej samej licencji. Tekst licencji jest dostępny pod adresem: \url{http://creativecommons.org/licenses/by-nc-sa/3.0/pl/}.}
+%%\newpage
 
 
 \chapterstyle{noNumbered}
