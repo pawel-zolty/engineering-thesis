@@ -168,71 +168,33 @@ Jak widać OData jest bardzo prosta w użyciu. Narzuca z góry dobrą konwencję
 \section{Użyte wzorce projektowe}
 \label{sec:wzorce}
 
+Jakość napisanego kodu jest bardzo ważna z punktu widzenia utrzymania i dalszego rozwoju systemu. Szczególnie istotna, a nawet niezbędna jest w dużych projektach, których proces rozwoju i utrzymania liczony jest w dekadach. Niezrozumiały i niejasny kod zwiększa znacząco ryzyko biznesowe i częstotliwość występowania błędów, nawet we wcześniej dobrze działających miejscach systemu.
+
+Dla czystego kodu kluczowe jest luźne powiązanie (ang.~\emph{loose coupling}) komponentów czy klas. Termin ten oznacza podejście do tworzenia ich tak, aby zależności między nimi były jak najmniejsze. W skrócie wiedza elementów systemu o innych powinna być minimalna, a one same izolowane od siebie nawzajem oraz od zmian. Taka filozofia ma na celu zredukowanie ryzyka niezamierzonej zmiany działania pozostałych części systemu, a w konsekwencji doprowadzenia do krytycznego błędu. 
+
+Idea luźnych powiązań jest ściśle związana z zasadami \texttt{SOLID}~\cite{clean-code}, a w szczególności pierwszej i ostatniej z nich. Pierwsza\label{ref:SRP}, czyli zasada pojedynczej odpowiedzialności (ang.~\emph{single responsibility principle}) określa, że każdy element systemu powinien mieć tylko jeden powód do zmiany. Jeden powód do zmiany przekłada się na jedną odpowiedzialność, a więc krótkie i zwięzłe funkcje czy klasy.
+
+Ostatnia z~ww.~zasad -- zasada odwrócenia zależności (ang.~\emph{dependency inversion principle}) głosi, że klasy powinny być zależne od kontraktu, abstrakcji lub inaczej interfejsu, ale nigdy od konkretnych implementacji różnych serwisów. Stosowanie się do tych zasad zmniejsza powiązania, a co za tym idzie ułatwia rozszerzanie, modyfikowanie, a także testowanie kodu. Jednym słowem system staje się bardziej elastyczny.
+
 \subsection{Mediator}
 \label{subsec:mediator}
+
+Mediator to wzorzec projektowy, którego głównym zadaniem jest utrzymywać w kodzie luźne powiązania i ograniczyć zależności między różnymi klasami. Mediator hermetyzuje komunikacje pomiędzy obiektami różnych klas udostępniając im interfejs, za pomocą którego się one komunikują. Tak więc celem mediatora jest usprawnienie czytania i utrzymania istniejącego kodu.
+
+Popularną implementacją wzorca mediator jest biblioteka \texttt{MediatR}. Obudowuje ona proces komunikacji między klasami w abstrakcję żądań (ang.~\emph{request}) i zdarzeń (ang.~\emph{notification/event}). Obiekt używający mediatora może wysłać żądanie, które zostanie przechwycone przez inny obiekt tzw. ~\emph{handler}. Handler wykonuje zleconą operację i w zależności od implementacji może też zwrócić rezultat (ang.\emph{response})~\ref{pic:mediator-request}. Za przekazywanie tego żądania i odpowiedzi odpowiada mediator. 
+
+Zdarzenia różnią się od żądań tym, że mogą być przechwytywane przez wiele handlerów. Z tego też powodu nie można zwrócić rezultatu zdarzenia. W pewnym sensie można w wielu scenariuszach odpowiedzieć na zdarzenie innym zdarzeniem. Jest to nowoczesna technika, która umożliwia asynchroniczne wywoływanie innych funkcji systemu, w szczególności w architekturze \texttt{mikroserwisów} (ang.~\emph{micorservices architecture}).
 
 \subsection{Podział odpowiedzialności czyli CQRS}
 \label{subsec:cqrs}
 
-\begin{table}[htb]
-\centering\small
-\caption{Pliki źródłowe szablonu oraz wyniki kompilacji}
-\label{tab:szablon}
-\begin{tabularx}{\linewidth}{|p{.55\linewidth}|X|}\hline
-Źródła & Wyniki kompilacji \\ \hline\hline
-\verb?Dokument.tex? - dokument główny\newline
-\verb?Dokument.tcp? -- szablon projektu \texttt{MiKTeX}\newline
-\verb?rozdzial01.tex? -- plik rozdziału \texttt{01}\newline
-\verb?...?\newline
-\verb?dodatekA.tex? -- plik dodatku \texttt{A}\newline
-\verb?...?\newline
-\verb?rys01? -- katalog na rysunki do rozdziału \texttt{01}\newline
-\verb?   |- fig01.png? -- plik grafiki\newline
-\verb?   |- ...?\newline
-\verb?...?\newline
-\verb?rysA? -- katalog na rysunki do dodatku \texttt{A}\newline
-\verb?   |- fig01.png? -- plik grafiki\newline
-\verb?   |- ...?\newline
-\verb?...?\newline
-\verb?dokumentacja.bib? -- plik danych bibliograficznych\newline
-\verb?Dyplom.ist? -- plik ze stylem indeksu\newline
-\verb?by-nc-sa.png? -- plik z ikonami CC\newline
- &
-\verb?Dyplom.bbl?\newline
-\verb?Dyplom.blg?\newline
-\verb?Dyplom.ind?\newline
-\verb?Dyplom.idx?\newline
-\verb?Dyplom.lof?\newline
-\verb?Dyplom.log?\newline
-\verb?Dyplom.lot?\newline
-\verb?Dyplom.out?\newline
-\verb?Dyplom.pdf? -- dokument wynikowy\newline
-\verb?Dyplom.syntex?\newline
-\verb?Dyplom.toc?\newline
-\verb?Dyplom.tps?\newline
-\verb?*.aux?\newline 
-\verb?Dyplom.synctex?\newline\\
-\hline
-\end{tabularx}
-\end{table}
+Kolejnym wzorcem projektowym wartym uwagi w perspektywie tworzenia nowej aplikacji jest \texttt{CQRS} (ang.~\emph{Command Query Responsibility Segregation}). Pozwala on na użycie innego modelu do zapytań (ang.~\emph{queries}), czytających dane oraz do komend (ang.~\emph{command}), które modyfikują stan systemu. 
 
+Gdy czytamy dane, często traktujemy aplikację serwerową jako opakowanie bazy danych -- swoisty kontener informacji~\cite{cqrs-fowler}. Najczęstszym, a także najważniejszym wymaganiem wobec zapytań jest ich wydajność. Natomiast podczas modyfikowania stanu systemu szybkość nie jest już krytycznym wymaganiem. Ważniejsze od niej są walidacja danych wejściowych, zgodność z regułami biznesowymi, obsługa wyjątków domenowych, a także atomowość operacji, tak aby pozostawić system w poprawnym stanie.
 
-\begin{lstlisting}[basicstyle=\ttfamily]
-> pdflatex Dyplom.tex
-\end{lstlisting}
+Segregacja komend i żądań pozwala dostosować kod źródłowy do specyficznych wymagań jakie się im stawia. Rozdziela ona także odpowiedzialność klas na wyższym poziomie systemu -- warstwie aplikacji. Dzięki temu powstają klasy wyspecjalizowane klasy warstwy aplikacji, które wykonują zapytanie, \texttt{albo} komendę. Mówi o tym także zasada pojedynczej odpowiedzialności\ref{chap:know-how}.
 
-\begin{lstlisting}[basicstyle=\ttfamily]
-> bibtex Dyplom
-\end{lstlisting}
-Szczegóły dotyczące przygotowania danych bibliograficznych oraz zastosowania cytowań przedstawiono w podrozdziale \ref{sec:literatura}.
-
-W głównym pliku zamieszczono polecenia pozwalające sterować procesem kompilacji poprzez włączanie bądź wyłączanie kodu źródłowego poszczególnych rozdziałów. Włączanie kodu do kompilacji zapewniają instrukcje \verb+\include+ oraz \verb+\includeonly+. Pierwsza z nich pozwala włączyć do kompilacji kod wskazanego pliku (np.\ kodu źródłowego pierwszego rozdziału \verb+\include{rozdzial01.tex}+). Druga, jeśli zostanie zastosowana, pozwala określić, które z~plików zostaną skompilowane w całości (na przykład kod źródłowy pierwszego i drugiego rozdziału \verb+\includeonly{rozdzial01.tex,rozdzial02.tex}+).
-Brak nazwy pliku na liście w poleceniu \verb+\includeonly+ przy jednoczesnym wystąpieniu jego nazwy w poleceniu \verb+\include+ oznacza, że w kompilacji zostaną uwzględnione referencje wygenerowane dla tego pliku wcześniej, sam zaś kod źródłowy pliku nie będzie kompilowany. 
-
-W szablonie wykorzystano klasę dokumentu \texttt{memoir} oraz wybrane pakiety. Podczas kompilacji szablonu w \texttt{MikTeXu} wszelkie potrzebne pakiety zostaną zainstalowane automatycznie (jeśli \texttt{MikTeX} zainstalowano z opcją dynamicznej instalacji brakujących pakietów). W przypadku innych dystrybucji latexowych może okazać się, że pakiety te trzeba doinstalować ręcznie (np.\ pod linuxem z \texttt{TeXLive} trzeba doinstalować dodatkową zbiorczą paczkę, a jeśli ma się menadżera pakietów latexowych - to pakiety latexowe można instalować indywidualnie).
-
-Jeśli w szablonie będzie wykorzystany indeks rzeczowy, kompilację źródeł trzeba będzie rozszerzyć o kroki potrzebne na wygenerowanie plików pośrednich \texttt{Dokument.idx} oraz \texttt{Dokument.ind} oraz dołączenia ich do finalnego dokumentu (podobnie jak to ma miejsce przy generowaniu wykazu literatury).
-Szczegóły dotyczące generowania indeksu rzeczowego opisano w podrozdziale~\ref{sec:indeks}.
+Ponadto CQRS idealnie komponuje się z systemem opartym o architekturę zdarzeń, którą oferuje np. biblioteka MediatR, opisana w punkcie~\ref{subsec:mediator}. CQRS dobrze działa także w architekturach opartych o \emph{event sourcing} czy \texttt{DDD} (ang.~\emph{Domain Driven Design}), a których autor szerzej nie opisze w tej pracy. 
 
 \section{Autoryzacja OpenId Connect}
 \label{sec:autoryzacja}
