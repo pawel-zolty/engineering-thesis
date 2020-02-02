@@ -4,7 +4,7 @@
 \label{sec:projektowanie-api}
 Projektowanie i tworzenie API należy do podstawowych zadań programisty. Poprzez API odbywa się udostępnienie zasobów, jak również z nim związana jest ich ochrona. Zasobami najczęściej są dane, którymi klient może zarządzać w zakresie zdefiniowanym przez przypisane mu uprawnienia. Klientem może być strona internetowa służąca do wyświetlania i zarządzania danymi, a także inna aplikacja serwerowa korzystająca z tych danych.
 
-Użycie API do dostarczania danych do aplikacji klienckiej pozwala rozdzielić logikę widoku po stronie klienta oraz logikę biznesową po stronie serwera. Zaletą tego rozwiązania jest uproszczenie implementacji i w dalszej perspektywie, ułatwienie utrzymywania tworzonego programu. Ponadto tak tworzone oprogramowanie jest bardziej elastyczne i łatwiej można je integrować z~innymi systemami. 
+Użycie API do dostarczania danych do aplikacji klienckiej pozwala rozdzielić logikę widoku po stronie klienta oraz logikę biznesową po stronie serwera. Zaletą tego rozwiązania jest uproszczenie implementacji i w dalszej perspektywie ułatwienie utrzymywania tworzonego programu. Ponadto tak tworzone oprogramowanie jest bardziej elastyczne i łatwiej można je integrować z~innymi systemami. 
 
 Stworzenie dobrego lub zmodyfikowanie już istniejącego API nie jest jednak zadaniem łatwym. Poza tym, że dodawanie funkcji filtrowania, sortowania czy łączenia danych z~różnych zasobów bywa po prostu nużące, to wymusza często konieczność tworzenia nowych punktów dostępu (ang.~\emph{endpoint}) do już istniejących zasobów lub modyfikowania tych już istniejących. Takie działanie niosą ze sobą ryzyko powstawania błędów. Problemem jest także budowanie adresu \texttt{URL} (ang.~\emph{Uniform Resource Locator}). Musi być on elastyczny i intuicyjny, aby można było pracować bez ciągłego wertowania dokumentacji. 
 
@@ -134,7 +134,7 @@ GET http://localhost:44300/api/odata/persons?$select=name, $orderby=id desc
 }
 \end{lstlisting}
 
-Podobne adresy URL można zaobserwować na innych stronach internetowych, które nie mają nic wspólnego z protokołem OData. Jednak prawdziwą zaletą OData jest umożliwienie agregacji danych kilku zasobów. To wszystko jest umożliwione programiście po napisaniu kilku dodatkowych linii kodu. Przykład agregacji widać na listingu~\ref{list:odata-agregacja}
+Podobne adresy URL można zaobserwować na innych stronach internetowych, które nie mają nic wspólnego z protokołem OData. Jednak prawdziwą zaletą OData jest umożliwienie agregacji danych kilku zasobów. To wszystko jest umożliwione programiście po napisaniu kilku dodatkowych linii kodu. Przykład agregacji widać na listingu~\ref{list:odata-agregacja}.
 
 \begin{lstlisting}[label=list:odata-agregacja,
     caption=OData -- przykład agregacji danych]
