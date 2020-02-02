@@ -2,11 +2,13 @@
 \label{chap:know-how}
 \section{Projektowanie REST API}
 \label{sec:projektowanie-api}
-Projektowanie i tworzenie \texttt{API} (ang.~\emph{Application Programming Interface}) współcześnie jest jednym z podstawowych zadań programisty. Zadaniem API jest udostępnienie i ochrona swoich zasobów. Zasoby te to najczęściej dane i w zależności od uprawnień klient może je zmieniać, lub tylko pobierać. Klientem może być strona internetowa służąca do wyświetlania i zarządzania danymi, a także inna aplikacja serwerowa korzystająca z tych danych.
+Projektowanie i tworzenie API należy do podstawowych zadań programisty. Poprzez API odbywa się udostępnienie zasobów, jak również z nim związana jest ich ochrona. Zasobami najczęściej są dane, którymi klient może zarządzać w zakresie zdefiniowanym przez przypisane mu uprawnienia. Klientem może być strona internetowa służąca do wyświetlania i zarządzania danymi, a także inna aplikacja serwerowa korzystająca z tych danych.
 
-Użycie API do dostarczania danych do aplikacji klienckiej pozwala rozdzielić logikę widoku po stronie klienta oraz logikę biznesową po stronie serwera. Zaletą tego rozwiązania jest uproszczenie implementacji i w perspektywie ułatwienia utrzymywania tworzonego programu. Ponadto tak tworzone oprogramowanie jest bardziej elastyczne i łatwiej można je integrować z~innymi systemami. Stworzenie takiego API nie jest zadaniem łatwym. Dlatego w sekcji~\ref{subsec:api-dobre-praktyki} przedstawione zostaną dobre praktyki.
+Użycie API do dostarczania danych do aplikacji klienckiej pozwala rozdzielić logikę widoku po stronie klienta oraz logikę biznesową po stronie serwera. Zaletą tego rozwiązania jest uproszczenie implementacji i w dalszej perspektywie, ułatwienie utrzymywania tworzonego programu. Ponadto tak tworzone oprogramowanie jest bardziej elastyczne i łatwiej można je integrować z~innymi systemami. 
 
-Często trzeba szybko stworzyć nowe API lub zmodyfikować już istniejące. Dodawanie funkcji filtrowania, sortowania czy łączenia danych z~różnych zasobów jest czasochłonne i~nudne. Implementacja takich funkcjonalności zmusza nas do dodawania nowych punktów dostępu (ang.~\emph{endpoint}) do już istniejących zasobów lub modyfikowania tych już istniejących. Problemem jest także budowanie adresu \texttt{URL} (ang.~\emph{Uniform Resource Locator}). Musi być on elastyczny i intuicyjny, aby można było pracować bez ciągłego wertowania dokumentacji. Z pomocą tutaj przychodzi zapoczątkowany przez Microsoft i zatwierdzony przez \texttt{ISO} (ang.~\emph{International Organization for Standardization}) protokół \texttt{OData} (ang.~\emph{Open Data Protocol}) i jego gotowe implementacje. Zostanie on opisany w sekcji~\ref{subsec:odata}
+Stworzenie dobrego lub zmodyfikowanie już istniejącego API nie jest jednak zadaniem łatwym. Poza tym, że dodawanie funkcji filtrowania, sortowania czy łączenia danych z~różnych zasobów bywa po prostu nużące, to wymusza często konieczność tworzenia nowych punktów dostępu (ang.~\emph{endpoint}) do już istniejących zasobów lub modyfikowania tych już istniejących. Takie działanie niosą ze sobą ryzyko powstawania błędów. Problemem jest także budowanie adresu \texttt{URL} (ang.~\emph{Uniform Resource Locator}). Musi być on elastyczny i intuicyjny, aby można było pracować bez ciągłego wertowania dokumentacji. 
+
+W dalszej części tego rozdziału zebrano zebrano dobre praktyki tworzenia API. Zwrócono też uwagę na zapoczątkowany przez Microsoft i zatwierdzony przez \texttt{ISO} (ang.~\emph{International Organization for Standardization}) protokół \texttt{OData} (ang.~\emph{Open Data Protocol}) i jego gotowe implementacje.
 
 \subsection{Dobre praktyki tworzenia API} 
 \label{subsec:api-dobre-praktyki}
@@ -63,7 +65,7 @@ Warto wspomnieć, że statusu \texttt{204} używa się najczęściej, gdy serwer
     \end{tcolorbox}
 \end{table}
 
-Ważną zasadą dotyczącą API jest to, aby po stworzeniu nowego zasobu zwróciła jego reprezentację, na przykład w postaci \texttt{JSON} (ang.~\emph{JavaScript Object Notation}). Dotyczy to w szczególności metody \texttt{POST}. W przypadku powodzenia serwer powinien zwrócić w takim wypadku odpowiedź z kodem \texttt{201}, a także dodatkowy nagłówek z lokalizacją nowostworzonego zasobu (ang.~\emph{Location Header}). Dodatkowo rekomendowane jest, aby dane stworzonego obiektu lub obiektów zapakować w pole danych (ang.~\emph{data} co~pokazano na listingu~\ref{list:response200}. 
+Ważną zasadą dotyczącą API jest to, aby po stworzeniu nowego zasobu zwróciła jego reprezentację, na przykład w postaci \texttt{JSON} (ang.~\emph{JavaScript Object Notation}). Dotyczy to w szczególności metody \texttt{POST}. W przypadku powodzenia serwer powinien zwrócić w takim wypadku odpowiedź z kodem \texttt{201}, a także dodatkowy nagłówek z lokalizacją nowostworzonego zasobu (ang.~\emph{Location Header}). Dodatkowo rekomendowane jest, aby dane stworzonego obiektu lub obiektów zapakować w pole danych (ang.~\emph{data}) co~pokazano na listingu~\ref{list:response200}. 
 
 {\belowcaptionskip=-10pt
 \begin{lstlisting}[label=list:response200,
@@ -75,7 +77,7 @@ Ważną zasadą dotyczącą API jest to, aby po stworzeniu nowego zasobu zwróci
     "firstName": "Paweł",
     "lastName": "Żółaniecki",
     "age": 24
-  },
+  }
 }
 \end{lstlisting}
 }
