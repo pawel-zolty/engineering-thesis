@@ -185,9 +185,10 @@ Mediator to wzorzec projektowy, którego głównym zadaniem jest utrzymywać w k
 
 Popularną implementacją wzorca mediator jest biblioteka \texttt{MediatR}. Obudowuje ona proces komunikacji między klasami w abstrakcję żądań (ang.~\emph{request}) i zdarzeń (ang.~\emph{notification/event}). Obiekt używający mediatora może wysłać żądanie (ang.~\emph{send reqest}), które zostanie przechwycone przez inny obiekt tzw. ~\emph{handler}. Handler wykonuje zleconą operację i w zależności od implementacji może też zwrócić rezultat (ang.\emph{response})~\ref{fig:mediatR-Request}. Za przekazywanie tego żądania i odpowiedzi odpowiada mediator. Na rysunku~\ref{fig:mediatR-Request} widać przykład przepływu żądania wysłanego przez serwis.
 
+% TO DO: proszę zadbać, by czcionka na rysunkach nie była większa niż czcionka wiodąca tekstu.
 \begin{figure}
 	\centering
-	\fbox{\includegraphics[width=.8\linewidth]{rys02/mediatR-Command.png}}
+	\fbox{\includegraphics[width=.6\linewidth]{rys02/mediatR-Command.png}}
 	\caption{Przykład wysłania żądania}
 	\label{fig:mediatR-Request}
 \end{figure}
@@ -206,7 +207,7 @@ Zdarzenia różnią się od żądań tym, że mogą być przechwytywane przez wi
 
 Kolejnym wzorcem projektowym wartym uwagi w perspektywie tworzenia nowej aplikacji jest \texttt{CQRS} (ang.~\emph{Command Query Responsibility Segregation}). Pozwala on na użycie innego modelu do zapytań (ang.~\emph{queries}), czytających dane oraz do komend (ang.~\emph{command}), które modyfikują stan systemu. 
 
-Na rysunku \ref{fig:cqrs-architecture} widać zarys architektury w przypadku bezstanowego API. Kierowane do API żądania HTTP GET przekazywane są do \emph{query} modelu, który czyta odpowiednie informację z bazy danych. Żądania POST przechwytuje \emph{command} model, posiadający skomplikowaną logikę biznesową, a następnie jeśli reguły biznesowe na to pozwalają, aktualizuje dane w magazynie danych. Wartym uwagi jest fakt, że oba modele mogą korzystać z innych połączeń do bazy danych, a więc model dla zapytań może nawet nie mieć uprawnień do zapisu w bazie danych. 
+Na rysunku \ref{fig:cqrs-architecture} widać zarys architektury w przypadku bezstanowego API. Kierowane do API żądania HTTP GET przekazywane są do \emph{query} modelu, który czyta odpowiednie informację z bazy danych. Żądania POST przechwytuje \emph{command} model, posiadający skomplikowaną logikę biznesową, a następnie jeśli reguły biznesowe na to pozwalają, aktualizuje dane w magazynie danych. Wartym uwagi jest fakt, że oba modele mogą korzystać z innych połączeń do bazy danych, a więc model dla zapytań może nawet nie mieć uprawnień do zapisu w bazie danych.
 
 \begin{figure}[h]
 	\centering
@@ -219,7 +220,7 @@ Gdy czytamy dane, często traktujemy aplikację serwerową jako opakowanie bazy 
 
 Segregacja komend i żądań pozwala dostosować kod źródłowy do specyficznych wymagań jakie się im stawia. Rozdziela ona także odpowiedzialność klas na wyższym poziomie systemu -- warstwie aplikacji. Dzięki temu powstają klasy wyspecjalizowane klasy warstwy aplikacji, które wykonują zapytanie, \texttt{albo} komendę. Mówi o tym także zasada pojedynczej odpowiedzialności\ref{chap:know-how}.
 
-Ponadto CQRS idealnie komponuje się z systemem opartym o architekturę zdarzeń, którą oferuje np. biblioteka MediatR, opisana w punkcie~\ref{subsec:mediator}. CQRS dobrze działa także w architekturach opartych o \emph{event sourcing} czy \texttt{DDD} (ang.~\emph{Domain Driven Design}), a których autor szerzej nie opisze w tej pracy. 
+Ponadto CQRS idealnie komponuje się z systemem opartym o architekturę zdarzeń, którą oferuje np. biblioteka MediatR, opisana w punkcie~\ref{subsec:mediator}. CQRS dobrze działa także w architekturach opartych o \emph{event sourcing} czy \texttt{DDD} (ang.~\emph{Domain Driven Design}), a których autor szerzej nie opisze w tej pracy.
 
 \section{Autoryzacja OpenId Connect}
 \label{sec:autoryzacja}
