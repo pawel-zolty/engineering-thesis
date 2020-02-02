@@ -3,26 +3,98 @@
 \section{Wymagania funkcjonalne}
 \label{sec:wymagania-funkcjonalne}
 
-%Na razie do wglądu diagramy use cases
-% Jest kilka kwestii do dyskusji
-% W systemie powinny być kategorie usera i rodziny. User moze edytowac swoje kategorie a admin rodziny rodzinne kategorie. Gdy konto jest dodane do rodziny mozna mu dodawac kategorie rodziny ale tez usera
-% 1 pytanie czy use case diagram dla category jest poprawny (generalizacja) Moze powinny byc osobne use casy dla kategorii rodziny i osobne dla kategorii usera
+W tej sekcji opisane zostaną wymagania funkcjonalne jakie powinien spełniać stworzony system. Zaprezentowane zostaną przypadki użycia dla czterech podsystemów: system zarządzania kontem pieniężnym, system zarządzania środkami finansowymi, system zarządzania rodziną i system zarządzania kategoriami. Przypadki użycia zostaną opisane w schemacie: nazwa przypadku użycia, aktor wykonujący akcję, warunki początkowe, warunki końcowe, cel oraz przebieg. Ponadto przypadki użycia zostaną zaprezentowane w formie diagramów.
 
-%2 family use case: czy admin powinien moc nadawac uprawnienia do nieswojego konta? Cz powinien admin moze domyslnie i zawsze dodawac wydatki do nieswojego konta, czy moze wlasciciel musi mu nadac uprawninia. 
+\subsection{Wymagania dotyczące konta pieniężnego}
+\label{subsec:wymagania-konto}
+Poniżej opisano przypadki użycia dotyczące zarządzania kontem pieniężnym użytkownika. Zaprezentowane są one także na diagramie -- rysunek~\ref{fig:use-case-account}.
 
-\begin{figure}[p]
+\begin{enumerate}[labelwidth=\widthof{\ref{last-item}},label=\arabic*.]
+\item \textbf{Nazwa:} Dodaj konto \newline
+    \textbf{Aktor:} Zalogowany użytkownik \newline
+    \textbf{Warunki początkowe:} Użytkownik musi posiadać wcześniej założone konto i się na nie zalogować. \newline
+    \textbf{Warunki końcowe:} Stan konta musi być zgodny z polityką dla jego typu. \newline
+    \textbf{Cel:} Stworzenie w systemie konta pieniężnego przypisanego do aktora wykonującego tę operację, aby umożliwić zapisywanie informacji o przepływie gotówki. \newline
+    \textbf{Przebieg:} Użytkownik wypełnia formularz. Wpisuje wymagane pola: nazwa konta, saldo początkowe i limit debetu oraz opcjonalne pola: numer konta, waluta i opis. Wybiera także typ konta.
+\item \textbf{Nazwa:} Usuń konto \newline
+    \textbf{Aktor:} Właściciel konta \newline
+    \textbf{Warunki początkowe:} Użytkownik musi posiadać konto pieniężne. \newline
+    \textbf{Warunki końcowe:} Użytkownik musi potwierdzić usunięcie konta. \newline
+    \textbf{Cel:} Usunięcie konta pieniężnego użytkownika wraz z jego historią. \newline
+    \textbf{Przebieg:} Użytkownik wybiera jedno ze swoich kont, a następnie naciska guzik usuń. Użytkownik musi potwierdzić tę operację.
+\item \textbf{Nazwa:} Edytuj dane konta \newline
+    \textbf{Aktor:} Właściciel konta \newline
+    \textbf{Warunki początkowe:} Użytkownik musi posiadać konto pieniężne. \newline
+    \textbf{Warunki końcowe:} Stan konta nie może przekraczać nowego limitu debetu. \newline
+    \textbf{Cel:} Aktualizacja danych konta, bez utraty jego historii. \newline
+    \textbf{Przebieg:} Użytkownik edytuje pola obowiązkowe formularza: nazwa konta, limit debetu oraz opcjonalne pola: numer konta, waluta i opis. Nie może edytować jego typu.
+\item \textbf{Nazwa:} Zmień typ konta\newline
+    \textbf{Aktor:} Właściciel konta \newline
+    \textbf{Warunki początkowe:} Użytkownik musi posiadać konto pieniężne. \newline
+    \textbf{Warunki końcowe:} Typ konta musi pozwalać na potencjalnie istniejący na koncie debet. \newline
+    \textbf{Cel:} Zmiana typu konta na inny. Umożliwiające posiadanie debetu, lub oprocentowane. \newline
+    \textbf{Przebieg:} Użytkownik po wybraniu konta zmienia jego typ, a swój wybór zatwierdza naciśnięciem guzika ,,Akceptuj''. 
+\end{enumerate}
+
+\begin{figure}[h]
 	\centering
 	\fbox{\includegraphics[width=.6\linewidth]{rys03/use-case-account.png}}
 	\caption{Diagram przypadków użycia konta pieniężnego}
 	\label{fig:use-case-account}
 \end{figure}
 
-\begin{figure}[p]
+\subsection{Wymagania dotyczące środków finansowych}
+\label{subsec:wymagania-srodki-finansowe}
+Na rysunku~\ref{fig:use-case-money} przedstawiono przypadki użycia związane z definiowaniem przepływu gotówki w ramach kont pieniężnych. Poniżej znajdują się także ich opisy.
+
+\begin{enumerate}[labelwidth=\widthof{\ref{last-item}},label=\arabic*.]
+\item \textbf{Nazwa:} Dodaj wydatek/przychód \newline
+    \textbf{Aktor:} Właściciel konta \newline
+    \textbf{Warunki początkowe:} Użytkownik zdefiniował co najmniej jedną kategorię dla operacji finansowych. \newline
+    \textbf{Warunki końcowe:} Stan konta po operacji dodania wydatku musi być zgodny z polityką dla typu konta. \newline
+    \textbf{Cel:} Zdefiniowanie operacji pieniężnej w ramach konta. \newline
+    \textbf{Przebieg:} Użytkownik tworzy wydatek lub przychód wpisując obowiązkowe pola: kwota i data, a także te dodatkowe: notatka, odbiorca. Użytkownik musi także wybrać kategorię. 
+\item \textbf{Nazwa:} Usuń wydatek/przychód \newline
+    \textbf{Aktor:} Właściciel konta \newline
+    \textbf{Warunki początkowe:} Konto posiada co najmniej jeden wpis: wydatek lub przychód. \newline
+    \textbf{Warunki końcowe:} Stan konta po operacji usunięcia przychodu musi być zgodny z polityką dla typu konta. \newline
+    \textbf{Cel:} Usunięcie operacji pieniężnej w ramach konta. \newline
+    \textbf{Przebieg:} Użytkownik wybiera wydatek lub przychód, a następnie naciska guzik usuń. 
+\item \textbf{Nazwa:} Edytuj wydatek/przychód \newline
+    \textbf{Aktor:} Właściciel konta \newline
+    \textbf{Warunki początkowe:} Konto posiada co najmniej jeden wpis: wydatek lub przychód. \newline
+    \textbf{Warunki końcowe:} Stan konta po edycji wpisu musi być zgodny z polityką dla typu konta. \newline
+    \textbf{Cel:} Edycja operacji pieniężnej w ramach konta. \newline
+    \textbf{Przebieg:} Użytkownik wybiera wydatek lub przychód, a następnie naciska guzik ,,edytuj''. Edytuje pola obowiązkowe i dodatkowe. Jeśli chce zmienić kategorię musi ją wybrać z listy. \newline
+    \textbf{Rozszerzenia: } 
+    \begin{enumerate}[label=\alph*)]
+        \item Użytkownik edytuje kategorię wpisu: Wybór kategorii.
+    \end{enumerate}
+\item \textbf{Nazwa:} Wykonaj przelew \newline
+    \textbf{Aktor:} Właściciel konta \newline
+    \textbf{Warunki początkowe:} Użytkownik zdefiniował co najmniej jedną kategorię dla operacji finansowych. \newline
+    \textbf{Warunki końcowe:} Stan konta po przelewie musi być zgodny z polityką dla typu konta. \newline
+    \textbf{Cel:} Wykonanie przelewu między kontami \newline
+    \textbf{Przebieg:} Użytkownik definiuje przelew wpisując obowiązkowe pola: kwota i data, a także dodatkowe: notatka, odbiorca. Użytkownik musi także wybrać kategorię. \newline
+    \textbf{Rozszerzenia: } %TODO strzalka icnlude do wybierz kategorie
+    \begin{enumerate}[label=\alph*)]
+        \item Użytkownik definiuje przelew między własnymi kontami: Przelew własny.
+    \end{enumerate}
+\end{enumerate}
+
+\begin{figure}[h]
 	\centering
-	\fbox{\includegraphics[width=.6\linewidth]{rys03/use-case-money.png}}
+	\fbox{\includegraphics[width=.7\linewidth]{rys03/use-case-money.png}}
 	\caption{Subdiagram przypadków użycia dla operacji finansowych}
 	\label{fig:use-case-money}
 \end{figure}
+
+%Na razie do wglądu diagramy use cases
+% Jest kilka kwestii do dyskusji
+% W systemie powinny być kategorie usera i rodziny. User moze edytowac swoje kategorie a admin rodziny rodzinne kategorie. Gdy konto jest dodane do rodziny mozna mu dodawac kategorie rodziny ale tez usera
+% 1 pytanie czy use case diagram dla category jest poprawny (generalizacja) Moze powinny byc osobne use casy dla kategorii rodziny i osobne dla kategorii usera
+
+%2 family use case: czy admin powinien moc nadawac uprawnienia do nieswojego konta? Cz powinien admin moze domyslnie i zawsze dodawac wydatki do nieswojego konta, czy moze wlasciciel musi mu nadac uprawninia. 
 
 \begin{figure}[p]
 	\centering
@@ -82,59 +154,3 @@
 
 \section{Metodyka}
 \label{sec:metodyka}
-
-
-
-
-
-
-
-
-
-
-
-
-
-\begin{figure}[b]
-\setlayoutscale{0.43}
-\currentstock
-\oddpagelayouttrue
-\twocolumnlayoutfalse
-\drawmarginparstrue
-\drawparametersfalse
-\drawstock
-\caption{Rzeczywisty układ strony nieparzystej w tym dokumencie} \label{fig:currentPageLayout}
-\end{figure}
-
-
-
-
-
-
-
-\begin{figure}[b]
-	\centering
-	\fbox{\includegraphics[width=.6\linewidth]{rys03/praca-dyplomowa2}}
-	\caption{Oficjalny szablon strony tytułowej pracy dyplomowej, \url{http://www.logotyp.pwr.edu.pl/Default.aspx?page=PracaDyplomowa} [dostęp dnia 20.04.2016]}
-	\label{fig:stronaTytulowa}
-\end{figure}
-
-\begin{table}[htb]
-\centering
-\caption{Zestawienie czcionek elementów podziału dokumentu, tekstu wiodącego, nagłówka i stopki oraz podpisów (Rozm. -- rozmiar czcionki, Odst. -- \texttt{baselineskip})}
-\label{tab:secfonts}\small
-\begin{tabularx}{\linewidth}{|ll@{\hskip 5pt}l@{\hskip 5pt}lX|} \hline
-Element & Przykład & Czcionka & Rozm. & Odst. \\ \hline\hline
-Nr rozdziału & {\huge\bfseries Rozdział 1 } & \verb?\huge\bfseries? & 25pt & 30pt \\
-Tytuł rozdziału & {\Huge\bfseries Wstęp } & \verb?\Huge\bfseries? & 30pt & 37pt\\
-Nr i tytuł sekcji & {\Large\bfseries 1.1. Wprowadzenie } & \verb?\Large\bfseries? & 17pt & 22pt \\
-Nr i tytuł podsekcji & {\large\bfseries 1.1.1. Cel szczegółowy } & \verb?\large\bfseries? &14.5pt & 18pt\\
-Tytuł podpodsekcji  & {\normalsize\bfseries Założenia } & \verb?\normalsize\bfseries? & 12pt & 14.5pt\\
-Tytuł paragrafu & {\normalsize\bfseries  Podstawy } Opis ... &  \verb?\normalsize\bfseries? & 12pt & 14.5pt\\
-Tekst wiodący & {\normalsize Niniejszy dokument ... } & \verb?\normalsize? & 12pt & 14.5pt\\
-Nagłówek strony & {\small\itshape 3.2. Czcionka wiodąca ...} & \verb?\small\itshape? & 11pt & 13.6pt \\
-Stopka strony & {\small Imię Nazwisko: ...} & \verb?\small? & 11pt & 13.6pt\\
-Podpisy tabel & {\small Tab.~3.1: Zestawienie ...} & \verb?\small? & 11pt & 13.6pt \\
-Podpisy rysunków & {\small Rys.~3.1: Oficjalny ...} & \verb?\small? & 11pt & 13.6pt\\\hline
-\end{tabularx}
-\end{table}
