@@ -12,7 +12,7 @@ Poniżej opisano przypadki użycia dotyczące zarządzania kontem pieniężnym u
 \begin{enumerate}[labelwidth=1em,label=\arabic*.]
 \item \textbf{Nazwa:} Dodaj konto \newline
     \textbf{Aktor:} Zalogowany użytkownik \newline
-    \textbf{Warunki początkowe:} Użytkownik musi posiadać wcześniej założone konto i się na nie zalogować. \newline
+    \textbf{Warunki początkowe:} Użytkownik musi się wcześniej zarejestrować i być zalogowany w momencie tworzenia konta. \newline
     \textbf{Warunki końcowe:} Stan konta musi być zgodny z polityką dla jego typu. \newline
     \textbf{Cel:} Stworzenie w systemie konta pieniężnego przypisanego do aktora wykonującego tę operację, aby umożliwić zapisywanie informacji o przepływie gotówki. \newline
     \textbf{Przebieg:} Użytkownik wypełnia formularz. Wpisuje wymagane pola: nazwa konta, saldo początkowe i limit debetu oraz opcjonalne pola: numer konta, waluta i opis. Wybiera także typ konta.
@@ -45,23 +45,23 @@ Poniżej opisano przypadki użycia dotyczące zarządzania kontem pieniężnym u
 
 \subsection{Wymagania dotyczące środków finansowych}
 \label{subsec:wymagania-srodki-finansowe}
-Na rysunku~\ref{fig:use-case-money} przedstawiono przypadki użycia związane z definiowaniem przepływu gotówki w ramach kont pieniężnych. Poniżej znajdują się także ich opisy.
+Na rysunku~\ref{fig:use-case-money} przedstawiono przypadki użycia związane z definiowaniem przepływu gotówki dla kont pieniężnych. Poniżej znajdują się także ich opisy.
 
 \begin{enumerate}[labelwidth=1em,label=\arabic*.]
 \item \textbf{Nazwa:} Dodaj wydatek/przychód \newline
-    \textbf{Aktor:} Właściciel konta \newline
-    \textbf{Warunki początkowe:} Użytkownik zdefiniował co najmniej jedną kategorię dla operacji finansowych. \newline
+    \textbf{Aktor:} Uprawniony przez właściciela członek rodziny \newline
+    \textbf{Warunki początkowe:} Administrator rodziny zdefiniował co najmniej jedną kategorię dla operacji finansowych. \newline
     \textbf{Warunki końcowe:} Stan konta po operacji dodania wydatku musi być zgodny z polityką dla typu konta. \newline
     \textbf{Cel:} Zdefiniowanie operacji pieniężnej w ramach konta. \newline
     \textbf{Przebieg:} Użytkownik tworzy wydatek lub przychód wpisując obowiązkowe pola: kwota i data, a także te dodatkowe: notatka, odbiorca. Użytkownik musi także wybrać kategorię. 
 \item \textbf{Nazwa:} Usuń wydatek/przychód \newline
-    \textbf{Aktor:} Właściciel konta \newline
+    \textbf{Aktor:} Uprawniony przez właściciela członek rodziny \newline
     \textbf{Warunki początkowe:} Konto posiada co najmniej jeden wpis: wydatek lub przychód. \newline
     \textbf{Warunki końcowe:} Stan konta po operacji usunięcia przychodu musi być zgodny z polityką dla typu konta. \newline
     \textbf{Cel:} Usunięcie operacji pieniężnej w ramach konta. \newline
     \textbf{Przebieg:} Użytkownik wybiera wydatek lub przychód, a następnie naciska guzik usuń. 
 \item \textbf{Nazwa:} Edytuj wydatek/przychód \newline
-    \textbf{Aktor:} Właściciel konta \newline
+    \textbf{Aktor:} Uprawniony przez właściciela członek rodziny \newline
     \textbf{Warunki początkowe:} Konto posiada co najmniej jeden wpis: wydatek lub przychód. \newline
     \textbf{Warunki końcowe:} Stan konta po edycji wpisu musi być zgodny z polityką dla typu konta. \newline
     \textbf{Cel:} Edycja operacji pieniężnej w ramach konta. \newline
@@ -71,14 +71,14 @@ Na rysunku~\ref{fig:use-case-money} przedstawiono przypadki użycia związane z 
         \item Użytkownik edytuje kategorię wpisu: Wybór kategorii.
     \end{enumerate}
 \item \textbf{Nazwa:} Wykonaj przelew \newline
-    \textbf{Aktor:} Właściciel konta \newline
-    \textbf{Warunki początkowe:} Użytkownik zdefiniował co najmniej jedną kategorię dla operacji finansowych. \newline
+    \textbf{Aktor:} Uprawniony przez właściciela członek rodziny \newline
+    \textbf{Warunki początkowe:} Administrator rodziny zdefiniował co najmniej jedną kategorię dla operacji finansowych. \newline
     \textbf{Warunki końcowe:} Stan konta po przelewie musi być zgodny z polityką dla typu konta. \newline
-    \textbf{Cel:} Wykonanie przelewu między kontami \newline
+    \textbf{Cel:} Wykonanie przelewu między kontami lub zewnętrznego. \newline
     \textbf{Przebieg:} Użytkownik definiuje przelew wpisując obowiązkowe pola: kwota i data, a także dodatkowe: notatka, odbiorca. Użytkownik musi także wybrać kategorię. \newline
-    \textbf{Rozszerzenia: } %TODO strzalka icnlude do wybierz kategorie
+    \textbf{Rozszerzenia: }
     \begin{enumerate}[label=\alph*)]
-        \item Użytkownik definiuje przelew między własnymi kontami: Przelew własny.
+        \item Użytkownik definiuje przelew między kontami rodziny: Przelew własny.
     \end{enumerate}
 \end{enumerate}
 
@@ -89,27 +89,87 @@ Na rysunku~\ref{fig:use-case-money} przedstawiono przypadki użycia związane z 
 	\label{fig:use-case-money}
 \end{figure}
 
-%Na razie do wglądu diagramy use cases
-% Jest kilka kwestii do dyskusji
-% W systemie powinny być kategorie usera i rodziny. User moze edytowac swoje kategorie a admin rodziny rodzinne kategorie. Gdy konto jest dodane do rodziny mozna mu dodawac kategorie rodziny ale tez usera
-% 1 pytanie czy use case diagram dla category jest poprawny (generalizacja) Moze powinny byc osobne use casy dla kategorii rodziny i osobne dla kategorii usera
+\subsection{Wymagania dotyczące rodziny}
+\label{subsec:wymagania-rodzina}
+Wymagania funkcjonalne dotyczące obsługi w aplikacji grupy rodziny, dalej zwanej rodziną, przedstawione zostały na~ rysunku~\ref{fig:use-case-family}. Poniżej znajdują się także ich szczegółowe opisy.
 
-%2 family use case: czy admin powinien moc nadawac uprawnienia do nieswojego konta? Cz powinien admin moze domyslnie i zawsze dodawac wydatki do nieswojego konta, czy moze wlasciciel musi mu nadac uprawninia. 
+\begin{enumerate}[labelwidth=1em,label=\arabic*.]
+\item \textbf{Nazwa:} Stwórz rodzinę \newline
+    \textbf{Aktor:} Zalogowany użytkownik \newline
+    \textbf{Warunki początkowe:} Użytkownik zarejestrował się w aplikacji. \newline
+    \textbf{Warunki końcowe:} Użytkownik staje się administratorem nowoutworzonej rodziny. \newline
+    \textbf{Cel:} Stworzenie rodziny, w ramach której można współdzielić konta pieniężne i ich historie. \newline
+    \textbf{Przebieg:} Rodzina zostaje stworzona w momencie rejestracji. 
+\item \textbf{Nazwa:} Akceptuj zaproszenie \newline
+    \textbf{Aktor:} Zalogowany użytkownik \newline
+    \textbf{Warunki początkowe:} Administrator innej rodziny dodał do niej użytkownika. \newline
+    \textbf{Warunki końcowe:} Użytkownik zaakceptował zaproszenie.  \newline
+    \textbf{Cel:} Dołączenie do nowej rodziny. \newline
+    \textbf{Przebieg:} Użytkownik wyświetla zaproszenia do rodziny. Następnie akceptuje zaproszenie do jednej, bądź wielu z nich.
+\item \textbf{Nazwa:} Dodaj członka \newline
+    \textbf{Aktor:} Administrator rodziny \newline
+    \textbf{Warunki początkowe:} Użytkownik stworzył rodzinę. \newline
+    \textbf{Warunki końcowe:} Użytkownik akceptuje zaproszenie do rodziny.  \newline
+    \textbf{Cel:} Dodanie nowego członka do rodziny, aby współdzielić historię finansową. \newline
+    \textbf{Przebieg:} Administrator wpisuję login użytkownika, którego chce dodać i zatwierdza wybór guzikiem. 
+\item \textbf{Nazwa:} Usuń członka \newline
+    \textbf{Aktor:} Administrator rodziny \newline
+    \textbf{Warunki początkowe:} Użytkownik dodał do rodziny co~najmniej jednego innego członka. \newline
+    \textbf{Warunki końcowe:} --  \newline
+    \textbf{Cel:} Usunięcie członka z rodziny. \newline
+    \textbf{Przebieg:} Administrator naciska guzik usuń członka, a następnie potwierdza swoją akcję.
+\item \textbf{Nazwa:} Edytuj uprawnienia dostępu do konta \newline
+    \textbf{Aktor:} Członek rodziny będący właścicielem konta \newline
+    \textbf{Warunki początkowe:} Użytkownik jest właścicielem konta. W rodzinie, do której przypisane jest konto jest więcej niż jeden członek. \newline
+    \textbf{Warunki końcowe:} Właściciel konta potwierdza nadanie uprawnień naciskając guzik. \newline
+    \textbf{Cel:} Nadanie uprawnień członkowi rodziny, aby mógł publikować wpisy w ramach konta i/lub przeglądać jego historię.  \newline
+    \textbf{Przebieg:} Właściciel konta wybiera z listy jedno ze swoich kont w ramach rodziny. Następnie z listy wybiera członka rodziny, któremu chce nadać uprawnienia. Nadaje członkowi uprawnienia spośród: prawo do wglądu, prawo do dodawania wpisów.
+    Swój wybór zatwierdza guzikiem ,,zatwierdź''.
+\end{enumerate}
 
-\begin{figure}[p]
-	\centering
-	\fbox{\includegraphics[width=.65\linewidth]{rys03/use-case-family.png}}
-	\caption{Diagram przypadków użycia dla kategorii}
-	\label{fig:use-case-category}
-\end{figure}
-
-\begin{figure}[p]
+\begin{figure}[t]
 	\centering
 	\fbox{\includegraphics[width=.65\linewidth]{rys03/use-case-family.png}}
 	\caption{Diagram przypadków użycia dla rodziny}
 	\label{fig:use-case-family}
 \end{figure}
 
+\subsection{Wymagania dotyczące kategorii}
+\label{subsec:wymagania-kategorie}
+
+\begin{enumerate}[labelwidth=1em,label=\arabic*.]
+\item \textbf{Nazwa:} Dodaj kategorię \newline
+    \textbf{Aktor:} Zalogowany użytkownik \newline
+    \textbf{Warunki początkowe:} Użytkownik zarejestrował się w aplikacji. \newline
+    \textbf{Warunki końcowe:} Nazwa kategorii w swoim poddrzewie jest unikatowa. \newline
+    \textbf{Cel:} Stworzenie kategorii, aby łatwiej segregować wydatki i przychody. \newline
+    \textbf{Przebieg:} Użytkownik naciska guzik dodaj kategorię na drzewie kategorii. Następnie wpisuje jej nazwę i wybiera kolor wyświetlania wpisów przypisanych do niej.
+\item \textbf{Nazwa:} Edytuj kategorię \newline
+    \textbf{Aktor:} Zalogowany użytkownik \newline
+    \textbf{Warunki początkowe:} Użytkownik dodał co najmniej jedną kategorię. \newline
+    \textbf{Warunki końcowe:} Nazwa kategorii w swoim poddrzewie jest unikatowa. \newline
+    \textbf{Cel:} Edycja istniejącej kategorii bez utraty historii wpisów tej kategorii. \newline
+    \textbf{Przebieg:} Użytkownik edytuje nazwę i kolor kategorii. Może także przeciągnąć ją do innej kategorii nadrzędnej lub zrobić z niej kategorię najwyższego rzędu.
+\item \textbf{Nazwa:} Ukryj kategorię \newline
+    \textbf{Aktor:} Zalogowany użytkownik \newline
+    \textbf{Warunki początkowe:} Użytkownik dodał co najmniej jedną kategorię. \newline
+    \textbf{Warunki końcowe:} -- \newline
+    \textbf{Cel:} Ukrycie istniejącej kategorii bez utraty historii wpisów tej kategorii. \newline
+    \textbf{Przebieg:} Użytkownik w menu kategorii klika ukryj.
+\item \textbf{Nazwa:} Usuń kategorię \newline
+    \textbf{Aktor:} Zalogowany użytkownik \newline
+    \textbf{Warunki początkowe:} Użytkownik dodał co najmniej jedną kategorię. Kategoria nie posiada żadnych wpisów. \newline
+    \textbf{Warunki końcowe:} Nie istnieje wpis, który nie ma przypisanej kategorii. \newline
+    \textbf{Cel:} Usunięcie kategorii, do której nie jest przypisany żaden wpis. \newline
+    \textbf{Przebieg:} Użytkownik w menu kategorii klika usuń i zatwierdza wybór.
+\end{enumerate}
+
+\begin{figure}[t]
+	\centering
+	\fbox{\includegraphics[width=.65\linewidth]{rys03/use-case-category.png}}
+	\caption{Diagram przypadków użycia dla kategorii}
+	\label{fig:use-case-category}
+\end{figure}
 
 \section{Wymagania niefunkcjonalne}
 \label{sec:wymagania-niefunkcjonalne}
