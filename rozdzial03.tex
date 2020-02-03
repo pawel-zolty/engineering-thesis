@@ -7,9 +7,9 @@ W tej sekcji opisane zostaną wymagania funkcjonalne jakie powinien spełniać s
 
 \subsection{Wymagania dotyczące konta pieniężnego}
 \label{subsec:wymagania-konto}
-Poniżej opisano przypadki użycia dotyczące zarządzania kontem pieniężnym użytkownika. Zaprezentowane są one także na diagramie -- rysunek~\ref{fig:use-case-account}.
+Poniżej opisano przypadki użycia dotyczące zarządzania kontem pieniężnym użytkownika. Zaprezentowano je także na diagramie (rys.~\ref{fig:use-case-account}).
 
-\begin{enumerate}[labelwidth=\widthof{\ref{last-item}},label=\arabic*.]
+\begin{enumerate}[labelwidth=1em,label=\arabic*.]
 \item \textbf{Nazwa:} Dodaj konto \newline
     \textbf{Aktor:} Zalogowany użytkownik \newline
     \textbf{Warunki początkowe:} Użytkownik musi posiadać wcześniej założone konto i się na nie zalogować. \newline
@@ -28,7 +28,7 @@ Poniżej opisano przypadki użycia dotyczące zarządzania kontem pieniężnym u
     \textbf{Warunki końcowe:} Stan konta nie może przekraczać nowego limitu debetu. \newline
     \textbf{Cel:} Aktualizacja danych konta, bez utraty jego historii. \newline
     \textbf{Przebieg:} Użytkownik edytuje pola obowiązkowe formularza: nazwa konta, limit debetu oraz opcjonalne pola: numer konta, waluta i opis. Nie może edytować jego typu.
-\item \textbf{Nazwa:} Zmień typ konta\newline
+\item \label{last-item1}\textbf{Nazwa:} Zmień typ konta\newline
     \textbf{Aktor:} Właściciel konta \newline
     \textbf{Warunki początkowe:} Użytkownik musi posiadać konto pieniężne. \newline
     \textbf{Warunki końcowe:} Typ konta musi pozwalać na potencjalnie istniejący na koncie debet. \newline
@@ -36,9 +36,9 @@ Poniżej opisano przypadki użycia dotyczące zarządzania kontem pieniężnym u
     \textbf{Przebieg:} Użytkownik po wybraniu konta zmienia jego typ, a swój wybór zatwierdza naciśnięciem guzika ,,Akceptuj''. 
 \end{enumerate}
 
-\begin{figure}[h]
+\begin{figure}[t]
 	\centering
-	\fbox{\includegraphics[width=.6\linewidth]{rys03/use-case-account.png}}
+	\fbox{\includegraphics[width=.65\linewidth]{rys03/use-case-account.png}}
 	\caption{Diagram przypadków użycia konta pieniężnego}
 	\label{fig:use-case-account}
 \end{figure}
@@ -47,7 +47,7 @@ Poniżej opisano przypadki użycia dotyczące zarządzania kontem pieniężnym u
 \label{subsec:wymagania-srodki-finansowe}
 Na rysunku~\ref{fig:use-case-money} przedstawiono przypadki użycia związane z definiowaniem przepływu gotówki w ramach kont pieniężnych. Poniżej znajdują się także ich opisy.
 
-\begin{enumerate}[labelwidth=\widthof{\ref{last-item}},label=\arabic*.]
+\begin{enumerate}[labelwidth=1em,label=\arabic*.]
 \item \textbf{Nazwa:} Dodaj wydatek/przychód \newline
     \textbf{Aktor:} Właściciel konta \newline
     \textbf{Warunki początkowe:} Użytkownik zdefiniował co najmniej jedną kategorię dla operacji finansowych. \newline
@@ -82,7 +82,7 @@ Na rysunku~\ref{fig:use-case-money} przedstawiono przypadki użycia związane z 
     \end{enumerate}
 \end{enumerate}
 
-\begin{figure}[h]
+\begin{figure}[t]
 	\centering
 	\fbox{\includegraphics[width=.7\linewidth]{rys03/use-case-money.png}}
 	\caption{Subdiagram przypadków użycia dla operacji finansowych}
@@ -98,14 +98,14 @@ Na rysunku~\ref{fig:use-case-money} przedstawiono przypadki użycia związane z 
 
 \begin{figure}[p]
 	\centering
-	\fbox{\includegraphics[width=.6\linewidth]{rys03/use-case-family.png}}
+	\fbox{\includegraphics[width=.65\linewidth]{rys03/use-case-family.png}}
 	\caption{Diagram przypadków użycia dla kategorii}
 	\label{fig:use-case-category}
 \end{figure}
 
 \begin{figure}[p]
 	\centering
-	\fbox{\includegraphics[width=.6\linewidth]{rys03/use-case-family.png}}
+	\fbox{\includegraphics[width=.65\linewidth]{rys03/use-case-family.png}}
 	\caption{Diagram przypadków użycia dla rodziny}
 	\label{fig:use-case-family}
 \end{figure}
@@ -114,7 +114,7 @@ Na rysunku~\ref{fig:use-case-money} przedstawiono przypadki użycia związane z 
 \section{Wymagania niefunkcjonalne}
 \label{sec:wymagania-niefunkcjonalne}
 
-\begin{enumerate}[labelwidth=\widthof{\ref{last-item}},label=\arabic*.]
+\begin{enumerate}[labelwidth=1em,label=\arabic*.]
 
 \item System składać ma się z~dwóch głównych części:
 \begin{enumerate}[label=\alph*)]
