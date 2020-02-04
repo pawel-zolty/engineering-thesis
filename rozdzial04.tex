@@ -28,6 +28,8 @@ W folderze \texttt{src} znajdują się dwa następne foldery: \texttt{API} oraz 
 	\label{fig:fiz-2}
 \end{figure}
 
+Warto zwrócić uwagę, że zarówno w API jak i w aplikacji klienckiej klasy pogrupowane są według funckjonoalności, a nie typów np.: \texttt{Services}, \texttt{Controllers}, \texttt{Views}, \texttt{Models}. Daje to dużą elastyczność i wygodę przy pracy programisty, gdyż nie musi szukać klas związanych z jedną funkcjonalnościach w wielu w poddrzewach katalogów.
+
 \subsubsection{Fizyczna struktura API}
 
 Aplikacja API składa się z czterech projektów: \texttt{BudgetApplication.API}, \texttt{BudgetApplication.Domain}, \texttt{BudgetApplication.Infrastructure} oraz \texttt{BudgetApplication.QueryInfrastructure}. Każdy z nich znajduje się w osobnym folderze -- rysunek~\ref{fig:fiz-api-1}.
