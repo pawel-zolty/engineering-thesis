@@ -59,6 +59,13 @@ Projekty \texttt{Infrastructure} i \texttt{QueryInfrastructure} zawierają warst
 
 Aplikacja kliencka składa się z dwóch projektów: \texttt{BudgetApplication.Client} oraz \texttt{BudgetApplication.Client.Core}, z których każdy jest w osobnym folderze -- rysunek~\ref{fig:fiz-client-1}. 
 
+\begin{figure}[t]
+	\centering
+	\fbox{\includegraphics[width=.5\linewidth]{rys04/struktura-fizyczna-client-1.PNG}}
+	\caption{Zawartość folderu Client}
+	\label{fig:fiz-client-1}
+\end{figure}
+
 Strukturę rozwiązania aplikacji klienckiej przedstawiono na rysunku~\ref{fig:fiz-client-2}.
 
 Pierwszy z nich zawiera jeden główny folder z widokami i ich modelami widoku (ang.~\emph{view model}) pogrupowanymi w foldery według funkcjonalności. W głównym folderze Znajdują się też widoki niezwiązane z modelami widoku, a także folder \texttt{Shared} z widokami częściowymi używanymi przez pozostałe widoki. Pliki: \texttt{Program.cs} i \texttt{Startup.cs} pełnią podobną funkcję co w projekcie API.
