@@ -1,16 +1,13 @@
 \chapter{Implementacja}
 \label{chap:implementacja}
 
-W tym rozdziale przedstawiony jest proces implementacji systemu budżetu domowego. 
-W sekcji~\ref{sec:struktura-fizyczna-projektu} zaprezentowana zostanie struktura projektu API i aplikacji klienckiej.
-Sekcja~\ref{sec:szczegoly-implementacji} zawiera szczegóły implementacji obu tych aplikacji, a w szczególności architektury całego systemu.
-
 \section{Struktura projektu}
+\label{sec:struktura-projektu}
 
 W tej sekcji przedstawiona zostanie logiczna i fizyczna struktura projektu. W szczególności zostanie uwzględniony podział na projekt aplikacji klienckiej oraz API, gdyż stanowią one tak na prawdę niezależne rozwiązania (ang.~\emph{solution} w środowisku programistycznym Visual Studio 2019.
 
-\label{sec:struktura-fizyczna-projektu}
 \subsection{Struktura fizyczna projektu}
+\label{sec:struktura-fizyczna-projektu}
 
 Obie aplikacje (API i aplikacja kliencka) znajdują się w tym samym repozytorium Git. Pliki ich rozwiązań znajdują się w folderze głównym repozytorium. W folderze tym znajduję się także plik \texttt{.gitignore}. Projekty należące do rozwiązań znajdują się w folderze \texttt{src}. W katalogu \texttt{Zoltaniecki.IDP} znajduję się potrzebny do testów dostawca tożsamości, będący tylko wydmuszką prawdziwego serwisu. Strukturę głównego folderu można zobaczyć na rysunku~\ref{fig:fiz-1}.
 
@@ -76,6 +73,12 @@ Klasa \texttt{ODataResult} jest klasą odpowiedzi żądań HTTP GET. Zawiera ona
 	\caption{Struktura rozwiązania aplikacji klienckiej}
 	\label{fig:fiz-client-2}
 \end{figure}
+
+\subsection{Struktura logiczna projektu}
+\label{sec:struktura-logiczna-projektu}
+
+W tej sekcji zostanie zaprezentowana logiczna struktura projektu. 
+Pokazane zostaną zależności między projektami zawartymi w rozwiązaniach dla aplikacji klienckiej oraz API.
 
 \section{Szczegóły implementacji}
 \label{sec:szczegoly-implementacji}
