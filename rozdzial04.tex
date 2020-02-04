@@ -1,89 +1,84 @@
 \chapter{Implementacja}
 \label{chap:implementacja}
 
+W tym rozdziale przedstawiony jest proces implementacji systemu budżetu domowego. 
+W sekcji~\ref{sec:struktura-fizyczna-projektu} zaprezentowana zostanie struktura projektu API i aplikacji klienckiej.
+Sekcja~\ref{sec:szczegoly-implementacji} zawiera szczegóły implementacji obu tych aplikacji, a w szczególności architektury całego systemu.
+
 \section{Struktura projektu}
-\label{sec:struktura-projektu}
+
+W tej sekcji przedstawiona zostanie logiczna i fizyczna struktura projektu. W szczególności zostanie uwzględniony podział na projekt aplikacji klienckiej oraz API, gdyż stanowią one tak na prawdę niezależne rozwiązania (ang.~\emph{solution} w środowisku programistycznym Visual Studio 2019.
+
+\label{sec:struktura-fizyczna-projektu}
+\subsection{Struktura fizyczna projektu}
+
+Obie aplikacje (API i aplikacja kliencka) znajdują się w tym samym repozytorium Git. Pliki ich rozwiązań znajdują się w folderze głównym repozytorium. W folderze tym znajduję się także plik \texttt{.gitignore}. Projekty należące do rozwiązań znajdują się w folderze \texttt{src}. W katalogu \texttt{Zoltaniecki.IDP} znajduję się potrzebny do testów dostawca tożsamości, będący tylko wydmuszką prawdziwego serwisu. Strukturę głównego folderu można zobaczyć na rysunku~\ref{fig:fiz-1}.
+
+\begin{figure}[b]
+	\centering
+	\fbox{\includegraphics[width=.8\linewidth]{rys04/struktura-fizyczna-1.PNG}}
+	\caption{Struktura fizyczna repozytorium}
+	\label{fig:fiz-1}
+\end{figure}
+
+W folderze \texttt{src} znajdują się dwa następne foldery: \texttt{API} oraz \texttt{Client}. Znajdują się w nich kolejno projekty dla rozwiązania: \texttt{BudgetApplicationAPI.sln} i~dla rozwiązania \texttt{BudgetApplicationClient.sln} -- rysunek~\ref{fig:fiz-2}. 
+
+%todo czy usunać?
+\begin{figure}[t]
+	\centering
+	\fbox{\includegraphics[width=.7\linewidth]{rys04/struktura-fizyczna-2.PNG}}
+	\caption{Zawartość folderu src}
+	\label{fig:fiz-2}
+\end{figure}
+
+\subsubsection{Fizyczna struktura API}
+
+Aplikacja API składa się z czterech projektów: \texttt{BudgetApplication.API}, \texttt{BudgetApplication.Domain}, \texttt{BudgetApplication.Infrastructure} oraz \texttt{BudgetApplication.QueryInfrastructure}. Każdy z nich znajduje się w osobnym folderze -- rysunek~\ref{fig:fiz-api-1}.
+
+%todo czy usunać?
+\begin{figure}[t]
+	\centering
+	\fbox{\includegraphics[width=.7\linewidth]{rys04/struktura-fizyczna-api-1.PNG}}
+	\caption{Zawartość folderu API}
+	\label{fig:fiz-api-1}
+\end{figure}
+
+Na rysunku~\ref{fig:fiz-api-2} przedstawiono strukturę rozwiązania dla API. Widać na nim cztery projekty zawierające różne foldery. 
+
+Foldery projektu \texttt{API} zawierają pogrupowane według funkcjonalności klasy kontrolerów API (ang.~\emph{controllers}), a także klasy związane z opisaną w sekcji~\ref{subsec:mediator} biblioteką \texttt{MediatR}: handlery (ang.~\emph{handlers}), komendy (ang.~\emph{commands}) i odpowiedzi(ang.~\emph{responses}). Katalog \texttt{Shared} zawiera współdzielone interfejsy. 
+
+W projekcie \texttt{Domain} podkatalogi katalogu \texttt{AggregatesModel} zawierają pogrupowane według funkcjonalności encje, ich serwisy domenowe, klasy wyjątków domenowych, enumeratory, klasy typu \texttt{DTO} (ang.~\emph{Data transfer object}), a także inne klasy związane z przetwarzaniem logiki biznesowej. Folder \texttt{SeedWork} zawiera związane z taktycznym DDD interfejsy i klasy bazowe. \texttt{Program.cs} zawiera funkcję \texttt{Main}, czyli punkt wejścia do programu, a w klasie \texttt{Startup} konfigurowana jest aplikacja i jej serwisy.
+
+Projekty \texttt{Infrastructure} i \texttt{QueryInfrastructure} zawierają warstwę dostępu do danych kolejno dla komend i zapytań, związanych z zastosowanym wzorcem \texttt{CQRS}, opisanym w punkcie~\ref{subsec:cqrs}. Foldery \texttt{EntityConfigurations} zawierają mapowania relacyjno-obiektowe charakterystyczne dla Entity Framework Core. Folder \texttt{Repositories} zawiera implementacje wzorca repozytorium dla klas encji biznesowych. Natomiast katalog \texttt{Migrations} zawiera pliki migracji modelu w bazie danych.
+
+\begin{figure}[t]
+	\centering
+	\fbox{\includegraphics[width=.5\linewidth]{rys04/struktura-fizyczna-api-2.PNG}}
+	\caption{Struktura rozwiązania API}
+	\label{fig:fiz-api-2}
+\end{figure}
+
+\subsubsection{Fizyczna struktura aplikacji klienckiej}
+
+Aplikacja kliencka składa się z dwóch projektów: \texttt{BudgetApplication.Client} oraz \texttt{BudgetApplication.Client.Core}, z których każdy jest w osobnym folderze -- rysunek~\ref{fig:fiz-client-1}. 
+
+Strukturę rozwiązania aplikacji klienckiej przedstawiono na rysunku~\ref{fig:fiz-client-2}.
+
+Pierwszy z nich zawiera jeden główny folder z widokami i ich modelami widoku (ang.~\emph{view model}) pogrupowanymi w foldery według funkcjonalności. W głównym folderze Znajdują się też widoki niezwiązane z modelami widoku, a także folder \texttt{Shared} z widokami częściowymi używanymi przez pozostałe widoki. Pliki: \texttt{Program.cs} i \texttt{Startup.cs} pełnią podobną funkcję co w projekcie API.
+
+Drugi z projektów, także zawiera tylko jeden główny katalog. Zawiera on odpowiednio skonfigurowane klasy klientów HTTP, komunikujące się z API, a także klasy modeli, które są zwracane przez zakończone sukcesem żądania HTTP.
+
+Klasa \texttt{ODataResult} jest klasą odpowiedzi żądań HTTP GET. Zawiera ona właściwości takie jak: \emph{Count}, \emph{Metadata}, \emph{Context} i \emph{Value}, ściśle związana z implementacją protokołu OData. Pole Value jest polem generycznym w zależności od zwracanego przez żądanie HTTP modelu. 
+
+\begin{figure}[t]
+	\centering
+	\fbox{\includegraphics[width=.5\linewidth]{rys04/struktura-fizyczna-client-2.PNG}}
+	\caption{Struktura rozwiązania aplikacji klienckiej}
+	\label{fig:fiz-client-2}
+\end{figure}
 
 \section{Szczegóły implementacji}
 \label{sec:szczegoly-implementacji}
 
-\section{Układ pracy}
-Standardowo praca powinna być zredagowana w następującym układzie:
-
-\noindent\fbox{\begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}
-\begin{quote}
-\item Strona tytułowa
-\item Strona z dedykacją (opcjonalna)
-\item Spis treści  
-\item Spis rysunków (opcjonalny)
-\item Spis tabel (opcjonalny)
-\item Skróty (wykaz opcjonalny)
-\item 1. Wstęp 
-\begin{quote}
-\item 1.1 Cel i zakres pracy 
-\item 1.2 Układ pracy 
-\end{quote}
-\item 2. Kolejny rozdział
-\begin{quote}
-\item 2.1 Sekcja
-\begin{quote}
-\item 2.1.1 Podsekcja
-\begin{quote}
-\item Nienumerowana podpodsekcja
-\begin{quote}
-\item Paragraf
-\end{quote}
-\end{quote}
-\end{quote}
-\end{quote}
-\item $\ldots$
-\item \#. Podsumownie i wnioski
-\item Literatura
-\item A. Dodatek
-\begin{quote}
-\item A.1 Sekcja w dodatku
-\end{quote}
-\item $\ldots$
-\item \$. Zawartość płyty CD/DVD
-\item Indeks rzeczowy (opcjonalny)
-\end{quote}
-\end{minipage}}\\
-
-Spis treści -- powinien być generowany automatycznie, z podaniem tytułów i numerów stron. Typ czcionki oraz wielkość liter spisu treści powinny być takie same jak w niniejszym wzorcu.
-
-Spis rysunków, Spis tabel -- powinny być generowane automatycznie (podobnie jak Spis treści). Elementy te są opcjonalne (robienie osobnego spisu, w którym na przykład są tylko dwie pozycje specjalnie nie ma sensu).
-
-Wstęp -- pierwszy rozdział, w którym powinien znaleźć się opis dziedziny, w jakiej osadzona jest praca, oraz wyjaśnienie motywacji do podjęcia tematu.  
-W sekcji ,,Cel i zakres'' powinien znaleźć się opis celu oraz zadań do wykonania, zaś w sekcji ,,Układ pracy'' -- opis zawartości kolejnych rozdziałów.
-
-Podsumowanie -- w rozdziale tym powinny być zamieszczone: podsumowanie uzyskanych efektów oraz wnioski końcowe wynikające z realizacji celu pracy dyplomowej.
-
-Literatura -- wykaz źródeł wykorzystanych w pracy (do każdego źródła musi istnieć odpowiednie cytowanie w tekście). Wykaz ten powinien być generowany automatycznie.
-
-Dodatki -- miejsce na zamieszczanie informacji dodatkowych, jak: Instrukcja wdrożeniowa, Instrukcja uruchomieniowa, Podręcznik użytkownika itp.
-Osobny dodatek powinien być przeznaczony na opis zawartości dołączonej płyty CD/DVD. Założono, że będzie to zawsze ostatni dodatek.
-
-Indeks rzeczowy -- miejsce na zamieszczenie kluczowych wyrazów, do których czytelnik będzie chciał sięgnąć. Indeks powinien być generowany automatycznie. Jego załączanie jest opcjonalne.
-\section{Styl}
-\label{sec:Styl}
-Zasady pisania pracy (przy okazji można tu zaobserwować efekt wyrównania wpisów występujących na liście wyliczeniowej uzależnione od długości etykiety):
-\begin{enumerate}[labelwidth=\widthof{\ref{last-item}},label=\arabic*.]
-\item Praca dyplomowa powinna być napisana w  formie bezosobowej (,,w pracy pokazano ...''). Taki styl przyjęto na uczelniach w naszym kraju, choć w krajach anglosaskich preferuje się redagowanie treści w pierwszej osobie.
-\item W tekście pracy można odwołać się do myśli autora, ale nie w pierwszej osobie, tylko poprzez wyrażenia typu: ,,autor wykazał, że ...''. 
-\item Odwołując się do rysunków i tabel należy używać zwrotów typu: ,,na rysunku pokazano ...'', ,,w tabeli zamieszczono ...'' (tabela i rysunek to twory nieżywotne, więc ,,rysunek pokazuje'' jest niepoprawnym zwrotem).
-\item Praca powinna być napisana językiem formalnym, bez wyrażeń żargonowych (,,sejwowanie'' i ,,downloadowanie''), nieformalnych czy zbyt ozdobnych (,,najznamienitszym przykładem tego niebywałego postępu ...'')
-\item Pisząc pracę należy dbać o poprawność stylistyczną wypowiedzi
-\begin{itemize}
-\item trzeba pamiętać, do czego stosuje się ,,liczba'', a do czego ,,ilość'',
-\item nie ,,szereg funkcji'' tylko ,,wiele funkcji'',
-\item redagowane zdania nie powinny być zbyt długie (lepiej podzielić zdanie wielokrotnie złożone na pojedyncze zdania),
-\item itp.
-\end{itemize}
-\item Zawartość rozdziałów powinna być dobrze wyważona. Nie wolno więc generować sekcji i podsekcji, które mają zbyt mało tekstu lub znacząco różnią się objętością. Zbyt krótkie podrozdziały można zaobserwować w przykładowym rozdziale~\ref{chap:podsumowanie}.
-\item Niedopuszczalne jest pozostawienie w pracy błędów ortograficznych czy tzw.\ literówek -- można je przecież znaleźć i skorygować
-automatycznie. \addtocounter{enumi}{9997} 
-\item  Niedopuszczalne jest pozostawienie w pracy błędów ortograficznych czy tzw.\ literówek -- można je przecież znaleźć i skorygować
-automatycznie. \label{last-item}
-\end{enumerate}
 
 
