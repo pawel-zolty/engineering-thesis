@@ -4,7 +4,7 @@
 \section{Struktura projektu}
 \label{sec:struktura-projektu}
 
-W tej sekcji przedstawiona zostanie logiczna i fizyczna struktura projektu. W szczególności zostanie uwzględniony podział na projekt aplikacji klienckiej oraz API, gdyż stanowią one tak na prawdę niezależne rozwiązania (ang.~\emph{solution} w środowisku programistycznym Visual Studio 2019.
+W tej sekcji przedstawiona zostanie logiczna i fizyczna struktura projektu. W szczególności zostanie uwzględniony podział na projekt aplikacji klienckiej oraz API, gdyż stanowią one tak na prawdę niezależne rozwiązania (ang.~\emph{solution}) w środowisku programistycznym Visual Studio 2019.
 
 \subsection{Struktura fizyczna projektu}
 \label{sec:struktura-fizyczna-projektu}
@@ -68,7 +68,7 @@ Aplikacja kliencka składa się z dwóch projektów: \texttt{BudgetApplication.C
 
 Strukturę rozwiązania aplikacji klienckiej przedstawiono na rysunku~\ref{fig:fiz-client-2}.
 
-Pierwszy z nich zawiera jeden główny folder z widokami i ich modelami widoku (ang.~\emph{view model}) pogrupowanymi w foldery według funkcjonalności. W głównym folderze Znajdują się też widoki niezwiązane z modelami widoku, a także folder \texttt{Shared} z widokami częściowymi używanymi przez pozostałe widoki. Pliki: \texttt{Program.cs} i \texttt{Startup.cs} pełnią podobną funkcję co w projekcie API.
+Pierwszy z nich zawiera jeden główny folder z widokami i ich modelami widoku (ang.~\emph{view model}) pogrupowanymi w foldery według funkcjonalności. W głównym folderze znajdują się też widoki niezwiązane z modelami widoku, a także folder \texttt{Shared} z widokami częściowymi używanymi przez pozostałe widoki. Pliki: \texttt{Program.cs} i \texttt{Startup.cs} pełnią podobną funkcję co w projekcie API.
 
 Drugi z projektów, także zawiera tylko jeden główny katalog. Zawiera on odpowiednio skonfigurowane klasy klientów HTTP, komunikujące się z API, a także klasy modeli, które są zwracane przez zakończone sukcesem żądania HTTP.
 
@@ -93,7 +93,7 @@ Aplikacja API składa się z czterech projektów: \texttt{BudgetApplication.API}
 
 Projekt \texttt{API} zawiera API kontrolery, a także handlery, odpowiedzi i żądania MediatR. Razem składają się one na warstwę aplikacji. Warstwa aplikacji operuje na obiektach domenowych, dlatego też projekt \texttt{API} zależny jest od projektu \texttt{Domain}.
 
-Projekt \texttt{Domain} jest projektem ślepym i nie ma żadnych zależności. Znajduje się w nim kod niezależny od innych zewnętrznych frameworków. Definiuje on zachowania biznesowe obiektów domenowych, które są używane podczas wykonywania komend CQRS, wcześniej opisanych w punkcie~\ref{subsec:cqrs}. Model domenowy jest szczególnie istotny z punktu widzenia zachowania prawidłowego stanu systemu w trakcie i po wykonywanych operacjach.
+Projekt \texttt{Domain} jest projektem ślepym i nie ma żadnych zależności. Znajduje się w nim kod niezależny od innych zewnętrznych frameworków. Definiuje on zachowania biznesowe obiektów domenowych, które są używane podczas wykonywania komend CQRS, wcześniej opisanych w punkcie~\ref{subsec:cqrs}. Model domenowy jest szczególnie istotny z punktu widzenia zachowania prawidłowego stanu systemu w trakcie i po wykonaniu operacji.
 
 Warstwę persystencji dla encji domenowych stanowi projekt \texttt{Infrastructure}. Znajdują się w nim m.in. repozytoria, które implementują kontrakt zdefiniowany w projekcie \texttt{Domain}. Repozytoria korzystają mapera relacyjno-obiektowego Entity Framework Core. Ten projekt tworzony jest dla zachowania niezależności domeny od zewnętrznych frameworków.
 
@@ -103,7 +103,7 @@ Wyżej opisane zależności przedstawiono na rysunku~\ref{fig:api-arch}.
 
 \begin{figure}[t]
 	\centering
-	\fbox{\includegraphics[width=.7\linewidth]{rys04/api-arch.png}}
+	\fbox{\includegraphics[width=.6\linewidth]{rys04/api-arch.png}}
 	\caption{Zależności między projektami w API}
 	\label{fig:api-arch}
 \end{figure}
@@ -120,8 +120,8 @@ Zależności projektów aplikacji klienckiej przedstawiono na rysunku~\ref{fig:c
 
 \begin{figure}[t]
 	\centering
-	\fbox{\includegraphics[width=.7\linewidth]{rys04/api-arch.png}}
-	\caption{Zależności między projektami w API}
+	\fbox{\includegraphics[width=.6\linewidth]{rys04/client-arch.png}}
+	\caption{Zależności między projektami w aplikacji klienckiej}
 	\label{fig:client-arch}
 \end{figure}
 
