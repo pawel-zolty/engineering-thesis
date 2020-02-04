@@ -68,11 +68,11 @@ Aplikacja kliencka składa się z dwóch projektów: \texttt{BudgetApplication.C
 
 Strukturę rozwiązania aplikacji klienckiej przedstawiono na rysunku~\ref{fig:fiz-client-2}.
 
-Pierwszy z nich zawiera jeden główny folder z widokami i ich modelami widoku (ang.~\emph{view model}) pogrupowanymi w foldery według funkcjonalności. W głównym folderze znajdują się też widoki niezwiązane z modelami widoku, a także folder \texttt{Shared} z widokami częściowymi używanymi przez pozostałe widoki. Pliki: \texttt{Program.cs} i \texttt{Startup.cs} pełnią podobną funkcję co w projekcie API.
+Pierwszy z projektów zawiera jeden główny folder z widokami i ich modelami strony (ang.~\emph{page model}) pogrupowanymi w foldery według funkcjonalności. W głównym folderze znajdują się też widoki niezwiązane z modelami strony, a także folder \texttt{Shared} z widokami częściowymi używanymi przez pozostałe widoki. Pliki: \texttt{Program.cs} i \texttt{Startup.cs} pełnią podobną funkcję co w projekcie API.
 
 Drugi z projektów, także zawiera tylko jeden główny katalog. Zawiera on odpowiednio skonfigurowane klasy klientów HTTP, komunikujące się z API, a także klasy modeli, które są zwracane przez zakończone sukcesem żądania HTTP.
 
-Klasa \texttt{ODataResult} jest klasą odpowiedzi żądań HTTP GET. Zawiera ona właściwości takie jak: \emph{Count}, \emph{Metadata}, \emph{Context} i \emph{Value}, ściśle związana z implementacją protokołu OData. Pole Value jest polem generycznym w zależności od zwracanego przez żądanie HTTP modelu. 
+Klasa \texttt{ODataResult} jest klasą odpowiedzi żądań HTTP GET. Zawiera ona właściwości takie jak: \emph{Count}, \emph{Metadata}, \emph{Context} i \emph{Value}, ściśle związana z implementacją protokołu ODat -- punkt~\ref{subsec:odata}. Pole Value jest polem generycznym w zależności od zwracanego przez żądanie HTTP modelu. 
 
 \begin{figure}[t]
 	\centering
