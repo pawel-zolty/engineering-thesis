@@ -212,5 +212,26 @@ Wymagania funkcjonalne dotyczące obsługi w aplikacji grupy rodziny, dalej zwan
 
 \end{enumerate}
 
-\section{Metodyka}
-\label{sec:metodyka}
+\section{Zarys architektury systemu}
+\label{sec:zarys-arch}
+
+System zostanie stworzony z dwóch niezależnych aplikacji. Pierwszą z nich będzie aplikacja kliencka, dostarczająca interfejs graficzny dla użytkownika w przeglądarce oraz API zajmujące się przetwarzaniem logiki biznesowej i dostarczaniem potrzebnych danych. 
+
+Użytkownik aplikacji budżetu domowego będzie pracował w przeglądarce internetowej swojego komputera lub urządzenia mobilnego. W trakcie jego pracy przeglądarka wysyłać będzie żądania do aplikacji klienckiej w celu pobrania potrzebnych danych i widoków, a także wysłania poleceń z pomocą żądań HTTP POST.
+
+Aplikacja kliencka przyjmować będzie żądania HTTP pochodzące z przeglądarki użytkownika. Następnie będzie komunikować się z API, w celu pobrania potrzebnych danych lub wykonania operacji, której żąda użytkownik. Po odpowiedzi ze strony API, aplikacja kliencka będzie zwracać gotowy widok HTML napełniony niezbędnymi dla użytkownika danymi.
+
+Aplikacja kliencka będzie także aplikacją działającą po stronie serwera, ponieważ tylko takie aplikacje są klientami zaufanymi z punktu widzenia protokołu OAuth 2.0. Wybór takiej opcji zapewni potencjalnie użycie najbezpieczniejszego typu autoryzacji i uwierzytelniania OpenId Connect, czyli \texttt{Hybrid Flow}. 
+
+Po przyjęciu żądań HTTP API komunikować będzie się przez warstwę modelu z bazą danych. Wykonywane będą operacje aktualizujące bazę danych, jak i tylko te pobierające z niej informacje. Następnie API będzie zwracać odpowiednią odpowiedź klientowi. Dane zwracane będą w ciele odpowiedzi HTTP w formacie JSON.
+
+Baza danych będzie dostępna tylko przez API. Nie będzie widoczna z zewnątrz co potencjalnie ma zwiększyć bezpieczeństwo przechowywanych w niej danych.
+
+Ogólna architektura aplikacji została przedstawiona na~\ref{fig:ogolna-arch}.
+
+\begin{figure}[h]
+	\centering
+	\fbox{\includegraphics[width=.65\linewidth]{rys03/ogolna-arch.png}}
+	\caption{Ogólna architektura systemu}
+	\label{fig:ogolna-arch}
+\end{figure}
