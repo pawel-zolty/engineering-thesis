@@ -135,6 +135,117 @@ W tym punkcie opisane zostaną szczegóły implementacji systemu budżetu domowe
 \subsection{Szczegóły implementacji API}
 \label{subsec:szczegoly-implementacji-api}
 
+Żądania HTTP wysłane do API zanim trafi do odpowiedniego sobie kontrolera przechodzi przez moduł routingu (ang.~\emph{Routing Middleware}) frameworka ASP.NET MVC. To on decyduje, do którego kontrolera i do jakiej jego akcji skierować żądanie. Jest to szczególnie istotne w bardziej skomplikowanych scenariuszach. Jednym z takich scenariuszy jest jest używanie implementacji protokołu OData równocześnie z routingiem atrybutowym (ang.~\emph{attribute routing}). Aby dodać routing OData do API wystarczy w metodzie \texttt{Configure} klasy \texttt{Startup} dodać kod widoczny na listingu~\ref{list:odata-route-config}. Konfiguruje on prefix ścieżki do zasobów OData na \texttt{/api/odata}. Umożliwia on także na używanie selekcji, filtrowania, sortowania, zliczania, a także rozszerzania i stronicowania zasobu OData. 
+
+Metoda \texttt{GetEdmModel} buduje model OData na podstawie klas encji przechowywanych w bazie danych. Model mapowany jest do dalszej części ścieżki zasobów adresu URL za pomocą parametru przekazywanego do metody \texttt{EntitySet}. Wartość tego parametru musi być taka sama jak atrybut routingu w kontrolerze OData. Na podstawie modelu EDM generowane są metadane dla zasobów. 
+
+{\belowcaptionskip=-10pt
+\begin{lstlisting}[label=list:odata-route-config,
+    caption=Konfiguracja rouingu OData w aplikacji MVC]
+app.UseMvc(routeBuilder =>
+{
+    AddOdataRoutes(routeBuilder);
+});
+...
+private static void AddOdataRoutes(Microsoft.AspNetCore.Routing.IRouteBuilder routeBuilder)
+{
+    routeBuilder.EnableDependencyInjection();
+    routeBuilder.Select().Filter().OrderBy().Count().Expand().MaxTop(100).SkipToken();
+    routeBuilder.MapODataServiceRoute("odata", "api/odata", OdataExtensionsMethods.GetEdmModel());
+}
+...
+internal static IEdmModel GetEdmModel()
+{
+    var builder = new ODataConventionModelBuilder();
+
+    builder.EntitySet<Category>("categories");
+    builder.EntitySet<MoneyAccount>("money-accounts");
+    builder.EntitySet<MoneyOperation>("money-operations");
+    builder.EntitySet<Expense>("expenses");
+    builder.EntitySet<Income>("incomes");
+
+    return builder.GetEdmModel();
+}
+\end{lstlisting}
+}
+
+Kontroler OData i standardowy kontroler API różnią się od siebie pod kilkoma względami. Standardowy kontroler API dziedziczy po klasie \texttt{ControllerBase} i używa atrybutów routingu \texttt{Route} z przestrzeni nazw \texttt{Microsoft.AspNetCore.Mvc}. Natomiast kontroler OData dziedziczy po klasie \texttt{ODataController}. Dzięki zastosowaniu klasy \texttt{ODataController} kontroler OData m.in. zwraca dane w formacie zgodnym z protokołem OData, czyli opakowuje dane w pole \texttt{values}, zapewnia link do metadanych zasobu, a także odpowiednie nagłówki charakterystyczne dla protokołu. Kontroler OData używa także innych atrybutów routingu: \texttt{ODataRoute} dla pojedynczej akcji oraz \texttt{ODataRoutePrefix} dla określenia prefixu routingu dla wszystkich akcji kontrolera. Znajdują się one w przestrzeni nazw \texttt{Microsoft.AspNet.OData.Routing}. Zastosowanie nieodpowiednich atrybutów routingu skutkuje błędem dopasowania wielu akcji do jednego adresu (ang.~\emph{AmbiguousActionException: Multiple actions matched}) lub zwróceniem statusu HTTP 404. Na listingu~\ref{list:api-ctrl-1} oraz~\ref{list:odata-ctrl-1} przedstawiono przykłady implementacji obu kontrolerów. Część kodu została pominięta dla klarowności.
+
+Ponadto w kontrolerze OData używane są atrybuty \texttt{EnableQuery}. Zezwalają one na korzystanie w adresie URL z opcji filtrowania, sortowania itd., skonfigurowanych w metodzie \texttt{AddOdataRoutes} na listingu~\ref{list:odata-route-config}. Brak tych atrybutów dla konkretnej akcji skutkować będzie brakiem obsługi tych funkcjonalności. Ścieżka wyszukiwania (ang.~\emph{query string} będzie w tym wypadku ignorowana. Istnieje też atrybut \texttt{Queryable}, który można wykorzystać do ograniczenia funkcjonalności, które programista chce udostępnić w akcji. Robi się to za pomocą przekazania do atrybutu podzbioru skonfigurowanych opcji wyszukiwania OData. Tutaj przykład atrybutu ograniczającego opcje wyszukiwania do stronicowania: \texttt{[Queryable(AllowedQueryOptions=
+    AllowedQueryOptions.Skip | AllowedQueryOptions.Top)]}
+
+{\belowcaptionskip=-10pt
+\begin{lstlisting}[label=list:api-ctrl-1,
+    caption=Przykład implementacji standardowego kontrolera API]
+[Route("api/money-accounts")]
+[ApiController]
+public class MoneyAccountsController : ControllerBase
+{
+    private readonly IMediator _mediator;
+...
+    //Patch api/money-accounts/1
+    [HttpPatch]
+    [Route("{moneyAccountId}")]
+    public async Task<IActionResult> UpdateAccount(Guid moneyAccountId,
+        UpdateMoneyAccountCommand updateMoneyAccountCommand)
+    {
+        updateMoneyAccountCommand.MoneyAccountId = moneyAccountId;
+        bool result = await _mediator.Send(updateMoneyAccountCommand);
+    
+        if (!result)
+        {
+            return BadRequest();
+        }
+    
+        return Ok();
+    }
+}
+\end{lstlisting}
+}
+
+{\belowcaptionskip=-10pt
+\begin{lstlisting}[label=list:odata-ctrl-1,
+    caption=Przykład implementacji kontrolera OData]
+[ODataRoutePrefix("money-accounts")]
+public class ODataMoneyAccountController : ODataController
+{
+    private readonly QueryEFContext _moneyAccountRepository;
+...
+    [EnableQuery]
+    [ODataRoute("{id}")]
+    public ActionResult<MoneyAccount> GetAsync(Guid id)
+    {
+        return Ok(_moneyAccountRepository.MoneyAccounts
+            .Where(acc => acc.Id == id));
+    }
+}
+\end{lstlisting}
+}
+
+W systemie aplikacji domowego budżetu kontrolery OData są używane tylko do żądań HTTP GET, a kontrolery API do wszystkich innych żądań, które zmieniają stan systemu.
+Kontroler OData bezpośrednio korzysta z kontekstu do bazy danych, który zwraca kolekcję implementują generyczny interfejs \texttt{IQueryable}. Dzięki temu OData jest w stanie przenieść logikę zapytania do bazy danych.
+
+Standardowy kontroler API korzysta z mediatora, aby wysłać komendę do kolejnej warstwy aplikacji, w której zachodzą procesy biznesowe. Przykład serwisu aplikacji, który przetwarza komendę pokazano na listingu~\ref{list:handler-impl}. Operuje on na encjach i serwisach domenowych. W tym wypadku wykorzystano repozytorium do pobrania konta bankowego z bazy danych. Następnie do konta bankowego dodawany jest nowy wydatek, a całość zapisywana jest z zastosowaniem wzorca \texttt{Unit of Work}, który gwarantuje, że zmiany które zaszły w systemie będą zapisane w jednej tranzakcji bazodanowej. 
+
+{\belowcaptionskip=-10pt
+\begin{lstlisting}[label=list:handler-impl,
+    caption=Przykład implementacji handlera aplikacji]
+public async Task<CreateExpenseResponse> Handle(CreateExpenseCommand command, CancellationToken cancellationToken)
+{
+    var accountId = command.AccountId;
+    var expenseDTO = _mapper.Map<AddExpenseDTO>(command);
+    MoneyAccount moneyAccount = await _moneyAccountRepository.GetAsync(accountId);
+
+    IReadOnlyExpense operation = moneyAccount.AddOperation(expenseDTO);
+
+    _moneyAccountRepository.Update(moneyAccount);
+    bool success = await _moneyAccountRepository.UnitOfWork.SaveEntitiesAsync();
+
+    return success ? _mapper.Map<CreateExpenseResponse>(operation) : null;
+}
+\end{lstlisting}
+}
+
 \subsection{Szczegóły implementacji aplikacji klienckiej}
 \label{subsec:szczegoly-implementacji-client}
 
