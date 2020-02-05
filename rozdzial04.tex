@@ -249,3 +249,120 @@ public async Task<CreateExpenseResponse> Handle(CreateExpenseCommand command, Ca
 \subsection{Szczegóły implementacji aplikacji klienckiej}
 \label{subsec:szczegoly-implementacji-client}
 
+Żądania użytkownika wysyłane do aplikacji klienckiej mapowane są do konkretnych stron Razor Pages. Strona Razor Page składa się z widoku napisanego przy pomocą języka html i opcjonalnie modelu strony (ang.~~\emph{page model}). Na stronie często też znajdują się dodatkowe komendy składni Razor, których zadaniem jest budowanie widoku w zależności od modelu przekazanego do strony, a także generowanie widoków częściowych (ang.~\emph{partial views}). Widoki częściowe ułatwiają wydzielanie wspólnych części widoku strony do oddzielnych plików. Można łatwo wykorzystać je w różnych stronach Razor, a także użyć w pętli dla kolekcji obiektów zawartych w modelu widoku. Widoki częściowe nie mogą mieć swoich modeli strony, a jedynie polegają na danych przekazanych do nich z zewnątrz.
+
+Aby widok był stroną Razor Page musi na nim znaleźć się dyrektywa \texttt{@page}. Służy ona także do routingu w aplikacji. Domyślnie routing oparty jest o strukturę folderów i nazwę strony. Oczywiście w takiej formie jest niewystarczający. Na listingu~\ref{list:razor-page-1} pokazano przykład wykorzystania dyrektywy \texttt{@page} do stworzenia strony konta bankowego o konkretnym identyfikatorze typu \texttt{guid} -- linia 1.
+
+{\belowcaptionskip=-10pt
+\begin{lstlisting}[label=list:razor-page-1,
+    caption=Przykład strony Razor Page: \texttt{Edit.cshtml}]
+@page "{accountId:guid?}"
+@model BudgetApplication.Client.Pages.MoneyAccounts.EditModel
+...
+<h2>Edycja konta: @Model.MoneyAccount.Name</h2>
+@if (Model.Message != null)
+{
+    <div class="alert alert-info">@Model.Message</div>
+}
+<form method="post">
+  <input type="hidden" asp-for="MoneyAccount.Id" />
+
+  <div class="form-group">
+    <label asp-for="MoneyAccount.Name"></label>
+    <input asp-for="MoneyAccount.Name" class="form-control" />
+    <span asp-validation-for="MoneyAccount.Name" class="text-danger"></span>
+  </div>
+  ...
+  <div class="form-group">
+    <label asp-for="MoneyAccount.Type"></label>
+    <select asp-for="MoneyAccount.Type" asp-items="Model.MoneyAccountTypes" class="form-control"></select>
+    <span asp-validation-for="MoneyAccount.Type" class="text-danger"></span>
+  </div>
+  ...
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+\end{lstlisting}
+}
+
+Na listingu~\ref{list:razor-page-1} pokazano także w jaki sposób za pomocą składni Razor napełnić widok danymi z modelu strony. Przykładem takiej dyrektywy jest ta w linijce 4. Dyrektywy używające modelu strony mogą posłużyć także do warunkowego generowania części widoku -- linie 5-7.
+
+Strona z listingu~\ref{list:razor-page-1} zawiera także dyrektywę Razor \texttt{@model}. Określa ona typ modelu strony przypisanego do strony. Jego nazwa składa się z nazwy strony i doklejonego do niej przyrostka \texttt{Model}. Model strony jest ściśle powiązany ze stroną. Jest tzw. klasą ,,code-behind''. Pomiędzy widokiem strony Razor i modelem strony jest wiązanie, które sprawia, że zmiany na widoku odzwierciedlane są w modelu, a zmiany w modelu odzwierciedlane są na stronie. Ten proces ma miejsca poprzez synchroniczne żądania HTTP, w trakcie działań użytkownika takie jak: wejście na stronę, odświeżenie strony, naciśnięcie guzika. Jest to realizacja popularnego wzorca architektonicznego \texttt{MVVM} (ang.~\emph{Model–view–viewmodel}).
+
+Model strony to klasa dziedzicząca po klasie \texttt{PageModel}. Implementuje on dwie metody: \texttt{OnGetAsync} oraz \texttt{OnGetAsync}. W pierwszej z nich implementowana jest logika pobierania danych i napełniania nimi widoku strony. Druga z nich, służy do obsługi żądań HTTP POST użytkownika, a w szczególności do wysyłania formularzy. 
+
+Na listingu~\ref{list:razor-page-model-1} przedstawiono przykład modelu strony. Zawiera on właściwość typu \texttt{MoneyAccount}. Pola jej klasy są bezpośrednio mapowane na wartości za pomocą dyrektyw Razor w pliku strony -- listing~\ref{list:razor-page-1}. W metodzie \texttt{OnGetAsync} przypisywany jest obiekt konta bankowego do tej właściwości. Warto zwrócić uwagę, że zarówno parametr metody \texttt{OnGetAsync}, jak i parametr dyrektywy routingu \texttt{@page} (listing~\ref{list:razor-page-1} linia 1) mają typ mogący być wartością \texttt{null}. Dzięki temu strona obsługuje dwie ścieżki routingu: \texttt{/Edit/{id}} do strony edycji istniejącej konta bankowego o podanym id oraz \texttt{/Edit} do strony tworzenia nowego konta bankowego. Podobna sytuacja ma miejsce w metodzie \texttt{OnPostASync}.
+
+Atrybut \texttt{[BindProperty]} dla właściwości \texttt{MoneyAccount} sprawia, że konto bankowe tworzone jest na podstawie danych z żądania i od razu przypisywane do właściwości, dlatego metoda \texttt{OnPostAsync} nie musi mieć parametru typu \texttt{MoneyAccount}. Domyślnie ten atrybut działa tylko dla żądania POST, jednak łatwo go skonfigurować dla żądań GET. W tym przykładzie jest to niepotrzebne.
+
+Za pomocą metody \texttt{GetEnumSelectList} tzw. ,,Tag Helper'', łatwo zmapowowano wartości enumeratora \texttt{MoneyAccountType} na kolekcję wykorzystywaną w rozwijanym menu w formularzu na listingu~\ref{list:razor-page-1} - linia 18-21.
+
+{\belowcaptionskip=-10pt
+\begin{lstlisting}[label=list:razor-page-model-1,
+    caption=Przykład modelu strony Razor Page: \texttt{EditPage.cs}]
+public class EditModel : PageModel
+{
+...
+  [BindProperty]
+  public MoneyAccount MoneyAccount { get; set; }
+  public IEnumerable<SelectListItem> MoneyAccountTypes { get; set; }
+  public async Task<IActionResult> OnGetAsync(Guid? accountId)
+  {
+    MoneyAccountTypes = _htmlHelper.GetEnumSelectList<MoneyAccountType>();
+    if (accountId.HasValue)
+      MoneyAccount = await _accountHttpClient.GetMoneyAccountByIdAsync(accountId.Value);
+    else
+      MoneyAccount = new MoneyAccount();
+    
+    return MoneyAccount == null 
+      ? RedirectToPage("./NotFound")
+      : Page() as IActionResult;
+  }
+
+  public async Task<IActionResult> OnPostAsync()
+  {
+    if (!ModelState.IsValid)
+    {
+      MoneyAccountTypes = _htmlHelper.GetEnumSelectList<MoneyAccountType>();
+      return Page();
+    }
+    try
+    {
+      MoneyAccount = MoneyAccount.Id == Guid.Empty 
+        ? await _accountHttpClient.AddMoneyAccountsAsync(MoneyAccount)
+        : await _accountHttpClient.EditMoneyAccountsAsync(MoneyAccount);
+
+      return RedirectToPage("./Edit", new { accountId = MoneyAccount.Id });
+    }
+    ...
+  }
+}
+\end{lstlisting}
+}
+
+Na końcu listingu~\ref{list:razor-page-1} znajduje się dyrektywa generująca widok częściowy w sekcji \texttt{Scripts} głównego układu strony -- plik \texttt{\_Layout.cshtml}. Odpowiada ona za generowanie na stronie \texttt{Edit.cshtml} skryptów biblioteki \texttt{jQuery unobtrusive validation}, która współpracuje z frameworkiem ASP.NET Core i zapewnia walidację po stronie klienta na podstawie adnotacji modelu klasy języka C. Przykład walidowanej klasy znajduje się na listingu~\ref{list:razor-validation-1}. Przed tagiem \texttt{body} HTML w pliku \texttt{\_Layout.cshtml} znajduje się dyrektywa \texttt{@RenderSection("Scripts", required: false)}. Umożliwia dołączenie opcjonalnej sekcji skryptów przez widoki, korzystające z tego układu strony.
+
+
+{\belowcaptionskip=-10pt
+\begin{lstlisting}[label=list:razor-validation-1,
+    caption=Przykład klasy z adnotacjami]
+using System.ComponentModel.DataAnnotations;
+public class MoneyAccount
+{
+    public Guid Id { get; set; }
+    [Required]
+    public Guid UserId { get; set; }
+    [Required, MinLength(8)]
+    public string Name { get; set; }
+    [Required]
+    public MoneyAccountType Type { get; set; }
+    [MaxLength(255)]
+    public string Description { get; set; }
+...
+    [MinLength(26)]
+    [MaxLength(26)]
+    public string BankAccountNumber { get; set; }
+}
+\end{lstlisting}
+}
