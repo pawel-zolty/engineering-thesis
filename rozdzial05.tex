@@ -42,17 +42,17 @@ W tej sekcji zostaną zaprezentowane, niektóre przypadki testowe dotyczące apl
     \textbf{Kroki reprodukcji:}  \begin{enumerate}[label=\arabic*.]
         \item Wybranie w menu opcji ,,Twoje Konta''
         \item Naciśnięcie guzika ,,Dodaj nowe konto''
-        \item Nie wprowadzenie żadnych danych na formularz
+        \item Wprowadzenie nieprawidłowej wartości konta bankowego
         \item Kliknięcie guzika ,,zapisz''
     \end{enumerate}
     \textbf{Oczekiwany rezultat:}  Pod obowiązkowymi polami wyświetlą się zrozumiałe komunikaty o błędach walidacji danych. \newline
-
+    \textbf{Dane testowe:} Limit debetu: abc, Typ konta: Personal Account, konto bankowe: aaa. 
 \end{enumerate}
 
 \begin{figure}[b]
 	\centering
 	\fbox{\includegraphics[width=.5\linewidth]{rys05/validation-client-1.PNG}}
-	\caption{Struktura fizyczna repozytorium}
+	\caption{Walidacja danych wejściowych przy tworzeniu konta bankowego}
 	\label{fig:client-test-1}
 \end{figure}
 
