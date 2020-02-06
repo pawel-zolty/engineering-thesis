@@ -14,7 +14,7 @@ W dalszej części tego rozdziału zebrano zebrano dobre praktyki tworzenia API.
 \label{subsec:api-dobre-praktyki}
 Aby stworzyć czytelne i elastyczne REST API należy zastosować się do wielu zasad. Oczywiście nie są one obowiązkowe. Najczęściej jednak stosowanie się do nich ułatwia konsumowanie API i integrowanie go z innymi systemami. Jednym z koniecznych do szybkiej i bezproblemowej pracy z API kroków jest stworzenie i późniejsze aktualizowanie jego dokumentacji. Polecanym i nowoczesnym narzędziem służący do jej tworzenia jest \texttt{Swagger}. 
 
-API projektujemy dla zasobów, które są rzeczownikami. Dlatego adres URL, a dokładniej jego ścieżka zasobów (ang.~\emph{resource path}) powinna być złożona z rzeczowników. Zalecane jest, aby używać liczby mnogiej rzeczownika, gdyż zazwyczaj zasób to zbiór przykładowo kont bankowych. Natomiast, aby wyrazić akcję, którą wykonuje się na zasobie, należy użyć odpowiedniej metody \texttt{HTTP} (ang.~\emph{HTTP Verb}). W tabeli~\ref{tab:http-verb} widać wzorzec zastosowania metod HTTP~\cite{api-good-practises-1}.
+API projektujemy dla zasobów, które są rzeczownikami. Dlatego adres URL, a dokładniej jego ścieżka zasobów (ang.~\emph{resource path}) powinna być złożona z rzeczowników. Zalecane jest, aby używać liczby mnogiej rzeczownika, gdyż zazwyczaj zasób to zbiór przykładowo kont bankowych. Natomiast, aby wyrazić akcję, którą wykonuje się na zasobie należy użyć odpowiedniej metody \texttt{HTTP} (ang.~\emph{HTTP Verb}). W tabeli~\ref{tab:http-verb} widać wzorzec zastosowania metod HTTP~\cite{api-good-practises-1}.
 
 \begin{table} \small
     \centering
@@ -70,7 +70,7 @@ Warto wspomnieć, że statusu \texttt{204} używa się najczęściej, gdy serwer
     \end{tabularx}
 \end{table}
 
-Ważną zasadą dotyczącą API jest to, aby po stworzeniu nowego zasobu zwróciła jego reprezentację, na przykład w postaci \texttt{JSON} (ang.~\emph{JavaScript Object Notation}). Dotyczy to w szczególności metody \texttt{POST}. W przypadku powodzenia serwer powinien zwrócić w takim wypadku odpowiedź z kodem \texttt{201}, a także dodatkowy nagłówek z lokalizacją nowostworzonego zasobu (ang.~\emph{Location Header}). Dodatkowo rekomendowane jest, aby dane stworzonego obiektu lub obiektów zapakować w pole danych (ang.~\emph{data}), co~pokazano na listingu~\ref{list:response200}. 
+Ważną zasadą dotyczącą API jest to, aby po stworzeniu nowego zasobu zwróciła jego reprezentację, na przykład w postaci \texttt{JSON} (ang.~\emph{JavaScript Object Notation}). Dotyczy to w szczególności metody \texttt{POST}. W przypadku powodzenia serwer powinien zwrócić w takim wypadku odpowiedź z kodem \texttt{201}, a także dodatkowy nagłówek z lokalizacją nowostworzonego zasobu (ang.~\emph{Location Header}). Dodatkowo rekomendowane jest, aby dane stworzonego obiektu lub obiektów zapakować w pole danych (ang.~\emph{data}) co~pokazano na listingu~\ref{list:response200}. 
 
 {\belowcaptionskip=-10pt
 \begin{lstlisting}[label=list:response200,
@@ -113,14 +113,14 @@ Istotnym także jest, żeby nie tworzyć nowych adresów \texttt{URL} dla filtro
 \subsection{Protokół OData}
 \label{subsec:odata}
 
-OData jest protokołem zbudowanym w oparciu o architekturę REST. Definiuje on nowe standardy i~praktyki budowania oraz konsumowania API. OData jest nie tylko standardem ISO, ale także \texttt{OASIS} (ang.~\emph{Organization for the Advancement of Structured Information Standards}). OData wykorzystywany jest w produktach firm takich jak: Microsoft, IBM, Telerik czy SAP. Standard definiowany przez OData sprawia, że konsumowanie API różnych dostawców opartych o ten protokół staje się jednolite. Proces integracji nie wymaga przeznaczania dodatkowych nakładów pracy na naukę standardu danej organizacji~\cite{odata-why-use}.
+OData jest protokołem zbudowanym w oparciu o architekturę REST. Definiuje on nowe standardy i~praktyki budowania oraz konsumowania API. OData jest nie tylko standardem ISO, ale także \texttt{OASIS} (ang.~\emph{Organization for the Advancement of Structured Information Standards}). OData wykorzystywany jest w produktach firm takich jak: Microsoft, IBM, Telerik czy SAP. Standard definiowany przez OData sprawia, że konsumowanie API różnych dostawców opartych o ten protokół, staje się jednolite. Proces integracji nie wymaga przeznaczania dodatkowych nakładów pracy na naukę standardu danej organizacji~\cite{odata-why-use}.
 
 OData umożliwia udostępnianie zasobów w postaci JSON, a także \texttt{XML} (ang.~\emph{Extensible Markup Language}). W obu wypadkach konwencje adresów URL, nagłówki itd.~pozostają takie same.
 Biblioteki implementujące ten standard niejako zwalniają programistę z dbania o konwencje adresów URL, nagłówki żądań, metadane i kody odpowiedzi HTTP. 
 
 OData oraz jego implementacje świetnie nadają się do szybkiego tworzenia REST API, a~na~pewno już tej jego części, która odpowiada za przetwarzanie zapytań (ang.~\emph{queries}). Zapytania są to operacje, które nie modyfikują stanu systemu, a jedynie zwracają dane, o które pyta klient. Zazwyczaj wykonywane są za pomocą metody HTTP GET. 
 
-Charakterystyką zapytań jest to, że najczęściej klient nie potrzebuje wszystkich danych, jakie są w systemie. Często na danych chce się wykonać projekcję, filtrowanie czy sortowanie. Nierzadko też potrzeba dokonać złączenia danych jednego zasobu z danymi innego zasobu. Filtrowanie i sortowanie to operacje, które często implementuje się w API z wykorzystaniem ścieżki wyszukiwania adresu URL. Operacja na listingu~\ref{list:odata-projekcja-sortowanie} pobiera imiona i wszystkich ludzi, posortowane malejąco według ich identyfikatora.
+Charakterystyką zapytań jest to, że najczęściej klient nie potrzebuje wszystkich danych jakie są w systemie. Często na danych chce się wykonać projekcję, filtrowanie czy sortowanie. Nierzadko też potrzeba dokonać złączenia danych jednego zasobu z danymi innego zasobu. Filtrowanie i sortowanie to operacje, które często implementuje się w API z wykorzystaniem ścieżki wyszukiwania adresu URL. Operacja na listingu~\ref{list:odata-projekcja-sortowanie} pobiera imiona i wszystkich ludzi, posortowane malejąco według ich identyfikatora.
 
 \begin{lstlisting}[label=list:odata-projekcja-sortowanie,
     caption=OData -- przykład projekcji i sortowania]
@@ -137,7 +137,7 @@ GET http://localhost:44300/api/odata/persons?$select=name, $orderby=id desc
     }
   ]
 }
-\end{lstlisting}
+\end{lstlisting} 
 
 Podobne adresy URL można zaobserwować na innych stronach internetowych, które nie mają nic wspólnego z protokołem OData. Jednak prawdziwą zaletą OData jest umożliwienie agregacji danych kilku zasobów. To wszystko jest umożliwione programiście po napisaniu kilku dodatkowych linii kodu. Przykład agregacji widać na listingu~\ref{list:odata-agregacja}.
 
@@ -179,16 +179,16 @@ Jakość napisanego kodu jest bardzo ważna z punktu widzenia utrzymania i dalsz
 
 Dla czystego kodu kluczowe jest luźne powiązanie (ang.~\emph{loose coupling}) komponentów czy klas. Termin ten oznacza podejście do tworzenia ich tak, aby zależności między nimi były jak najmniejsze. W skrócie wiedza elementów systemu o innych powinna być minimalna, a one same izolowane od siebie nawzajem oraz od zmian. Taka filozofia ma na celu zredukowanie ryzyka niezamierzonej zmiany działania pozostałych części systemu, a w konsekwencji doprowadzenia do krytycznego błędu. 
 
-Idea luźnych powiązań jest ściśle związana z zasadami \texttt{SOLID}~\cite{clean-code}, a w szczególności pierwszej i ostatniej z nich. Pierwsza\label{ref:SRP}, czyli zasada pojedynczej odpowiedzialności (ang.~\emph{single responsibility principle}) określa, że każdy element systemu powinien mieć tylko jeden powód do zmiany. Jeden powód do zmiany przekłada się na jedną odpowiedzialność, a więc krótkie i zwięzłe funkcje czy klasy.
+Idea luźnych powiązań jest ściśle związana z zasadami \texttt{SOLID}~\cite{clean-code}, a w szczególności pierwszej i ostatniej z nich. Pierwsza\label{ref:SRP}, czyli zasada pojedynczej odpowiedzialności (ang.~\emph{single responsibility principle}) określa, że każdy element systemu powinien mieć tylko jeden powód do zmiany. Jeden powód do zmiany przekłada się na jedną odpowiedzialność, a więc krótkie i~zwięzłe funkcje czy klasy.
 
 Ostatnia z~ww.~zasad -- zasada odwrócenia zależności (ang.~\emph{dependency inversion principle}) głosi, że klasy powinny być zależne od kontraktu, abstrakcji lub inaczej interfejsu, ale nigdy od konkretnych implementacji różnych serwisów. Stosowanie się do tych zasad zmniejsza powiązania, a co za tym idzie ułatwia rozszerzanie, modyfikowanie, a także testowanie kodu. Jednym słowem system staje się bardziej elastyczny.
 
 \subsection{Mediator}
 \label{subsec:mediator}
 
-Mediator to wzorzec projektowy, którego głównym zadaniem jest utrzymywać w kodzie luźne powiązania i ograniczyć zależności między różnymi klasami. Mediator hermetyzuje komunikacje pomiędzy obiektami różnych klas udostępniając im interfejs, za pomocą którego się one komunikują. Tak więc celem mediatora jest usprawnienie czytania i utrzymania istniejącego kodu.
+Mediator to wzorzec projektowy, którego ma utrzymywać w kodzie luźne powiązania i ograniczyć zależności między różnymi klasami. Mediator hermetyzuje komunikacje pomiędzy obiektami różnych klas udostępniając im interfejs, za pomocą którego się one komunikują. Tak więc celem mediatora jest usprawnienie czytania i utrzymania istniejącego kodu.
 
-Popularną implementacją wzorca mediator jest biblioteka \texttt{MediatR}. Obudowuje ona proces komunikacji między klasami w abstrakcję żądań (ang.~\emph{request}) i zdarzeń (ang.~\emph{notification/event}). Obiekt używający mediatora może wysłać żądanie (ang.~\emph{send reqest}), które zostanie przechwycone przez inny obiekt, tzw. ~\emph{handler}. Handler wykonuje zleconą operację i w zależności od implementacji może też zwrócić rezultat (ang.\emph{response})~\ref{fig:mediatR-Request}. Za przekazywanie tego żądania i odpowiedzi odpowiada mediator. Na rysunku~\ref{fig:mediatR-Request} widać przykład przepływu żądania wysłanego przez serwis.
+Popularną implementacją wzorca mediator jest biblioteka \texttt{MediatR}. Obudowuje ona proces komunikacji między klasami w abstrakcję żądań (ang.~\emph{request}) i zdarzeń (ang.~\emph{notification/event}). Obiekt używający mediatora może wysłać żądanie (ang.~\emph{send reqest}), które zostanie przechwycone przez inny obiekt tzw.~\emph{handler}. Handler wykonuje zleconą operację i w zależności od implementacji może też zwrócić rezultat (ang.\emph{response})~(rys.~\ref{fig:mediatR-Request}). Za przekazywanie tego żądania i odpowiedzi odpowiada mediator. Na rysunku~\ref{fig:mediatR-Request} widać przykład przepływu żądania wysłanego przez serwis.
 
 \begin{figure}
 	\centering
@@ -211,7 +211,7 @@ Zdarzenia różnią się od żądań tym, że mogą być przechwytywane przez wi
 
 Kolejnym wzorcem projektowym wartym uwagi w perspektywie tworzenia nowej aplikacji jest \texttt{CQRS} (ang.~\emph{Command Query Responsibility Segregation}). Pozwala on na użycie innego modelu do zapytań (ang.~\emph{queries}), czytających dane oraz do komend (ang.~\emph{command}), które modyfikują stan systemu. 
 
-Na rysunku \ref{fig:cqrs-architecture} widać zarys architektury w przypadku bezstanowego API. Kierowane do API żądania HTTP GET przekazywane są do \emph{query} modelu, który czyta odpowiednie informację z bazy danych. Żądania POST przechwytuje \emph{command} model, posiadający skomplikowaną logikę biznesową, a następnie, jeśli reguły biznesowe na to pozwalają, aktualizuje dane w magazynie danych. Wartym uwagi jest fakt, że oba modele mogą korzystać z innych połączeń do bazy danych, a więc model dla zapytań może nawet nie mieć uprawnień do zapisu w bazie danych.
+Na rysunku \ref{fig:cqrs-architecture} widać zarys architektury w przypadku bezstanowego API. Kierowane do API żądania HTTP GET przekazywane są do \emph{query} modelu, który czyta odpowiednie informację z~bazy danych. Żądania POST przechwytuje \emph{command} model, posiadający skomplikowaną logikę biznesową, a następnie jeśli reguły biznesowe na to pozwalają, aktualizuje dane w magazynie danych. Wartym uwagi jest fakt, że oba modele mogą korzystać z innych połączeń do bazy danych, a więc model dla zapytań może nawet nie mieć uprawnień do zapisu w bazie danych.
 
 \begin{figure}[h]
 	\centering
@@ -222,6 +222,6 @@ Na rysunku \ref{fig:cqrs-architecture} widać zarys architektury w przypadku bez
 
 Gdy czytamy dane, często traktujemy aplikację serwerową jako opakowanie bazy danych -- swoisty kontener informacji~\cite{cqrs-fowler}. Najczęstszym, a także najważniejszym wymaganiem wobec zapytań jest ich wydajność. Natomiast podczas modyfikowania stanu systemu szybkość nie jest już krytycznym wymaganiem. Ważniejsze od niej są walidacja danych wejściowych, zgodność z regułami biznesowymi, obsługa wyjątków domenowych, a także atomowość operacji, tak aby pozostawić system w poprawnym stanie.
 
-Segregacja komend i żądań pozwala dostosować kod źródłowy do specyficznych wymagań, jakie im się stawia. Rozdziela ona także odpowiedzialność klas na wyższym poziomie systemu -- warstwie aplikacji. Dzięki temu powstają klasy wyspecjalizowane klasy warstwy aplikacji, które wykonują zapytanie albo komendę. Mówi o tym także zasada pojedynczej odpowiedzialności\ref{chap:know-how}.
+Segregacja komend i żądań pozwala dostosować kod źródłowy do specyficznych wymagań jakie się im stawia. Rozdziela ona także odpowiedzialność klas na wyższym poziomie systemu -- warstwie aplikacji. Dzięki temu powstają klasy wyspecjalizowane klasy warstwy aplikacji, które wykonują zapytanie, \texttt{albo} komendę. Mówi o tym także zasada pojedynczej odpowiedzialności. % TO DO: Gdzie ta zasada? referencja~\ref{chap:know-how} prowadzi do całego rozdziału.
 
-Ponadto CQRS idealnie komponuje się z systemem opartym o architekturę zdarzeń, którą oferuje, np. biblioteka MediatR, opisana w punkcie~\ref{subsec:mediator}. CQRS dobrze działa także w architekturach opartych o \emph{event sourcing} czy \texttt{DDD} (ang.~\emph{Domain Driven Design}), a których autor szerzej nie opisze w tej pracy.
+Ponadto CQRS idealnie komponuje się z systemem opartym o architekturę zdarzeń, którą oferuje np. biblioteka MediatR, opisana w punkcie~\ref{subsec:mediator}. CQRS dobrze działa także w architekturach opartych o \emph{event sourcing} czy \texttt{DDD} (ang.~\emph{Domain Driven Design}), a których autor szerzej nie opisze w tej pracy.

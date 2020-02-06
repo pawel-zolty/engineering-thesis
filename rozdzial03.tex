@@ -14,7 +14,7 @@ Użytkownik systemu będzie pracował w przeglądarce internetowej swojego kompu
 
 Aplikacja kliencka przyjmować będzie żądania HTTP pochodzące z przeglądarki użytkownika. Następnie będzie komunikować się z API, w celu pobrania potrzebnych danych lub wykonania operacji, której żąda użytkownik. Po odpowiedzi ze strony API, aplikacja kliencka będzie zwracać gotowy widok HTML napełniony niezbędnymi dla użytkownika danymi. Ponadto Aplikacja kliencka będzie działać po stronie serwera, ponieważ tylko taka aplikacja może być zaufanym klientem z punktu widzenia protokołu OAuth 2.0. Wybór takiej opcji zapewni potencjalnie użycie najbezpieczniejszego typu autoryzacji i uwierzytelniania OpenId Connect, czyli \texttt{Hybrid Flow}. 
 
-Po przyjęciu żądań HTTPS API komunikować będzie się przez warstwę modelu z bazą danych. Wykonywane będą operacje aktualizujące bazę danych, jak i tylko te pobierające z niej informacje. Następnie API będzie zwracać odpowiednią odpowiedź klientowi. Dane zwracane będą w ciele odpowiedzi HTTP w formacie JSON.
+API, po przyjęciu żądań HTTP, będzie komunikować się przez warstwę modelu z bazą danych. Wykonywane będą operacje aktualizujące bazę danych, jak i tylko te pobierające z niej informacje. Następnie API będzie zwracać odpowiednią odpowiedź klientowi. Dane zwracane będą w ciele odpowiedzi HTTP w formacie JSON.
 
 Baza danych będzie dostępna tylko przez jej własne API. Nie będzie widoczna z zewnątrz, co potencjalnie ma zwiększyć bezpieczeństwo przechowywanych w niej danych.
 
