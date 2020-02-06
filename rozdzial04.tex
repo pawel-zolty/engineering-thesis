@@ -9,7 +9,7 @@ W tej sekcji przedstawiona zostanie logiczna i fizyczna struktura projektu. W sz
 \subsection{Struktura fizyczna projektu}
 \label{sec:struktura-fizyczna-projektu}
 
-Obie aplikacje (API i aplikacja kliencka) znajdują się w tym samym repozytorium Git. Pliki ich rozwiązań znajdują się w folderze głównym repozytorium. W folderze tym znajduję się także plik \texttt{.gitignore}. Projekty należące do rozwiązań znajdują się w folderze \texttt{src}. W katalogu \texttt{Zoltaniecki.IDP} znajduję się potrzebny do testów dostawca tożsamości, będący tylko wydmuszką prawdziwego serwisu. Strukturę głównego folderu można zobaczyć na rysunku~\ref{fig:fiz-1}.
+Obie aplikacje (API i aplikacja kliencka) znajdują się w tym samym repozytorium Git. Pliki ich rozwiązań znajdują się w folderze głównym repozytorium. W folderze tym znajduje się także plik \texttt{.gitignore}. Projekty należące do rozwiązań znajdują się w folderze \texttt{src}. W katalogu \texttt{Zoltaniecki.IDP} znajduję się potrzebny do testów dostawca tożsamości, będący tylko wydmuszką prawdziwego serwisu. Strukturę głównego folderu można zobaczyć na rysunku~\ref{fig:fiz-1}.
 
 \begin{figure}[b]
 	\centering
@@ -70,11 +70,11 @@ Aplikacja kliencka składa się z dwóch projektów: \texttt{BudgetApplication.C
 
 Strukturę rozwiązania aplikacji klienckiej przedstawiono na rysunku~\ref{fig:fiz-client-2}.
 
-Pierwszy z projektów zawiera jeden główny folder z widokami i ich modelami strony (ang.~\emph{page model}) pogrupowanymi w foldery według funkcjonalności. W głównym folderze znajdują się też widoki niezwiązane z modelami strony, a także folder \texttt{Shared} z widokami częściowymi używanymi przez pozostałe widoki. Pliki: \texttt{Program.cs} i \texttt{Startup.cs} pełnią podobną funkcję co w projekcie API.
+Pierwszy z projektów zawiera jeden główny folder z widokami i ich modelami strony (ang.~\emph{page model}) pogrupowanymi w foldery według funkcjonalności. W głównym folderze znajdują się też widoki niezwiązane z modelami strony, a także folder \texttt{Shared} z widokami częściowymi używanymi przez pozostałe widoki. Pliki: \texttt{Program.cs} i \texttt{Startup.cs} pełnią podobną funkcję, co w projekcie API.
 
-Drugi z projektów, także zawiera tylko jeden główny katalog. Zawiera on odpowiednio skonfigurowane klasy klientów HTTP, komunikujące się z API, a także klasy modeli, które są zwracane przez zakończone sukcesem żądania HTTP.
+Drugi z projektów także zawiera tylko jeden główny katalog. Zawiera on odpowiednio skonfigurowane klasy klientów HTTP, komunikujące się z API, a także klasy modeli, które są zwracane przez zakończone sukcesem żądania HTTP.
 
-Klasa \texttt{ODataResult} jest klasą odpowiedzi żądań HTTP GET. Zawiera ona właściwości takie jak: \emph{Count}, \emph{Metadata}, \emph{Context} i \emph{Value}, ściśle związana z implementacją protokołu ODat -- punkt~\ref{subsec:odata}. Pole Value jest polem generycznym w zależności od zwracanego przez żądanie HTTP modelu. 
+Klasa \texttt{ODataResult} jest klasą odpowiedzi żądań HTTP GET. Zawiera ona właściwości, takie jak: \emph{Count}, \emph{Metadata}, \emph{Context} i \emph{Value}, ściśle związana z implementacją protokołu ODat -- punkt~\ref{subsec:odata}. Pole Value jest polem generycznym w zależności od zwracanego przez żądanie HTTP modelu. 
 
 \begin{figure}[t]
 	\centering
@@ -97,7 +97,7 @@ Projekt \texttt{API} zawiera API kontrolery, a także handlery, odpowiedzi i ż�
 
 Projekt \texttt{Domain} jest projektem ślepym i nie ma żadnych zależności. Znajduje się w nim kod niezależny od innych zewnętrznych frameworków. Definiuje on zachowania biznesowe obiektów domenowych, które są używane podczas wykonywania komend CQRS, wcześniej opisanych w punkcie~\ref{subsec:cqrs}. Model domenowy jest szczególnie istotny z punktu widzenia zachowania prawidłowego stanu systemu w trakcie i po wykonaniu operacji.
 
-Warstwę persystencji dla encji domenowych stanowi projekt \texttt{Infrastructure}. Znajdują się w nim m.in. repozytoria, które implementują kontrakt zdefiniowany w projekcie \texttt{Domain}. Repozytoria korzystają mapera relacyjno-obiektowego Entity Framework Core. Ten projekt tworzony jest dla zachowania niezależności domeny od zewnętrznych frameworków.
+Warstwę persystencji dla encji domenowych stanowi projekt \texttt{Infrastructure}. Znajdują się w nim m.in. repozytoria, które implementują kontrakt zdefiniowany w projekcie \texttt{Domain}. Repozytoria korzystają z mapera relacyjno-obiektowego Entity Framework Core. Ten projekt tworzony jest dla zachowania niezależności domeny od zewnętrznych frameworków.
 
 Projekt \texttt{QueryInfrastructure} to projekt dostarczający uproszczoną wersję modelu zapisanego w bazie danych, bez logiki domenowej. Obiekty tworzone w tej części aplikacji potrzebne są dla wykonania zapytań CQRS -- punkt~\ref{subsec:cqrs}. Projekt stworzono, podobnie jak poprzedni, również z wykorzystaniem Entity Framework Core. Oba projekty są niezależne i nic nie stoi na przeszkodzie, aby zamiast EF Core wykorzystać technologię wbudowaną w Net Framework -- ADO.NET czy bibliotekę innego mapera relacyjno-obiektowego -- \texttt{Dapper}.
 
@@ -135,7 +135,7 @@ W tym punkcie opisane zostaną szczegóły implementacji systemu budżetu domowe
 \subsection{Szczegóły implementacji API}
 \label{subsec:szczegoly-implementacji-api}
 
-Żądania HTTP wysłane do API zanim trafi do odpowiedniego sobie kontrolera przechodzi przez moduł routingu (ang.~\emph{Routing Middleware}) frameworka ASP.NET MVC. To on decyduje, do którego kontrolera i do jakiej jego akcji skierować żądanie. Jest to szczególnie istotne w bardziej skomplikowanych scenariuszach. Jednym z takich scenariuszy jest jest używanie implementacji protokołu OData równocześnie z routingiem atrybutowym (ang.~\emph{attribute routing}). Aby dodać routing OData do API wystarczy w metodzie \texttt{Configure} klasy \texttt{Startup} dodać kod widoczny na listingu~\ref{list:odata-route-config}. Konfiguruje on prefix ścieżki do zasobów OData na \texttt{/api/odata}. Umożliwia on także na używanie selekcji, filtrowania, sortowania, zliczania, a także rozszerzania i stronicowania zasobu OData. 
+Żądania HTTP wysłane do API zanim trafi do odpowiedniego sobie kontrolera przechodzi przez moduł routingu (ang.~\emph{Routing Middleware}) frameworka ASP.NET MVC. To on decyduje, do którego kontrolera i do jakiej jego akcji skierować żądanie. Jest to szczególnie istotne w bardziej skomplikowanych scenariuszach. Jednym z takich scenariuszy jest używanie implementacji protokołu OData równocześnie z routingiem atrybutowym (ang.~\emph{attribute routing}). Aby dodać routing OData do API, wystarczy w metodzie \texttt{Configure} klasy \texttt{Startup} dodać kod widoczny na listingu~\ref{list:odata-route-config}. Konfiguruje on prefix ścieżki do zasobów OData na \texttt{/api/odata}. Umożliwia on także na używanie selekcji, filtrowania, sortowania, zliczania, a także rozszerzania i stronicowania zasobu OData. 
 
 Metoda \texttt{GetEdmModel} buduje model OData na podstawie klas encji przechowywanych w bazie danych. Model mapowany jest do dalszej części ścieżki zasobów adresu URL za pomocą parametru przekazywanego do metody \texttt{EntitySet}. Wartość tego parametru musi być taka sama jak atrybut routingu w kontrolerze OData. Na podstawie modelu EDM generowane są metadane dla zasobów. 
 
@@ -225,7 +225,7 @@ public class ODataMoneyAccountController : ODataController
 W systemie aplikacji domowego budżetu kontrolery OData są używane tylko do żądań HTTP GET, a kontrolery API do wszystkich innych żądań, które zmieniają stan systemu.
 Kontroler OData bezpośrednio korzysta z kontekstu do bazy danych, który zwraca kolekcję implementują generyczny interfejs \texttt{IQueryable}. Dzięki temu OData jest w stanie przenieść logikę zapytania do bazy danych.
 
-Standardowy kontroler API korzysta z mediatora, aby wysłać komendę do kolejnej warstwy aplikacji, w której zachodzą procesy biznesowe. Przykład serwisu aplikacji, który przetwarza komendę pokazano na listingu~\ref{list:handler-impl}. Operuje on na encjach i serwisach domenowych. W tym wypadku wykorzystano repozytorium do pobrania konta bankowego z bazy danych. Następnie do konta bankowego dodawany jest nowy wydatek, a całość zapisywana jest z zastosowaniem wzorca \texttt{Unit of Work}, który gwarantuje, że zmiany które zaszły w systemie będą zapisane w jednej tranzakcji bazodanowej. 
+Standardowy kontroler API korzysta z mediatora, aby wysłać komendę do kolejnej warstwy aplikacji, w której zachodzą procesy biznesowe. Przykład serwisu aplikacji, który przetwarza komendę pokazano na listingu~\ref{list:handler-impl}. Operuje on na encjach i serwisach domenowych. W tym wypadku wykorzystano repozytorium do pobrania konta bankowego z bazy danych. Następnie do konta bankowego dodawany jest nowy wydatek, a całość zapisywana jest z zastosowaniem wzorca \texttt{Unit of Work}, który gwarantuje, że zmiany, które zaszły w systemie będą zapisane w jednej transakcji bazodanowej. 
 
 {\belowcaptionskip=-10pt
 \begin{lstlisting}[label=list:handler-impl,
@@ -286,17 +286,17 @@ Aby widok był stroną Razor Page musi na nim znaleźć się dyrektywa \texttt{@
 \end{lstlisting}
 }
 
-Na listingu~\ref{list:razor-page-1} pokazano także w jaki sposób za pomocą składni Razor napełnić widok danymi z modelu strony. Przykładem takiej dyrektywy jest ta w linijce 4. Dyrektywy używające modelu strony mogą posłużyć także do warunkowego generowania części widoku -- linie 5-7.
+Na listingu~\ref{list:razor-page-1} pokazano także, w jaki sposób za pomocą składni Razor napełnić widok danymi z modelu strony. Przykładem takiej dyrektywy jest ta w linijce 4. Dyrektywy używające modelu strony mogą posłużyć także do warunkowego generowania części widoku -- linie 5-7.
 
-Strona z listingu~\ref{list:razor-page-1} zawiera także dyrektywę Razor \texttt{@model}. Określa ona typ modelu strony przypisanego do strony. Jego nazwa składa się z nazwy strony i doklejonego do niej przyrostka \texttt{Model}. Model strony jest ściśle powiązany ze stroną. Jest tzw. klasą ,,code-behind''. Pomiędzy widokiem strony Razor i modelem strony jest wiązanie, które sprawia, że zmiany na widoku odzwierciedlane są w modelu, a zmiany w modelu odzwierciedlane są na stronie. Ten proces ma miejsca poprzez synchroniczne żądania HTTP, w trakcie działań użytkownika takie jak: wejście na stronę, odświeżenie strony, naciśnięcie guzika. Jest to realizacja popularnego wzorca architektonicznego \texttt{MVVM} (ang.~\emph{Model–view–viewmodel}).
+Strona z listingu~\ref{list:razor-page-1} zawiera także dyrektywę Razor \texttt{@model}. Określa ona typ modelu strony przypisanego do strony. Jego nazwa składa się z nazwy strony i doklejonego do niej przyrostka \texttt{Model}. Model strony jest ściśle powiązany ze stroną. Jest tzw. klasą ,,code-behind''. Pomiędzy widokiem strony Razor i modelem strony jest wiązanie, które sprawia, że zmiany na widoku odzwierciedlane są w modelu, a zmiany w modelu odzwierciedlane są na stronie. Ten proces ma miejsca poprzez synchroniczne żądania HTTP, w trakcie działań użytkownika, takie jak: wejście na stronę, odświeżenie strony, naciśnięcie guzika. Jest to realizacja popularnego wzorca architektonicznego \texttt{MVVM} (ang.~\emph{Model–view–viewmodel}).
 
-Model strony to klasa dziedzicząca po klasie \texttt{PageModel}. Implementuje on dwie metody: \texttt{OnGetAsync} oraz \texttt{OnGetAsync}. W pierwszej z nich implementowana jest logika pobierania danych i napełniania nimi widoku strony. Druga z nich, służy do obsługi żądań HTTP POST użytkownika, a w szczególności do wysyłania formularzy. 
+Model strony to klasa dziedzicząca po klasie \texttt{PageModel}. Implementuje on dwie metody: \texttt{OnGetAsync} oraz \texttt{OnGetAsync}. W pierwszej z nich implementowana jest logika pobierania danych i napełniania nimi widoku strony. Druga z nich służy do obsługi żądań HTTP POST użytkownika, a w szczególności do wysyłania formularzy. 
 
 Na listingu~\ref{list:razor-page-model-1} przedstawiono przykład modelu strony. Zawiera on właściwość typu \texttt{MoneyAccount}. Pola jej klasy są bezpośrednio mapowane na wartości za pomocą dyrektyw Razor w pliku strony -- listing~\ref{list:razor-page-1}. W metodzie \texttt{OnGetAsync} przypisywany jest obiekt konta bankowego do tej właściwości. Warto zwrócić uwagę, że zarówno parametr metody \texttt{OnGetAsync}, jak i parametr dyrektywy routingu \texttt{@page} (listing~\ref{list:razor-page-1} linia 1) mają typ mogący być wartością \texttt{null}. Dzięki temu strona obsługuje dwie ścieżki routingu: \texttt{/Edit/{id}} do strony edycji istniejącej konta bankowego o podanym id oraz \texttt{/Edit} do strony tworzenia nowego konta bankowego. Podobna sytuacja ma miejsce w metodzie \texttt{OnPostASync}.
 
 Atrybut \texttt{[BindProperty]} dla właściwości \texttt{MoneyAccount} sprawia, że konto bankowe tworzone jest na podstawie danych z żądania i od razu przypisywane do właściwości, dlatego metoda \texttt{OnPostAsync} nie musi mieć parametru typu \texttt{MoneyAccount}. Domyślnie ten atrybut działa tylko dla żądania POST, jednak łatwo go skonfigurować dla żądań GET. W tym przykładzie jest to niepotrzebne.
 
-Za pomocą metody \texttt{GetEnumSelectList} tzw. ,,Tag Helper'', łatwo zmapowowano wartości enumeratora \texttt{MoneyAccountType} na kolekcję wykorzystywaną w rozwijanym menu w formularzu na listingu~\ref{list:razor-page-1} - linia 18-21.
+Za pomocą metody \texttt{GetEnumSelectList} tzw. ,,Tag Helper'', łatwo zmapowowano wartości enumeratora \texttt{MoneyAccountType} na kolekcję, wykorzystywaną w rozwijanym menu w formularzu na listingu~\ref{list:razor-page-1} - linia 18-21.
 
 {\belowcaptionskip=-10pt
 \begin{lstlisting}[label=list:razor-page-model-1,
