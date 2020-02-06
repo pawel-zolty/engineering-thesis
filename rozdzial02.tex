@@ -190,10 +190,9 @@ Mediator to wzorzec projektowy, którego głównym zadaniem jest utrzymywać w k
 
 Popularną implementacją wzorca mediator jest biblioteka \texttt{MediatR}. Obudowuje ona proces komunikacji między klasami w abstrakcję żądań (ang.~\emph{request}) i zdarzeń (ang.~\emph{notification/event}). Obiekt używający mediatora może wysłać żądanie (ang.~\emph{send reqest}), które zostanie przechwycone przez inny obiekt tzw. ~\emph{handler}. Handler wykonuje zleconą operację i w zależności od implementacji może też zwrócić rezultat (ang.\emph{response})~\ref{fig:mediatR-Request}. Za przekazywanie tego żądania i odpowiedzi odpowiada mediator. Na rysunku~\ref{fig:mediatR-Request} widać przykład przepływu żądania wysłanego przez serwis.
 
-% TO DO: proszę zadbać, by czcionka na rysunkach nie była większa niż czcionka wiodąca tekstu.
 \begin{figure}
 	\centering
-	\includegraphics[width=.6\linewidth]{rys02/mediatR-Command.png}
+	\includegraphics[width=.6\linewidth]{rys02/mediatR-Command-3.pdf}
 	\caption{Przykład wysłania żądania}
 	\label{fig:mediatR-Request}
 \end{figure}
@@ -202,7 +201,7 @@ Zdarzenia różnią się od żądań tym, że mogą być przechwytywane przez wi
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=.8\linewidth]{rys02/mediatR-Notification.png}
+	\includegraphics[width=.8\linewidth]{rys02/mediatR-notification-3.pdf}
 	\caption{Przykład publikacji notyfikacji}
 	\label{fig:mediatR-Event}
 \end{figure}
