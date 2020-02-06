@@ -1,18 +1,35 @@
 \chapter{Założenia projektowe}
 \label{chap:zalozenia-projektowe}
+\section{Zarys architektury systemu}
+\label{sec:zarys-arch}
+Tworzony system (tj.\ aplikacja budżetu domowego) będzie składać się z dwóch niezależnych części: aplikacji klienckiej (dostarczającej interfejs graficzny dla użytkownika w przeglądarce) oraz API (zajmującego się przetwarzaniem logiki biznesowej i dostarczaniem potrzebnych danych). Zarys jego architektury przedstawiono na rysunku~\ref{fig:ogolna-arch}.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.9\linewidth]{rys03/zas.pdf}
+	\caption{Zarys architektury systemu}
+	\label{fig:ogolna-arch}
+\end{figure}
+
+Użytkownik systemu będzie pracował w przeglądarce internetowej swojego komputera lub urządzenia mobilnego. W trakcie jego pracy przeglądarka wysyłać będzie żądania do aplikacji klienckiej w celu pobrania potrzebnych danych i widoków, a także wysłania poleceń z pomocą żądań HTTP POST.
+
+% TO DO: w zarysie architektury jest HTTPS, więc tutaj wstawiono HTTPS. Proszę to zweryfikować.
+Aplikacja kliencka przyjmować będzie żądania HTTPS pochodzące z przeglądarki użytkownika. Następnie będzie komunikować się z API, w celu pobrania potrzebnych danych lub wykonania operacji, której żąda użytkownik. Po odpowiedzi ze strony API, aplikacja kliencka będzie zwracać gotowy widok HTML napełniony niezbędnymi dla użytkownika danymi. Ponadto Aplikacja kliencka będzie działać po stronie serwera, ponieważ tylko taka aplikacja może być zaufanym klientem z punktu widzenia protokołu OAuth 2.0. Wybór takiej opcji zapewni potencjalnie użycie najbezpieczniejszego typu autoryzacji i uwierzytelniania OpenId Connect, czyli \texttt{Hybrid Flow}. 
+
+Po przyjęciu żądań HTTPS API komunikować będzie się przez warstwę modelu z bazą danych. Wykonywane będą operacje aktualizujące bazę danych, jak i tylko te pobierające z niej informacje. Następnie API będzie zwracać odpowiednią odpowiedź klientowi. Dane zwracane będą w ciele odpowiedzi HTTP w formacie JSON.
+
+Baza danych będzie dostępna tylko przez jej własne API. Nie będzie widoczna z zewnątrz, co potencjalnie ma zwiększyć bezpieczeństwo przechowywanych w niej danych.
+
 \section{Wymagania funkcjonalne}
 \label{sec:wymagania-funkcjonalne}
-
-W tej sekcji opisane zostaną wymagania funkcjonalne jakie powinien spełniać stworzony system. Zaprezentowane zostaną przypadki użycia dla czterech podsystemów: system zarządzania kontem pieniężnym, system zarządzania środkami finansowymi, system zarządzania rodziną i system zarządzania kategoriami. Przypadki użycia zostaną opisane w schemacie: nazwa przypadku użycia, aktor wykonujący akcję, warunki początkowe, warunki końcowe, cel oraz przebieg. Ponadto przypadki użycia zostaną zaprezentowane w formie diagramów.
+Poniżej opisano wymagania funkcjonalne, jakie powinien spełniać tworzony system. Wykorzystano przy tym diagramy przypadków użycia. Zaprezentowane przypadki obejmują funkcje czterech wyróżnionych podsystemów: zarządzania kontem pieniężnym, zarządzania środkami finansowymi, zarządzania rodziną i zarządzania kategoriami. Przypadki uszczegółowiono posługując się schematem: nazwa przypadku użycia, aktor wykonujący akcję, warunki początkowe, warunki końcowe, cel oraz przebieg. 
 
 \subsection{Wymagania dotyczące konta pieniężnego}
 \label{subsec:wymagania-konto}
 Poniżej opisano przypadki użycia dotyczące zarządzania kontem pieniężnym użytkownika. Zaprezentowano je także na diagramie (rys.~\ref{fig:use-case-account}).
-
 \begin{enumerate}[labelwidth=1em,label=\arabic*.]
 \item \textbf{Nazwa:} Dodaj konto \newline
     \textbf{Aktor:} Zalogowany użytkownik \newline
-    \textbf{Warunki początkowe:} Użytkownik musi się wcześniej zarejestrować i być zalogowany w momencie tworzenia konta. \newline
+    \textbf{Warunki początkowe:} Użytkownik musi się wcześniej zarejestrować i być zalogowany w~momencie tworzenia konta. \newline
     \textbf{Warunki końcowe:} Stan konta musi być zgodny z polityką dla jego typu. \newline
     \textbf{Cel:} Stworzenie w systemie konta pieniężnego przypisanego do aktora wykonującego tę operację, aby umożliwić zapisywanie informacji o przepływie gotówki. \newline
     \textbf{Przebieg:} Użytkownik wypełnia formularz. Wpisuje wymagane pola: nazwa konta, saldo początkowe i limit debetu oraz opcjonalne pola: numer konta, waluta i opis. Wybiera także typ konta.
@@ -38,7 +55,7 @@ Poniżej opisano przypadki użycia dotyczące zarządzania kontem pieniężnym u
 
 \begin{figure}[t]
 	\centering
-	\fbox{\includegraphics[width=.65\linewidth]{rys03/use-case-account.png}}
+	\includegraphics[width=.65\linewidth]{rys03/use-case-account.png}
 	\caption{Diagram przypadków użycia konta pieniężnego}
 	\label{fig:use-case-account}
 \end{figure}
@@ -84,7 +101,7 @@ Na rysunku~\ref{fig:use-case-money} przedstawiono przypadki użycia związane z 
 
 \begin{figure}[t]
 	\centering
-	\fbox{\includegraphics[width=.7\linewidth]{rys03/use-case-money.png}}
+	\includegraphics[width=.7\linewidth]{rys03/use-case-money.png}
 	\caption{Subdiagram przypadków użycia dla operacji finansowych}
 	\label{fig:use-case-money}
 \end{figure}
@@ -129,7 +146,7 @@ Wymagania funkcjonalne dotyczące obsługi w aplikacji grupy rodziny, dalej zwan
 
 \begin{figure}[t]
 	\centering
-	\fbox{\includegraphics[width=.65\linewidth]{rys03/use-case-family.png}}
+	\includegraphics[width=.65\linewidth]{rys03/use-case-family.png}
 	\caption{Diagram przypadków użycia dla rodziny}
 	\label{fig:use-case-family}
 \end{figure}
@@ -166,7 +183,7 @@ Wymagania funkcjonalne dotyczące obsługi w aplikacji grupy rodziny, dalej zwan
 
 \begin{figure}[t]
 	\centering
-	\fbox{\includegraphics[width=.65\linewidth]{rys03/use-case-category.png}}
+	\includegraphics[width=.65\linewidth]{rys03/use-case-category.png}
 	\caption{Diagram przypadków użycia dla kategorii}
 	\label{fig:use-case-category}
 \end{figure}
@@ -212,26 +229,3 @@ Wymagania funkcjonalne dotyczące obsługi w aplikacji grupy rodziny, dalej zwan
 
 \end{enumerate}
 
-\section{Zarys architektury systemu}
-\label{sec:zarys-arch}
-
-System zostanie stworzony z dwóch niezależnych aplikacji. Pierwszą z nich będzie aplikacja kliencka, dostarczająca interfejs graficzny dla użytkownika w przeglądarce oraz API zajmujące się przetwarzaniem logiki biznesowej i dostarczaniem potrzebnych danych. 
-
-Użytkownik aplikacji budżetu domowego będzie pracował w przeglądarce internetowej swojego komputera lub urządzenia mobilnego. W trakcie jego pracy przeglądarka wysyłać będzie żądania do aplikacji klienckiej w celu pobrania potrzebnych danych i widoków, a także wysłania poleceń z pomocą żądań HTTP POST.
-
-Aplikacja kliencka przyjmować będzie żądania HTTP pochodzące z przeglądarki użytkownika. Następnie będzie komunikować się z API, w celu pobrania potrzebnych danych lub wykonania operacji, której żąda użytkownik. Po odpowiedzi ze strony API, aplikacja kliencka będzie zwracać gotowy widok HTML napełniony niezbędnymi dla użytkownika danymi.
-
-Aplikacja kliencka będzie także aplikacją działającą po stronie serwera, ponieważ tylko takie aplikacje są klientami zaufanymi z punktu widzenia protokołu OAuth 2.0. Wybór takiej opcji zapewni potencjalnie użycie najbezpieczniejszego typu autoryzacji i uwierzytelniania OpenId Connect, czyli \texttt{Hybrid Flow}. 
-
-Po przyjęciu żądań HTTP API komunikować będzie się przez warstwę modelu z bazą danych. Wykonywane będą operacje aktualizujące bazę danych, jak i tylko te pobierające z niej informacje. Następnie API będzie zwracać odpowiednią odpowiedź klientowi. Dane zwracane będą w ciele odpowiedzi HTTP w formacie JSON.
-
-Baza danych będzie dostępna tylko przez API. Nie będzie widoczna z zewnątrz co potencjalnie ma zwiększyć bezpieczeństwo przechowywanych w niej danych.
-
-Ogólna architektura aplikacji została przedstawiona na~\ref{fig:ogolna-arch}.
-
-\begin{figure}[h]
-	\centering
-	\fbox{\includegraphics[width=.65\linewidth]{rys03/ogolna-arch.png}}
-	\caption{Ogólna architektura systemu}
-	\label{fig:ogolna-arch}
-\end{figure}

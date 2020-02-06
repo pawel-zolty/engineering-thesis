@@ -16,15 +16,19 @@ Aby stworzyć czytelne i elastyczne REST API należy zastosować się do wielu z
 
 API projektujemy dla zasobów, które są rzeczownikami. Dlatego adres URL, a dokładniej jego ścieżka zasobów (ang.~\emph{resource path}) powinna być złożona z rzeczowników. Zalecane jest, aby używać liczby mnogiej rzeczownika, gdyż zazwyczaj zasób to zbiór przykładowo kont bankowych. Natomiast, aby wyrazić akcję, którą wykonuje się na zasobie należy użyć odpowiedniej metody \texttt{HTTP} (ang.~\emph{HTTP Verb}). W tabeli~\ref{tab:http-verb} widać wzorzec zastosowania metod HTTP~\cite{api-good-practises-1}.
 
-\begin{table}
+\begin{table} \small
     \centering
     \caption{Użycie metod HTTP}
     \label{tab:http-verb}
-    \begin{tcolorbox}[tab2,tabularx={X||Y|Y|Y|Y}]
-    \texttt{Zasób}      & \texttt{GET}     & \texttt{POST}    & \texttt{PUT}      & \texttt{DELETE}   \\\hline\hline
-    /bank-account   & Zwraca listę kont & Tworzy nowe konto &  Zbiorczo aktualizuje konta &  Usuwa wszystkie konta \\\hline
-    /bank-account/1 & Zwraca określone konto & Metoda niedozwolona (405) &  Aktualizuje określone konto &  Usuwa określone konto \\\hline
-    \end{tcolorbox}
+    \begin{tabularx}{\linewidth}{|l||X|X|X|X|} \hline
+    \multicolumn{1}{|>{\columncolor[gray]{0.9}}c||}{\texttt{Zasób}}   & 
+		\multicolumn{1}{|>{\columncolor[gray]{0.9}}c|}{\texttt{GET}}     & 
+		\multicolumn{1}{|>{\columncolor[gray]{0.9}}c|}{\texttt{POST}}    & 
+		\multicolumn{1}{|>{\columncolor[gray]{0.9}}c|}{\texttt{PUT}}     & 
+		\multicolumn{1}{|>{\columncolor[gray]{0.9}}c|}{\texttt{DELETE}}  \\\hline
+    \texttt{/bank-account}   & Zwraca listę kont & Tworzy nowe konto &  Zbiorczo aktualizuje konta &  Usuwa wszystkie konta \\\hline
+    \texttt{/bank-account/1} & Zwraca określone konto & Metoda niedozwolona (405) &  Aktualizuje określone konto &  Usuwa określone konto \\\hline
+    \end{tabularx}
 \end{table} 
 
 Kolejną ważną praktyką przy tworzeniu API jest zwracanie odpowiedniego kodu odpowiedzi HTTP (ang.~\emph{HTTP Status Code}), aby poinformować klienta o sposobie realizacji jego żądania. Żądanie może zakończone być sukcesem bądź niepowodzeniem. Jednak konieczne jest używanie więcej niż dwóch kodów odpowiedzi, aby dokładnie określić, co ten sukces lub niepowodzenie oznaczają. Dokument \texttt{RFC7231} opisuje, kiedy i jak używać konkretnych kodów odpowiedzi HTTP. Statusy HTTP dzielimy na pięć klas, które rozróżniane są po pierwszej cyfrze kodu odpowiedzi HTTP~\cite{rfc7231}.
@@ -40,12 +44,13 @@ Kolejną ważną praktyką przy tworzeniu API jest zwracanie odpowiedniego kodu 
 W tabeli~\ref{tab:http-status} przedstawiono najczęściej używane w REST API statusy HTTP i ich znaczenie~\cite{api-good-practises-2, rfc7231}.  
 Warto wspomnieć, że statusu \texttt{204} używa się najczęściej, gdy serwer nie zwraca w~ciele odpowiedzi żadnych danych. Sytuacją taką jest między innymi usuwanie zasobu.
 
-\begin{table}
+\begin{table} \small
     \centering
     \caption{Kody odpowiedzi HTTP}
     \label{tab:http-status}
-    \begin{tcolorbox}[tab2,tabularx={p{.30\linewidth}|Y}]
-    \texttt{Kod HTTP}    & \texttt{Opis}   \\\hline\hline
+    \begin{tabularx}{\linewidth}{|p{3.7cm}|X|} \hline
+    \multicolumn{1}{|>{\columncolor[gray]{0.9}}c|}{\texttt{Kod HTTP}}    & 
+		\multicolumn{1}{|>{\columncolor[gray]{0.9}}c|}{\texttt{Opis}}   \\\hline
     \texttt{200: OK}
         & Żądanie zakończone sukcesem. \\\hline
     \texttt{201: Created}
@@ -62,7 +67,7 @@ Warto wspomnieć, że statusu \texttt{204} używa się najczęściej, gdy serwer
         & Serwer źródłowy nie znalazł bieżącej reprezentacji zasobu docelowego lub nie chce ujawnić, że istnieje. \\\hline
     \texttt{500: Internal Server Error}
         & Serwer napotkał nieoczekiwany warunek, który uniemożliwił mu spełnienie żądania. \\\hline
-    \end{tcolorbox}
+    \end{tabularx}
 \end{table}
 
 Ważną zasadą dotyczącą API jest to, aby po stworzeniu nowego zasobu zwróciła jego reprezentację, na przykład w postaci \texttt{JSON} (ang.~\emph{JavaScript Object Notation}). Dotyczy to w szczególności metody \texttt{POST}. W przypadku powodzenia serwer powinien zwrócić w takim wypadku odpowiedź z kodem \texttt{201}, a także dodatkowy nagłówek z lokalizacją nowostworzonego zasobu (ang.~\emph{Location Header}). Dodatkowo rekomendowane jest, aby dane stworzonego obiektu lub obiektów zapakować w pole danych (ang.~\emph{data}) co~pokazano na listingu~\ref{list:response200}. 
@@ -211,7 +216,7 @@ Na rysunku \ref{fig:cqrs-architecture} widać zarys architektury w przypadku bez
 
 \begin{figure}[h]
 	\centering
-	\fbox{\includegraphics[width=.9\linewidth]{rys02/cqrs.png}}
+	\includegraphics[width=.9\linewidth]{rys02/cqrs01.pdf}
 	\caption{Architektura CQRS}
 	\label{fig:cqrs-architecture}
 \end{figure}

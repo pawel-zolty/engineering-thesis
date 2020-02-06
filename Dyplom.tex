@@ -280,16 +280,16 @@ Listing \thelstlisting: #1\hfill%\hfill%
 \fi
 \sloppy
 
-\usepackage{tcolorbox} % przerzucono za ifpdf, bo był konflikt opcji
-%\usepackage{array}
+%%\usepackage{tcolorbox} % przerzucono za ifpdf, bo był konflikt opcji
+%%%\usepackage{array}
 \usepackage{colortbl}
-\tcbuselibrary{skins}
+%%\tcbuselibrary{skins}
 
-\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+%%\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 
-\tcbset{tab2/.style={enhanced,fonttitle=\bfseries,fontupper=\normalsize\sffamily,
-colback=yellow!10!white,colframe=red!50!black,colbacktitle=Salmon!40!white,
-coltitle=black,center title}}
+%%%\tcbset{tab2/.style={enhanced,fonttitle=\bfseries,fontupper=\normalsize\sffamily,
+%%%colback=yellow!10!white,colframe=red!50!black,colbacktitle=Salmon!40!white,
+%%%coltitle=black,center title}}
 %\graphicspath{{rys01/}{rys02/}}
 
 
@@ -524,7 +524,7 @@ SPECJALNOŚĆ: & \@specjalnosc\\
 \wydzial{WYDZIAŁ ELEKTRONIKI}
 \kierunek{INFORMATYKA}
 \specjalnosc{INŻYNIERIA SYSTEMÓW INFORMATYCZNYCH}
-\promotor{dr inż. Tomasz Kubik, W4/K9}
+\promotor{dr inż.\ Tomasz Kubik, W4/K9}
 \date{WROCŁAW, 2020}
 
 % Ustawienie odstępu od góry w nienumerowanych rozdziałach oraz wykazach:
@@ -611,9 +611,9 @@ SPECJALNOŚĆ: & \@specjalnosc\\
 \include{dodatekA}
 \include{dodatekB}
 
-\chapterstyle{noNumbered}
-\phantomsection % sets an anchor
-\addcontentsline{toc}{chapter}{Indeks rzeczowy}
-\printindex
+%%%%\chapterstyle{noNumbered}
+%%%%\phantomsection % sets an anchor
+%%%%\addcontentsline{toc}{chapter}{Indeks rzeczowy}
+%%%%\printindex
 
 \end{document}
