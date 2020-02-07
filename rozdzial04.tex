@@ -325,7 +325,7 @@ public class EditModel : PageModel
 
 Na końcu listingu~\ref{list:razor-page-1} znajduje się dyrektywa generująca widok częściowy w sekcji \texttt{Scripts} głównego układu strony -- plik \texttt{\_Layout.cshtml}. Odpowiada ona za generowanie na stronie \texttt{Edit.cshtml} skryptów biblioteki \texttt{jQuery unobtrusive validation}, która współpracuje z frameworkiem ASP.NET Core i zapewnia walidację po stronie klienta na podstawie adnotacji modelu klasy języka C\#. 
 
-Przykład walidowanej klasy znajduje się na listingu~\ref{list:razor-validation-1}. Przed tagiem \texttt{body} HTML w~pliku \texttt{\_Layout.cshtml} znajduje się dyrektywa \texttt{@RenderSection("Scripts", required: false)}. Umożliwia dołączenie opcjonalnej sekcji skryptów przez widoki, korzystające z tego układu strony.
+Przykład walidowanej klasy znajduje się na listingu~\ref{list:razor-validation-1}. Przed tagiem \texttt{body} HTML w~pliku \texttt{\_Layout.cshtml} znajduje się dyrektywa \texttt{@RenderSection("{}Scripts", required: false)}. Umożliwia dołączenie opcjonalnej sekcji skryptów przez widoki, korzystające z tego układu strony.
 
 
 {\belowcaptionskip=-10pt
