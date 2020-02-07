@@ -350,3 +350,57 @@ public class MoneyAccount
 }
 \end{lstlisting}
 }
+
+\subsection{Strony aplikacji klienckiej}
+
+W tym punkcie przedstawione są niektóre widoki z aplikacji klienckiej. Na pierwszym z nich -- rysunek~\ref{fig:ss-6}, przedstawiono widok listy kont pieniężnych użytkownika. Oferuję on możliwość dodanie nowego konta, jak i również wykonania akcji edycji, usunięcia i przejrzenia informacji o wybranym koncie.
+
+\begin{figure}[ht]
+	\centering
+\includegraphics[scale=.35]{rys04/lista-kont.PNG}
+	\caption{Widok listy kont użytkownika}
+	\label{fig:ss-6}
+\end{figure}
+
+Kolejny widok~\ref{fig:ss-1} przedstawia ekran, który pojawia się po naciśnięciu guzika ,,Dodaj nowe konto''. Pojawiają się na nim formularz do wypełnienia przez użytkownika. Aby dodać nowe konto użytkownik musi zatwierdzić dane naciskając guzik ,,Zapisz''.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=.35]{rys04/dodaj-konto.PNG}
+	\caption{Dodawanie nowego konta}
+	\label{fig:ss-1}
+\end{figure}
+
+Po dodaniu konta użytkownik znajduje się dalej na tym samym widoku, jednak nie jest to już strona dodania nowego konta, a edycji tego nowostworzonego. Można to zauważyć po zmianie komunikatu z ,,Dodawanie nowego konta'' na ,,Edycja konta: \{nazwa\}''. Pojawia się też jednorazowy komunikat ,,Konto \{nazwa\} zapisano'' -- rysunek~\ref{fig:ss-2}. Znika on po odświeżeniu strony.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=.35]{rys04/konto-saved.PNG}
+	\caption{Edycja stworzonego konta}
+	\label{fig:ss-2}
+\end{figure}
+
+Z widoku listy kont można także przejść do widoku informacji o koncie -- rysunek~\ref{fig:ss-3}. Na tym widoku zaprezentowane są informacje o koncie przeznaczone dla użytkownika bez prawa edycji. Guzik powrotu do ekranu listy kont ułatwia sprawną nawigację w aplikacji.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=.35]{rys04/konto-info.PNG}
+	\caption{Widok informacji o koncie}
+	\label{fig:ss-3}
+\end{figure}
+
+Na rysunku~\ref{fig:ss-4} zaprezentowano ekran, pojawiający się po naciśnięciu guzika usuń -- ikonka kosza na śmieci, na stronie z listą kont. Po zatwierdzeniu usunięcia konta użytkownik jest przekierowywany do listy kont. Pojawia się także komunikat o usunięciu strony -- rysunek~\ref{fig:ss-5}.
+
+\begin{figure}[ht]
+	\centering
+\includegraphics[scale=.35]{rys04/usun-konto.PNG}
+	\caption{Usuwanie konta}
+	\label{fig:ss-4}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+\includegraphics[scale=.35]{rys04/usunieto.PNG}
+	\caption{Komunikat o usunięciu konta}
+	\label{fig:ss-5}
+\end{figure}
