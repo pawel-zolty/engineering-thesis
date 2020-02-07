@@ -93,7 +93,7 @@ Projekt \texttt{Domain} jest projektem ślepym i nie ma żadnych zależności. Z
 
 Warstwę persystencji dla encji domenowych stanowi projekt \texttt{Infrastructure}. Znajdują się w nim m.in. repozytoria, które implementują kontrakt zdefiniowany w projekcie \texttt{Domain}. Repozytoria korzystają z mapera relacyjno-obiektowego Entity Framework Core. Ten projekt tworzony jest dla zachowania niezależności domeny od zewnętrznych frameworków.
 
-Projekt \texttt{QueryInfrastructure} to projekt dostarczający uproszczoną wersję modelu zapisanego w bazie danych, bez logiki domenowej. Obiekty tworzone w tej części aplikacji potrzebne są dla wykonania zapytań CQRS -- punkt~\ref{subsec:cqrs}. Projekt stworzono, podobnie jak poprzedni, również z wykorzystaniem Entity Framework Core. Oba projekty są niezależne i nic nie stoi na przeszkodzie, aby zamiast EF Core wykorzystać technologię wbudowaną w Net Framework -- ADO.NET czy bibliotekę innego mapera relacyjno-obiektowego -- \texttt{Dapper}.
+Projekt \texttt{QueryInfrastructure} to projekt dostarczający uproszczoną wersję modelu zapisanego w bazie danych, bez logiki domenowej. Obiekty tworzone w tej części aplikacji potrzebne są dla wykonania zapytań CQRS -- punkt~\ref{subsec:cqrs}. Projekt stworzono, podobnie jak poprzedni, również z wykorzystaniem Entity Framework Core. Oba projekty są niezależne i nic nie stoi na~przeszkodzie, aby zamiast EF Core wykorzystać technologię wbudowaną w Net Framework -- ADO.NET czy bibliotekę innego mapera relacyjno-obiektowego -- \texttt{Dapper}.
 
 \subsubsection{Logiczna struktura aplikacji klienckiej}
 
@@ -323,7 +323,7 @@ public class EditModel : PageModel
 \end{lstlisting}
 }
 
-Na końcu listingu~\ref{list:razor-page-1} znajduje się dyrektywa generująca widok częściowy w sekcji \texttt{Scripts} głównego układu strony -- plik \texttt{\_Layout.cshtml}. Odpowiada ona za generowanie na stronie \texttt{Edit.cshtml} skryptów biblioteki \texttt{jQuery unobtrusive validation}, która współpracuje z frameworkiem ASP.NET Core i zapewnia walidację po stronie klienta na podstawie adnotacji modelu klasy języka C\#. 
+Na końcu listingu~\ref{list:razor-page-1} znajduje się dyrektywa generująca widok częściowy w sekcji \texttt{Scripts} głównego układu strony -- plik \texttt{\_Layout.cshtml}. Odpowiada ona za generowanie na stronie \texttt{Edit.cshtml} skryptów biblioteki \texttt{jQuery unobtrusive validation}, która współpracuje z~frameworkiem ASP.NET Core i zapewnia walidację po stronie klienta na podstawie adnotacji modelu klasy języka C\#. 
 
 Przykład walidowanej klasy znajduje się na listingu~\ref{list:razor-validation-1}. Przed tagiem \texttt{body} HTML w~pliku \texttt{\_Layout.cshtml} znajduje się dyrektywa \texttt{@RenderSection("{}Scripts", required: false)}. Umożliwia dołączenie opcjonalnej sekcji skryptów przez widoki, korzystające z tego układu strony.
 
@@ -380,7 +380,7 @@ Po dodaniu konta użytkownik znajduje się dalej na tym samym widoku, jednak nie
 	\label{fig:ss-2}
 \end{figure}
 
-Z widoku listy kont można także przejść do widoku informacji o koncie -- rysunek~\ref{fig:ss-3}. Na tym widoku zaprezentowane są informacje o koncie przeznaczone dla użytkownika bez prawa edycji. Guzik powrotu do ekranu listy kont ułatwia sprawną nawigację w aplikacji.
+Z widoku listy kont można także przejść do widoku informacji o koncie -- rysunek~\ref{fig:ss-3}. Na~tym widoku zaprezentowane są informacje o koncie przeznaczone dla użytkownika bez prawa edycji. Guzik powrotu do ekranu listy kont ułatwia sprawną nawigację w aplikacji.
 
 \begin{figure}[ht]
 	\centering
